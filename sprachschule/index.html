@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/>
 <title>Sprachwerk by Fabio Witt | Persönliches Sprachcoaching &amp; Firmenkurse</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/sprachschule/">
 <meta content="Persönliches Sprachcoaching und Firmenkurse mit Fabio Witt: Deutsch, Englisch und weitere Sprachen. Online oder vor Ort, 1:1, in Gruppen und für Unternehmen." name="description"/>
 <meta content="index,follow" name="robots"/>
 <meta content="Sprachwerk" property="og:title"/>
@@ -845,12 +846,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

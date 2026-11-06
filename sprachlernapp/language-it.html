@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 
-<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Italienisch lernen | Sprachwerk</title><link href="language.css" rel="stylesheet"/><link href="learning-v23.css" rel="stylesheet"/><link href="training-v43.css" rel="stylesheet"/><style>
+<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Italienisch lernen | Sprachwerk</title>
+<meta name="description" content="Italienisch lernen mit LERNWERK: strukturierte Grammatik, Vokabeln und Übungen von A1 bis C1.">
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/sprachlernapp/language-it">
+<meta property="og:title" content="Italienisch lernen | Sprachwerk">
+<meta property="og:description" content="Italienisch lernen mit LERNWERK: strukturierte Grammatik, Vokabeln und Übungen von A1 bis C1.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fabio-ecosystem-ashy.vercel.app/sprachlernapp/language-it">
+<meta property="og:image" content="https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg"><link href="language.css" rel="stylesheet"/><link href="learning-v23.css" rel="stylesheet"/><link href="training-v43.css" rel="stylesheet"/><style>
 /* ===== v29 shared responsive navbar ===== */
 .site-header{position:sticky;top:0;z-index:1200;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(20,55,95,.08)}
 .nav-wrap{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -141,12 +148,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

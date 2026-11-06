@@ -13,6 +13,7 @@
 <meta content="SAP MM Beratung für Einkauf, Bestand &amp; 3PL | DACHWERK" property="og:title"/>
 <meta content="SAP MM Beratung für Procure-to-Pay, Inventory Management, Goods Movements, Movement Types, MRP-Integration, 3PL, Datenmigration und S/4HANA." property="og:description"/>
 <title>SAP MM Beratung für Einkauf, Bestand &amp; 3PL | DACHWERK</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/sap-mm-beratung/">
 <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="../site.webmanifest" rel="manifest"/>
 <link href="../styles.css" rel="stylesheet"/>
@@ -156,12 +157,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

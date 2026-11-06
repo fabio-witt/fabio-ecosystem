@@ -11,6 +11,7 @@
 <meta content="DACHWERK Consulting – SAP für Produktion &amp; Supply Chain" property="og:title"/>
 <meta content="DACH-geführte SAP-Beratung für PP, PP/DS, PEO, MM, Supply Chain und SAP Business One sowie RISE with SAP, Public Cloud, Signavio und Cloud ALM – mit englischsprachigem Senior-Expertenteam aus Pakistan und Indien." property="og:description"/>
 <title>DACHWERK Consulting | SAP-Projekte für Produktion &amp; Supply Chain</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/">
 <link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="site.webmanifest" rel="manifest"/>
 <link href="styles.css" rel="stylesheet"/>
@@ -874,12 +875,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

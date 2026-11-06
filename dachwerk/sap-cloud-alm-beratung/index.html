@@ -13,6 +13,7 @@
 <meta content="SAP Cloud ALM Beratung für Implementierung &amp; Test | DACHWERK" property="og:title"/>
 <meta content="SAP Cloud ALM Beratung für Projektsetup, SAP Activate Roadmaps, Prozesse, Requirements, User Stories, Features, Tests, Defects, Quality Gates und Reporting." property="og:description"/>
 <title>SAP Cloud ALM Beratung für Implementierung &amp; Test | DACHWERK</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/sap-cloud-alm-beratung/">
 <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="../site.webmanifest" rel="manifest"/>
 <link href="../styles.css" rel="stylesheet"/>
@@ -156,12 +157,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

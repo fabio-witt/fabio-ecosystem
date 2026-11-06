@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 
-<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Impressum | Fabio Witt</title><link href="styles.css" rel="stylesheet"/><style>
+<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Impressum | Fabio Witt</title>
+<meta name="description" content="Impressum der Website von Fabio Witt, SAP S/4HANA Supply Chain Consultant in Zürich.">
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/impressum">
+<meta property="og:title" content="Impressum | Fabio Witt">
+<meta property="og:description" content="Impressum der Website von Fabio Witt, SAP S/4HANA Supply Chain Consultant in Zürich.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fabio-ecosystem-ashy.vercel.app/impressum">
+<meta property="og:image" content="https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg"><link href="styles.css" rel="stylesheet"/><style>
 /* ===== Unified DACHWERK Navbar ===== */
 .site-header{
   position:sticky;top:0;z-index:1000;
@@ -143,12 +150,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

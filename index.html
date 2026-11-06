@@ -3,6 +3,7 @@
 <html lang="de"><head>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/>
 <title>Fabio Witt | SAP S/4HANA Supply Chain &amp; Manufacturing Consultant</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/">
 <meta content="Persönliche SAP-Beratung für S/4HANA Supply Chain, SAP PP, MM, Public Cloud, Signavio, Cloud ALM und Integrated Toolchain." name="description"/>
 <link href="styles.css" rel="stylesheet"/><link href="assets/logo.svg" rel="icon"/>
 <meta content="Fabio Witt | SAP S/4HANA Supply Chain &amp; Manufacturing Consultant" property="og:title"/><meta content="Persönliche SAP-Beratung für PP, MM, S/4HANA Cloud, Signavio, Cloud ALM und Integrated Toolchain." property="og:description"/><meta content="website" property="og:type"/><meta content="#0b2342" name="theme-color"/><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Fabio Witt","jobTitle":"Senior SAP S/4HANA Supply Chain Consultant","url":"https://www.linkedin.com/in/fabio-witt-8b889117a/","sameAs":["https://www.linkedin.com/in/fabio-witt-8b889117a/"],"knowsAbout":["SAP S/4HANA","SAP PP","SAP Production Planning","SAP MM","SAP Procurement","MRP","DDMRP","SAP Signavio","SAP Cloud ALM","SAP Activate","SAP BTP","SAP LeanIX","Business Process Design","Business Process Management","S/4HANA Public Cloud","S/4HANA Private Cloud","Supply Chain","Manufacturing","3PL"]}</script><style>
@@ -627,12 +628,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

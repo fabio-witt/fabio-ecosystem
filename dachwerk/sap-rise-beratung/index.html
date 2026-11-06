@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 
-<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><meta content="Transformationsscope, Zielarchitektur und Delivery-Modell für RISE with SAP strukturiert vorbereiten." name="description"/><meta content="#071a2b" name="theme-color"/><meta content="index,follow" name="robots"/><title>RISE with SAP Beratung | DACHWERK</title><link href="../assets/favicon.svg" rel="icon" type="image/svg+xml"/><link href="../styles.css" rel="stylesheet"/><script defer="" src="../script.js"></script>
+<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><meta content="Transformationsscope, Zielarchitektur und Delivery-Modell für RISE with SAP strukturiert vorbereiten." name="description"/><meta content="#071a2b" name="theme-color"/><meta content="index,follow" name="robots"/><title>RISE with SAP Beratung | DACHWERK</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/sap-rise-beratung/">
+<meta property="og:title" content="RISE with SAP Beratung | DACHWERK">
+<meta property="og:description" content="Transformationsscope, Zielarchitektur und Delivery-Modell für RISE with SAP strukturiert vorbereiten.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fabio-ecosystem-ashy.vercel.app/dachwerk/sap-rise-beratung/">
+<meta property="og:image" content="https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg"><link href="../assets/favicon.svg" rel="icon" type="image/svg+xml"/><link href="../styles.css" rel="stylesheet"/><script defer="" src="../script.js"></script>
 <style>
 .flag-icon{display:inline-block!important;width:24px!important;height:16px!important;object-fit:cover!important;vertical-align:-3px!important;border-radius:2px!important;box-shadow:0 0 0 1px rgba(13,35,66,.13)!important;margin:0 3px!important}
 .flag-card-img{display:block!important;width:34px!important;height:23px!important;object-fit:cover!important;border-radius:3px!important;box-shadow:0 0 0 1px rgba(13,35,66,.12)!important}
@@ -114,12 +120,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

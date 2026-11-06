@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
-<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Lehrer-Dashboard | Sprachwerk</title><link href="app.css" rel="stylesheet"/><style>
+<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Lehrer-Dashboard | Sprachwerk</title>
+<meta name="description" content="Lehrer-Dashboard von SPRACHWERK: Lernfortschritt verfolgen und Hausaufgaben vergeben.">
+<meta name="robots" content="noindex"><link href="app.css" rel="stylesheet"/><style>
 .teacher-page{background:#f6f9fb}.teacher-wrap{width:min(1180px,calc(100% - 32px));margin:35px auto}.teacher-hero{padding:30px;border-radius:22px;background:linear-gradient(135deg,#14375f,#2a9d8f);color:#fff}.teacher-hero h1{font-size:40px;margin:6px 0}.teacher-hero p{color:#dbeaf0}.teacher-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:16px;margin-top:18px}.teacher-card{background:#fff;border:1px solid #dce6ec;border-radius:17px;padding:20px}.student{display:grid;grid-template-columns:1fr repeat(4,90px);gap:10px;align-items:center;padding:14px;border-bottom:1px solid #edf2f5}.student strong{color:#14375f}.student span{font-size:11px;color:#708697}.student b{font-size:13px;color:#2a9d8f}.assign-form{display:grid;gap:10px}.assign-form input,.assign-form textarea,.assign-form select{padding:10px;border:1px solid #bdced8;border-radius:9px}.assignment{padding:12px;border-radius:11px;background:#f5f8fa;margin:8px 0}.assignment strong,.assignment span{display:block}.assignment span{font-size:10px;color:#718697}@media(max-width:800px){.teacher-grid{grid-template-columns:1fr}.student{grid-template-columns:1fr 1fr}}</style><style>
 /* ===== v29 shared responsive navbar ===== */
 .site-header{position:sticky;top:0;z-index:1200;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(20,55,95,.08)}
@@ -113,12 +115,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

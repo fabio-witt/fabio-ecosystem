@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Vielen Dank | Fabio Witt</title><link href="styles.css" rel="stylesheet"/><style>
+<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>Vielen Dank | Fabio Witt</title>
+<meta name="robots" content="noindex"><link href="styles.css" rel="stylesheet"/><style>
 /* ===== Unified DACHWERK Navbar ===== */
 .site-header{
   position:sticky;top:0;z-index:1000;
@@ -143,12 +144,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

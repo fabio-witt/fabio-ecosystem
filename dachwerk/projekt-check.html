@@ -13,6 +13,7 @@
 <meta content="SAP-Projekt-Check | DACHWERK Consulting" property="og:title"/>
 <meta content="Interaktiver SAP-Projekt-Check mit acht Fragen zu S/4HANA, PP/DS, PEO, MM, Werken, Datenreife, Teamkapazität und internationaler Delivery. Sofortige erste Einordnung." property="og:description"/>
 <title>SAP-Projekt-Check | DACHWERK Consulting</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/projekt-check">
 <link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="site.webmanifest" rel="manifest"/>
 <link href="styles.css" rel="stylesheet"/>
@@ -174,12 +175,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

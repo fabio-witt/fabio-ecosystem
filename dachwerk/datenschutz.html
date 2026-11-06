@@ -8,6 +8,12 @@
 <meta content="noindex,follow" name="robots"/>
 <meta content="#071a2b" name="theme-color"/>
 <title>Datenschutz | DACHWERK Consulting</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/datenschutz">
+<meta property="og:title" content="Datenschutz | DACHWERK Consulting">
+<meta property="og:description" content="Datenschutzerklärung von DACHWERK Consulting.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fabio-ecosystem-ashy.vercel.app/dachwerk/datenschutz">
+<meta property="og:image" content="https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg">
 <link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="styles.css" rel="stylesheet"/>
 <script defer="" src="script.js"></script>
@@ -295,12 +301,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

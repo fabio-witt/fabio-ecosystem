@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://fabio-ecosystem-ashy.vercel.app/sitemap.xml

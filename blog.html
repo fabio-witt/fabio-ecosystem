@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 
-<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>DACHWERK SAP Blog</title><meta content="0;url=dachwerk/blog.html" http-equiv="refresh"/><style>
+<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/><title>DACHWERK SAP Blog</title>
+<meta name="description" content="SAP-Blog von DACHWERK und Fabio Witt zu S/4HANA, Supply Chain, Produktion und Projektpraxis.">
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/blog">
+<meta property="og:title" content="DACHWERK SAP Blog">
+<meta property="og:description" content="SAP-Blog von DACHWERK und Fabio Witt zu S/4HANA, Supply Chain, Produktion und Projektpraxis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fabio-ecosystem-ashy.vercel.app/blog">
+<meta property="og:image" content="https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg"><meta content="0;url=dachwerk/blog.html" http-equiv="refresh"/><style>
 /* ===== v32 contextual CTA + donation ===== */
 .context-cta{margin:36px auto;padding:28px;border-radius:22px;background:linear-gradient(135deg,#0d3158,#247c82);color:#fff;display:flex;justify-content:space-between;gap:22px;align-items:center;box-shadow:0 18px 48px rgba(20,55,95,.12)}
 .context-cta h2{margin:5px 0;font-size:30px;color:#fff}.context-cta p{margin:0;color:#dcebf1;max-width:720px}.context-cta .cta-actions{display:flex;gap:9px;flex-wrap:wrap}
@@ -51,12 +58,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>

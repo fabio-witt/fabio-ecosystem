@@ -5,6 +5,12 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/>
 <title>DACHWERK SAP Blog | PP/DS, PEO, MM, RISE, Signavio &amp; Cloud ALM</title>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/dachwerk/blog">
+<meta property="og:title" content="DACHWERK SAP Blog | PP/DS, PEO, MM, RISE, Signavio &amp; Cloud ALM">
+<meta property="og:description" content="DACHWERK SAP Blog zu PP/DS, PEO, MM, Supply Chain, RISE, Signavio, Cloud ALM, Testing, Movement Types und Goods Movements.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fabio-ecosystem-ashy.vercel.app/dachwerk/blog">
+<meta property="og:image" content="https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg">
 <meta content="DACHWERK SAP Blog zu PP/DS, PEO, MM, Supply Chain, RISE, Signavio, Cloud ALM, Testing, Movement Types und Goods Movements." name="description"/>
 <link href="styles.css" rel="stylesheet"/>
 <style>
@@ -1178,12 +1184,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
     const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
     if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else {
-      a.addEventListener("click",e=>{
-        e.preventDefault();
-        alert("PayPal-Spendenlink ist noch nicht konfiguriert. Bitte die echte PayPal-Donate-ID in shared-assets/site-config.js eintragen.");
-      });
-    }
+    else { const box=a.closest("section")||a; box.hidden=true; }
   });
 });
 </script>
