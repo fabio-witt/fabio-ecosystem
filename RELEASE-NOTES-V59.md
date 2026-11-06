@@ -17,3 +17,7 @@
 
 ## Hinweis Domain
 Canonical, Sitemap und OpenGraph zeigen auf `https://fabio-ecosystem-ashy.vercel.app`. Bei einer eigenen Domain alle Vorkommen dieser Adresse ersetzen.
+
+## v59.1 Hotfix
+- `trailingSlash: false` aus `vercel.json` entfernt. Diese Einstellung leitete `/dachwerk/` auf `/dachwerk` um, dadurch fanden die Unterseiten ihre CSS- und Bilddateien nicht mehr.
+- Alle internen Links, Bilder, Styles und Skripte auf absolute Pfade umgestellt (`/dachwerk/styles.css` statt `styles.css`). Die Seiten funktionieren jetzt mit und ohne Schrägstrich am Ende.

@@ -519,7 +519,7 @@ document.querySelectorAll('[data-lead-magnet-form]').forEach((form) => {
     const localPreview = location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(location.hostname);
     if (localPreview && form.checkValidity()) {
       event.preventDefault();
-      location.href = 'readiness-download.html';
+      location.href = '/dachwerk/readiness-download.html';
     }
   });
 });
