@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
  if(plan!=="free")return;
  // Grammar: first 4 free.
  document.querySelectorAll("[data-lesson]").forEach(b=>{
-  const n=Number(b.dataset.lesson);if(n>4){b.textContent="🔒 Pro";b.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();window.showSprachwerkUpgrade?.("Die vollständigen A1–C1-Grammatikpfade sind in Sprachwerk Pro enthalten.")}}
+  const n=Number(b.dataset.lesson);if(n>4){b.textContent="🔒 Pro";b.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();window.showSprachwerkUpgrade?.("Die vollständigen A1 bis C1 Grammatikpfade sind in Sprachwerk Pro enthalten.")}}
  });
  // Verb quiz is Pro; lookup remains available.
  document.querySelectorAll(".verb-quiz-launch").forEach(b=>b.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();window.showSprachwerkUpgrade?.("Der unbegrenzte Verb-Konjugationstest ist Teil von Pro.")});

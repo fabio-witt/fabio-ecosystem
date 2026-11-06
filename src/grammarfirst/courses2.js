@@ -60,7 +60,7 @@ export const RU = {
           ch("Они ___ (говорить)", ["говорят", "говорют", "говорим"], 0, "они → -ят"),
           ty("он ___ (говорить)", ["говорит", "govorit"], "он → -ит"),
           bu("Übersetze: Ich spreche Deutsch.", "Я говорю по-немецки", ["говорит", "по-русски"], "я говорю"),
-          ch("Which ending fits 'ты' in the 2nd conjugation?", ["-ешь", "-ишь", "-ет"], 1, "2. Konjugation: ты говоришь"),
+          ch("Welche Endung passt zu 'ты' in der 2. Konjugation?", ["-ешь", "-ишь", "-ет"], 1, "2. Konjugation: ты говоришь"),
         ] },
       { id: "ru6", title: "Akkusativ weiblich", rule: "Als direktes Objekt ändern weibliche Nomen ihre Endung: -а wird -у, -я wird -ю. Männliche Dinge und sächliche Nomen bleiben gleich.",
         structure: "книга → книгу · Таня → Таню · дом, окно bleiben",

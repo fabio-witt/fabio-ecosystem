@@ -126,7 +126,7 @@ export const EN = {
           ch("He doesn't ___ coffee.", ["likes", "like", "liking"], 1, "nach doesn't die Grundform"),
           bu("Übersetze: Magst du Pizza?", "Do you like pizza", ["Does", "likes"], "you → do"),
           ty("Verneine: I like tea → I ___ like tea", ["don't", "do not", "dont"], "I don't like tea."),
-          ch("Which is correct?", ["Does he plays tennis?", "Does he play tennis?", "Do he play tennis?"], 1, "does + Grundform"),
+          ch("Was ist richtig?", ["Does he plays tennis?", "Does he play tennis?", "Do he play tennis?"], 1, "does + Grundform"),
         ] },
       { id: "en5", title: "Present Continuous", rule: "Für etwas, das gerade jetzt passiert, nutzt du am/is/are + Verb mit -ing.",
         structure: "I am working · she is reading · they are waiting",
@@ -221,7 +221,7 @@ export const ES = {
           ch("los perros ___ (klein)", ["pequeño", "pequeña", "pequeños"], 2, "männlich Plural → pequeños"),
           ty("las casas ___ (blanco)", ["blancas"], "weiblich Plural → blancas"),
           bu("Übersetze: ein interessantes Buch", "un libro interesante", ["interesanto", "una"], "-e bleibt im Singular gleich"),
-          ch("Which is correct?", ["una ciudad grande", "una grande ciudad", "una ciudad granda"], 0, "Adjektiv nach dem Nomen, -e bleibt"),
+          ch("Was ist richtig?", ["una ciudad grande", "una grande ciudad", "una ciudad granda"], 0, "Adjektiv nach dem Nomen, -e bleibt"),
         ] } ] } ] };
 
 export const FR = {
@@ -281,7 +281,7 @@ export const FR = {
         ex: [
           bu("Verneine: Je travaille.", "Je ne travaille pas", ["n'", "non"], "ne … pas um das Verb"),
           ch("Elle ___ aime pas le sport.", ["ne", "n'", "pas"], 1, "vor Vokal → n'"),
-          ch("Which is correct?", ["Je pas suis fatigué.", "Je ne suis pas fatigué.", "Je ne pas suis fatigué."], 1, "ne + Verb + pas"),
+          ch("Was ist richtig?", ["Je pas suis fatigué.", "Je ne suis pas fatigué.", "Je ne pas suis fatigué."], 1, "ne + Verb + pas"),
           ty("Nous ___ habitons pas ici.", ["n'"], "vor Vokal → n'"),
           bu("Übersetze: Er ist nicht da.", "Il n'est pas là", ["ne", "non"], "n'est pas"),
         ] },

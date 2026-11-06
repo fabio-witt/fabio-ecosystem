@@ -53,3 +53,22 @@ textarea{resize:vertical}
   .btn,.button{width:100%}
   .sw56-mobile-cta .btn,.sw56-mobile-cta a{width:auto}
 }
+
+/* v70: minimum readable text size on phones */
+@media (max-width: 640px){
+  .footer-market-pill,.footer-market-pill *,.hero-market-strip,.hero-market-strip *,.hero-person__label,.hero-person__label *,.map-legend,.map-legend *,.transform-card__kicker,.transform-card__kicker *,.lead-card__tags,.lead-card__tags *,.network-language,.network-language *,.expert-card__top,.expert-card__top *,.expert-card__country,.expert-card__country *,.delivery-language-bridge,.delivery-language-bridge *,.delivery-flow__connector,.delivery-flow__connector *,.use-case-card-v16__top,.use-case-card-v16__top *,.v41-kicker,.v41-kicker *,.v41-proof,.v41-proof *,.v41-bubble,.v41-bubble *,.v41-player-top,.v41-player-top *,.v41-player-card,.v41-player-card *,.v41-lang-copy,.v41-lang-copy *,.quest-node,.quest-node *,.account-help,.account-help *,.v41-buy-points,.v41-buy-points *,.eyebrow,.eyebrow *,.dash-label,.dash-label *,.badge,.badge *,.v41-coin,.v41-coin *,.lw48-crumb,.lw48-crumb *{font-size:max(12px,1em)!important;line-height:1.35}
+  .transform-card li,.expert-card__body li,.v41-shell > div > span,.v41-mission span,.v41-mission small,.placement-benefits span,.profile-stats span,.v41-shell > div > p,.v41-shell > div > a,.page-final-cta__inner > div > span,.wrap > div > span{font-size:max(12px,1em)!important}
+}
+
+/* v70: long German words must not push grid columns wider than the screen */
+@media (max-width: 640px){
+  h1,h2,h3{overflow-wrap:break-word}
+  .section-heading>*,.placement-section>*,.placement-copy>*,.placement-benefits>*{min-width:0}
+}
+
+/* v70: grids that must keep their columns on phones */
+@media (max-width: 640px){
+  .v41-heat-grid{grid-template-columns:repeat(7,1fr)!important}
+  .placement-benefits{grid-template-columns:1fr!important}
+  .v41-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
