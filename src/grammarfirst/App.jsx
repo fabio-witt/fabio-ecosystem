@@ -1,584 +1,526 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import Mascot from "./Mascot.jsx";
+import { DE, EN, ES, FR } from "./courses1.js";
+import { RU, PL, GSW, IT, GA } from "./courses2.js";
+import CSS from "./styles.js";
 
-// ─── LESSON DATA ─────────────────────────────────────────────────────────────
-const lessons = [
-  { id: 10, title: "Essere & Avere: To Be & To Have", language: "Italian", flag: "🇮🇹", color: "#8b1a1a", accent: "#e05c5c",
-    grammar: {
-      rule: "Italian has two verbs for 'to be/have'. 'Essere' describes identity, origin, and permanent traits. 'Avere' expresses possession. Both are irregular and must be memorised.",
-      structure: "essere: sono / sei / è / siamo / siete / sono  |  avere: ho / hai / ha / abbiamo / avete / hanno",
-      examples: [
-        { native: "Io sono italiano.", english: "I am Italian.", breakdown: ["Io = I", "sono = am (essere)", "italiano = Italian"] },
-        { native: "Lei è medica.", english: "She is a doctor.", breakdown: ["Lei = she", "è = is (essere)", "medica = doctor (f.)"] },
-        { native: "Noi abbiamo un cane.", english: "We have a dog.", breakdown: ["Noi = we", "abbiamo = have (avere)", "un cane = a dog"] },
-      ],
-      tip: "💡 You can DROP the subject pronoun in Italian — 'sono stanco' means 'I am tired' because the verb ending tells you who it is (pro-drop language).",
-    },
-    exercises: [
-      { type: "translate", prompt: "Translate to Italian: 'She has a car.'", hint: "car = macchina", options: ["Lei è una macchina.", "Lei ha una macchina.", "Lei avere una macchina.", "Ha lei una macchina."], correct: 1, explanation: "'Avere' is used for possession. 'Ha' is 3rd person singular of avere." },
-      { type: "fill", prompt: "Fill in: 'Marco ___ di Roma.' (Marco is from Rome.)", hint: "origin uses essere", options: ["ha", "è", "sei", "sono"], correct: 1, explanation: "Origin uses 'essere'. 3rd person singular = è." },
-      { type: "identify", prompt: "Which sentence correctly says 'We are tired'?", hint: "tired = stanchi (plural)", options: ["Abbiamo stanchi.", "Siamo stanchi.", "Sono stanchi noi.", "Essere stanchi."], correct: 1, explanation: "'Siamo' is 1st person plural of essere." },
-    ]
-  },
-  { id: 11, title: "Noun Gender & Articles", language: "Italian", flag: "🇮🇹", color: "#1a4a1a", accent: "#5cb85c",
-    grammar: {
-      rule: "Every Italian noun is masculine or feminine. The article must match the gender. Masculine nouns usually end in -o, feminine in -a. Articles also change before vowels.",
-      structure: "Masc: il / i (pl.)  |  Fem: la / le (pl.)  |  Before vowels: l' (sing.) / gli or le (pl.)",
-      examples: [
-        { native: "il libro / i libri", english: "the book / the books", breakdown: ["il = the (masc.)", "libro = book", "i = the (masc. pl.)", "libri = books"] },
-        { native: "la casa / le case", english: "the house / the houses", breakdown: ["la = the (fem.)", "casa = house", "le = the (fem. pl.)"] },
-        { native: "l'amico / gli amici", english: "the friend / the friends", breakdown: ["l' = the (before vowel)", "amico = friend (m.)", "gli = the (masc. pl. before vowel)"] },
-      ],
-      tip: "💡 Quick rule: -o ending = masculine (il libro), -a ending = feminine (la casa). Nouns ending in -e can be either — learn them!",
-    },
-    exercises: [
-      { type: "identify", prompt: "Choose the correct article for 'pizza' (feminine):", hint: "pizza ends in -a", options: ["il pizza", "la pizza", "lo pizza", "le pizza"], correct: 1, explanation: "'Pizza' is feminine singular → 'la'." },
-      { type: "translate", prompt: "How do you say 'the books' (plural of il libro)?", hint: "masculine plural article", options: ["il libri", "i libri", "le libri", "gli libri"], correct: 1, explanation: "Masculine plural: il → i, libro → libri." },
-      { type: "fill", prompt: "Fill in: '___ amico è simpatico.' (The friend is nice.)", hint: "amico starts with a vowel!", options: ["Il", "Lo", "L'", "La"], correct: 2, explanation: "Before a vowel, 'il'/'la' become 'l''." },
-    ]
-  },
-  { id: 1, title: "Verb 'To Be': Tá", language: "Irish", flag: "🇮🇪", color: "#2d6a4f", accent: "#52b788",
-    grammar: {
-      rule: "The verb 'tá' means 'is/am/are' — used for states, conditions, and locations. Unlike English, Irish puts the verb FIRST.",
-      structure: "Tá + [subject] + [complement]",
-      examples: [
-        { native: "Tá mé go maith.", english: "I am well.", breakdown: ["Tá = am", "mé = I", "go maith = well"] },
-        { native: "Tá sí ina cónaí in Éirinn.", english: "She lives in Ireland.", breakdown: ["Tá = is", "sí = she", "ina cónaí = living", "in Éirinn = in Ireland"] },
-        { native: "Tá an aimsir go hiontach.", english: "The weather is wonderful.", breakdown: ["Tá = is", "an aimsir = the weather", "go hiontach = wonderful"] },
-      ],
-      tip: "💡 Irish word order is VSO (Verb-Subject-Object) — the verb always comes first!",
-    },
-    exercises: [
-      { type: "translate", prompt: "Translate to Irish: 'I am tired.'", hint: "tired = tuirseach", options: ["Tá mé tuirseach.", "Mé tá tuirseach.", "Tuirseach tá mé.", "Tá tuirseach mé."], correct: 0, explanation: "Verb first! Tá (am) before mé (I)." },
-      { type: "fill", prompt: "Fill in: '___ sé go maith.' (He is well.)", options: ["Tá", "Is", "Bí", "An"], correct: 0, explanation: "'Tá' for current states. 'Sé' = he." },
-      { type: "identify", prompt: "Which sentence correctly says 'The cat is black'?", hint: "cat = an cat, black = dubh", options: ["An cat tá dubh.", "Tá an cat dubh.", "Dubh tá an cat.", "Tá dubh an cat."], correct: 1, explanation: "Verb (Tá) → Subject (an cat) → Complement (dubh)." },
-    ]
-  },
-  { id: 2, title: "Definite Article: An", language: "Irish", flag: "🇮🇪", color: "#1a3a5c", accent: "#4a9eca",
-    grammar: {
-      rule: "Irish has only ONE definite article: 'an' (the). There is NO indefinite article — 'cat' means either 'a cat' or just 'cat'.",
-      structure: "an + [noun] — 'an' causes lenition (mutations) on some consonants",
-      examples: [
-        { native: "an cat", english: "the cat", breakdown: ["an = the", "cat = cat"] },
-        { native: "an bhean", english: "the woman", breakdown: ["an = the", "bhean = woman (lenited from 'bean')"] },
-        { native: "an fear", english: "the man", breakdown: ["an = the", "fear = man (no change — masculine)"] },
-      ],
-      tip: "💡 After 'an', feminine nouns get lenition (add 'h' after first consonant): bean → an bhean.",
-    },
-    exercises: [
-      { type: "translate", prompt: "How do you say 'the dog' in Irish?", hint: "dog = madra (masculine)", options: ["an madra", "an mhadra", "madra an", "na madra"], correct: 0, explanation: "'Madra' is masculine — no lenition in nominative case." },
-      { type: "identify", prompt: "Which is correct for 'the woman'?", hint: "bean (woman) is feminine", options: ["an bean", "an bhean", "na bean", "an bhhean"], correct: 1, explanation: "Feminine nouns are lenited after 'an': b → bh." },
-      { type: "fill", prompt: "How do you say just 'a cat' in Irish?", options: ["an cat", "cat", "aon cat", "na cat"], correct: 1, explanation: "No indefinite article in Irish — just the bare noun." },
-    ]
-  },
-];
+const COURSES = [DE, EN, ES, FR, RU, PL, GSW, IT, GA];
+const byId = Object.fromEntries(COURSES.map(c => [c.id, c]));
+const allLessons = c => c.units.flatMap(u => u.lessons);
+const FLAG = f => "/shared-assets/flags/" + f + ".svg";
+const SPEECH = { de: "de-DE", en: "en-GB", es: "es-ES", fr: "fr-FR", ru: "ru-RU", pl: "pl-PL", gsw: "de-CH", it: "it-IT", ga: "ga-IE" };
+const MAX_HEARTS = 5, HEART_MS = 30 * 60 * 1000, STORE = "grammarfirst-v2";
 
-// ─── GAMIFICATION ─────────────────────────────────────────────────────────────
-const LEVELS = [
-  { level: 1, name: "Beginner",  minXP: 0,   color: "#8899aa" },
-  { level: 2, name: "Learner",   minXP: 50,  color: "#5cb85c" },
-  { level: 3, name: "Student",   minXP: 120, color: "#4a9eca" },
-  { level: 4, name: "Scholar",   minXP: 250, color: "#c97c2a" },
-  { level: 5, name: "Linguist",  minXP: 450, color: "#a855f7" },
-  { level: 6, name: "Master",    minXP: 700, color: "#e05c5c" },
-];
-const BADGES = [
-  { id: "first_lesson",  icon: "🎯", name: "First Step",    desc: "Complete your first lesson",                 check: u => u.completedLessons.length >= 1 },
-  { id: "perfect",       icon: "✨", name: "Perfectionist", desc: "Get 100% on any lesson",                     check: u => (u.perfectLessons||0) >= 1 },
-  { id: "streak3",       icon: "🔥", name: "On Fire",       desc: "Maintain a 3-day streak",                    check: u => u.streak >= 3 },
-  { id: "bilingual",     icon: "🌍", name: "Bilingual",     desc: "Complete lessons in both languages",         check: u => { const s=new Set(u.completedLessons.map(id=>lessons.find(l=>l.id===id)?.language)); return s.size>=2; } },
-  { id: "xp100",         icon: "💎", name: "Century",       desc: "Earn 100 XP",                                check: u => u.xp >= 100 },
-  { id: "all_italian",   icon: "🍕", name: "Italiano",      desc: "Complete all Italian lessons",               check: u => lessons.filter(l=>l.language==="Italian").every(l=>u.completedLessons.includes(l.id)) },
-  { id: "all_irish",     icon: "☘️", name: "Gaeilge",       desc: "Complete all Irish lessons",                 check: u => lessons.filter(l=>l.language==="Irish").every(l=>u.completedLessons.includes(l.id)) },
-  { id: "dedicated",     icon: "🏅", name: "Dedicated",     desc: "Complete 4 lessons total",                   check: u => u.completedLessons.length >= 4 },
-];
-const getLevel    = xp => [...LEVELS].reverse().find(l => xp >= l.minXP) || LEVELS[0];
-const getNextLvl  = xp => LEVELS.find(l => l.minXP > xp) || null;
-
-// ─── MOCK USER DB ─────────────────────────────────────────────────────────────
-const SEED_USERS = {
-  demo:  { username:"demo",  password:"demo123", xp:80,  streak:2, completedLessons:[10], perfectLessons:1, badges:["first_lesson","perfect"], lastActive:new Date().toDateString(), joinDate:"2026-01-15" },
-  anna:  { username:"anna",  password:"anna123", xp:210, streak:5, completedLessons:[10,11,1], perfectLessons:2, badges:["first_lesson","perfect","xp100","streak3"], lastActive:"2026-03-04", joinDate:"2026-01-10" },
-  marco: { username:"marco", password:"marco123",xp:145, streak:1, completedLessons:[10,11],  perfectLessons:0, badges:["first_lesson","all_italian"], lastActive:"2026-03-01", joinDate:"2026-02-01" },
+// ─── UI TEXT ────────────────────────────────────────────────────────────────
+const T = {
+  de: {
+    learn: "Lernen", league: "Liga", profile: "Profil", shop: "Shop", start: "Los geht's", cont: "Weiter", check: "Prüfen",
+    correct: "Richtig!", wrong: "Nicht ganz.", almost: "Fast richtig, achte auf die Akzente:", answer: "Lösung:",
+    rule: "Die Regel", structure: "Struktur", examples: "Beispiele", tip: "Tipp", listen: "Anhören",
+    chooseCourse: "Welche Sprache willst du lernen?", hello: "Hallo, ich bin Mila!", introText: "Ich zeige dir zuerst die Grammatik und dann üben wir sie, bis sie sitzt.",
+    yourName: "Wie soll ich dich nennen?", goal: "Tagesziel", goals: { 20: "Locker", 50: "Normal", 100: "Intensiv" },
+    xpDay: "XP pro Tag", streak: "Tage in Folge", gems: "Edelsteine", hearts: "Herzen", lesson: "Lektion", done: "Lektion geschafft!",
+    perfect: "Perfekt, keine Fehler!", earned: "Verdient", accuracy: "Treffer", combo: "Serie", practice: "Fehler üben", practiceDesc: "Wiederhole Aufgaben, bei denen du dich vertan hast. Kostet keine Herzen und gibt Herzen zurück.",
+    noMistakes: "Keine offenen Fehler. Stark!", outOfHearts: "Keine Herzen mehr", outText: "Übe deine Fehler, um Herzen zurückzubekommen, oder fülle sie im Shop auf.",
+    refill: "Auffüllen (50 💎)", wait: "Nächstes Herz in", quests: "Tagesaufgaben", achievements: "Abzeichen", settings: "Einstellungen",
+    sound: "Töne", lang: "Sprache der App", reset: "Fortschritt löschen", resetConfirm: "Wirklich alles löschen?", yes: "Ja, löschen", no: "Abbrechen",
+    leagueTitle: "Wochenliga", leagueNote: "Übungsliga mit simulierten Mitspielern. Sie startet jeden Montag neu.", you: "Du", promote: "Die Top 3 steigen auf.",
+    freeze: "Streak-Schutz", freezeDesc: "Schützt deine Serie, wenn du einen Tag verpasst.", buy: "Kaufen", owned: "Im Besitz", notEnough: "Nicht genug Edelsteine",
+    heartRefill: "Herzen auffüllen", chest: "Truhe", chestOpen: "Truhe öffnen", locked: "Noch gesperrt", crown: "Krone", level: "Level",
+    tapWords: "Tippe die Wörter in der richtigen Reihenfolge an.", typeHere: "Antwort eingeben …", matchHint: "Tippe links und dann rechts das passende Paar.",
+    quit: "Beenden", quitConfirm: "Lektion beenden? Dein Fortschritt in dieser Lektion geht verloren.", stay: "Weiterlernen",
+    dailyDone: "Tagesziel erreicht!", newLevel: "Neues Level!", unitDone: "Einheit abgeschlossen", reviewAll: "Lektion wiederholen", course: "Kurs",
+    change: "Wechseln", keyHint: "Tastatur: 1 bis 4 wählen, Enter prüfen", mascotSays: "Mila sagt", of: "von", lessons: "Lektionen",
+  },
+  en: {
+    learn: "Learn", league: "League", profile: "Profile", shop: "Shop", start: "Let's go", cont: "Continue", check: "Check",
+    correct: "Correct!", wrong: "Not quite.", almost: "Almost, watch the accents:", answer: "Answer:",
+    rule: "The rule", structure: "Structure", examples: "Examples", tip: "Tip", listen: "Listen",
+    chooseCourse: "Which language do you want to learn?", hello: "Hi, I'm Mila!", introText: "First I show you the grammar, then we practise it until it sticks.",
+    yourName: "What should I call you?", goal: "Daily goal", goals: { 20: "Casual", 50: "Regular", 100: "Intense" },
+    xpDay: "XP per day", streak: "day streak", gems: "Gems", hearts: "Hearts", lesson: "Lesson", done: "Lesson complete!",
+    perfect: "Perfect, no mistakes!", earned: "Earned", accuracy: "Accuracy", combo: "Combo", practice: "Practise mistakes", practiceDesc: "Repeat exercises you got wrong. Costs no hearts and gives hearts back.",
+    noMistakes: "No open mistakes. Great!", outOfHearts: "Out of hearts", outText: "Practise your mistakes to earn hearts back, or refill them in the shop.",
+    refill: "Refill (50 💎)", wait: "Next heart in", quests: "Daily quests", achievements: "Badges", settings: "Settings",
+    sound: "Sounds", lang: "App language", reset: "Reset progress", resetConfirm: "Really delete everything?", yes: "Yes, delete", no: "Cancel",
+    leagueTitle: "Weekly league", leagueNote: "Practice league with simulated players. It restarts every Monday.", you: "You", promote: "Top 3 get promoted.",
+    freeze: "Streak freeze", freezeDesc: "Protects your streak if you miss a day.", buy: "Buy", owned: "Owned", notEnough: "Not enough gems",
+    heartRefill: "Refill hearts", chest: "Chest", chestOpen: "Open chest", locked: "Locked", crown: "Crown", level: "Level",
+    tapWords: "Tap the words in the right order.", typeHere: "Type your answer …", matchHint: "Tap a word on the left, then its match on the right.",
+    quit: "Quit", quitConfirm: "Quit the lesson? Your progress in this lesson will be lost.", stay: "Keep learning",
+    dailyDone: "Daily goal reached!", newLevel: "New level!", unitDone: "Unit complete", reviewAll: "Repeat lesson", course: "Course",
+    change: "Change", keyHint: "Keyboard: 1 to 4 to choose, Enter to check", mascotSays: "Mila says", of: "of", lessons: "lessons",
+  },
 };
 
-// ─── TINY COMPONENTS ─────────────────────────────────────────────────────────
-const XPBar = ({ val, max, color="#52b788" }) => (
-  <div style={{ background:"rgba(255,255,255,0.07)", borderRadius:8, height:8, overflow:"hidden", width:"100%" }}>
-    <div style={{ height:"100%", width:`${Math.min((val/max)*100,100)}%`, background:`linear-gradient(90deg,${color}99,${color})`, borderRadius:8, transition:"width 0.6s ease" }} />
-  </div>
-);
+const LEVELS = [0, 60, 150, 300, 500, 800, 1200, 1700, 2400, 3200, 4200, 5500];
+const levelOf = xp => { let l = 0; while (l < LEVELS.length - 1 && xp >= LEVELS[l + 1]) l++; return l + 1; };
 
-const Toast = ({ msg, type }) => (
-  <div style={{
-    position:"fixed", bottom:28, left:"50%", transform:"translateX(-50%)",
-    background: type==="badge" ? "linear-gradient(135deg,#7c3aed,#a855f7)" : type==="levelup" ? "linear-gradient(135deg,#b45309,#f0a050)" : "rgba(20,28,38,0.97)",
-    border:"1px solid rgba(255,255,255,0.15)", borderRadius:14, padding:"14px 26px",
-    color:"#fff", fontSize:15, fontWeight:500, zIndex:999, whiteSpace:"nowrap",
-    boxShadow:"0 8px 32px rgba(0,0,0,0.6)", animation:"slideUp 0.3s ease"
-  }}>{msg}</div>
-);
+const ACH = [
+  { id: "first", icon: "🌱", de: ["Erster Schritt", "Erste Lektion abgeschlossen"], en: ["First step", "Finished your first lesson"], test: s => s.lessonsCompleted >= 1 },
+  { id: "five", icon: "📚", de: ["Bücherwurm", "5 Lektionen abgeschlossen"], en: ["Bookworm", "Finished 5 lessons"], test: s => s.lessonsCompleted >= 5 },
+  { id: "twenty", icon: "🏔️", de: ["Gipfelstürmer", "20 Lektionen abgeschlossen"], en: ["Summit", "Finished 20 lessons"], test: s => s.lessonsCompleted >= 20 },
+  { id: "perfect", icon: "✨", de: ["Fehlerfrei", "Eine Lektion ohne Fehler"], en: ["Flawless", "A lesson without mistakes"], test: s => s.perfects >= 1 },
+  { id: "perfect5", icon: "💎", de: ["Präzise", "5 Lektionen ohne Fehler"], en: ["Precise", "5 flawless lessons"], test: s => s.perfects >= 5 },
+  { id: "combo10", icon: "🔥", de: ["Heisse Serie", "10 richtige Antworten am Stück"], en: ["On fire", "10 correct answers in a row"], test: s => s.maxCombo >= 10 },
+  { id: "streak3", icon: "📅", de: ["Dranbleiben", "3 Tage in Folge gelernt"], en: ["Consistent", "3-day streak"], test: s => s.bestStreak >= 3 },
+  { id: "streak7", icon: "🗓️", de: ["Eine Woche", "7 Tage in Folge gelernt"], en: ["One week", "7-day streak"], test: s => s.bestStreak >= 7 },
+  { id: "xp500", icon: "⭐", de: ["500 XP", "500 XP gesammelt"], en: ["500 XP", "Collected 500 XP"], test: s => s.xp >= 500 },
+  { id: "poly", icon: "🌍", de: ["Polyglott", "Lektionen in 3 Sprachen"], en: ["Polyglot", "Lessons in 3 languages"], test: s => new Set(Object.keys(s.done).map(k => k.replace(/\d+$/, ""))).size >= 3 },
+  { id: "fixer", icon: "🛠️", de: ["Fehlerjäger", "10 Fehler nachgeübt"], en: ["Mistake hunter", "Fixed 10 mistakes"], test: s => s.fixed >= 10 },
+  { id: "course", icon: "🏆", de: ["Kursabschluss", "Alle Lektionen eines Kurses"], en: ["Course complete", "All lessons of a course"], test: s => COURSES.some(c => allLessons(c).every(l => s.done[l.id])) },
+];
 
-const GrammarCard = ({ ex }) => (
-  <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:12, padding:"16px 20px", marginBottom:12 }}>
-    <div style={{ fontSize:18, fontFamily:"'Playfair Display',serif", color:"#e8f4ea", marginBottom:4 }}>{ex.native}</div>
-    <div style={{ fontSize:14, color:"#aab8c2", marginBottom:10 }}>{ex.english}</div>
-    <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-      {ex.breakdown.map((b,i)=>(
-        <span key={i} style={{ background:"rgba(82,183,136,0.15)", color:"#95d5b2", border:"1px solid rgba(82,183,136,0.3)", borderRadius:6, padding:"2px 10px", fontSize:12 }}>{b}</span>
-      ))}
-    </div>
-  </div>
-);
+const BOTS = ["Lea", "Noah", "Mia", "Luca", "Elif", "Jonas", "Sofia", "Ben", "Aylin", "Nico", "Lena", "Mateo"];
 
-const ExerciseView = ({ exercise, onAnswer, answered, selectedIdx }) => {
-  const ok = selectedIdx === exercise.correct;
-  return (
-    <div>
-      <div style={{ marginBottom:20 }}>
-        <div style={{ display:"inline-block", background:"rgba(82,183,136,0.15)", color:"#95d5b2", fontSize:12, padding:"3px 12px", borderRadius:20, marginBottom:12 }}>
-          {exercise.type==="translate"?"✍️ Translate":exercise.type==="fill"?"🔤 Fill the blank":"🔍 Identify"}
-        </div>
-        <div style={{ fontSize:20, color:"#e8f4ea", fontFamily:"'Playfair Display',serif", lineHeight:1.4, marginBottom:8 }}>{exercise.prompt}</div>
-        {exercise.hint&&<div style={{ fontSize:13, color:"#7a9aaa", fontStyle:"italic" }}>Hint: {exercise.hint}</div>}
-      </div>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:16 }}>
-        {exercise.options.map((opt,i)=>{
-          let bg="rgba(255,255,255,0.04)",border="1px solid rgba(255,255,255,0.1)",color="#cdd6dd";
-          if(answered){
-            if(i===exercise.correct){bg="rgba(82,183,136,0.2)";border="1px solid #52b788";color="#b7e4c7";}
-            else if(i===selectedIdx){bg="rgba(220,80,80,0.2)";border="1px solid #e07070";color="#ffb3b3";}
-          }
-          return(
-            <button key={i} onClick={()=>!answered&&onAnswer(i)} style={{ background:bg,border,borderRadius:10,padding:"14px 16px",color,fontSize:15,cursor:answered?"default":"pointer",textAlign:"left",fontFamily:"'Playfair Display',serif",transition:"all 0.2s",lineHeight:1.3 }}>
-              <span style={{ opacity:0.5,marginRight:8,fontSize:12 }}>{String.fromCharCode(65+i)}.</span>{opt}
-            </button>
-          );
-        })}
-      </div>
-      {answered&&(
-        <div style={{ background:ok?"rgba(82,183,136,0.15)":"rgba(220,80,80,0.15)", border:`1px solid ${ok?"#52b788":"#e07070"}`, borderRadius:12, padding:"14px 18px" }}>
-          <div style={{ fontWeight:600, color:ok?"#95d5b2":"#ffb3b3", marginBottom:4 }}>{ok?"✓ Correct!":"✗ Not quite"}</div>
-          <div style={{ color:"#aab8c2", fontSize:14 }}>{exercise.explanation}</div>
-        </div>
-      )}
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+const today = () => new Date().toISOString().slice(0, 10);
+const dayDiff = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000);
+const weekId = () => { const d = new Date(); const day = (d.getDay() + 6) % 7; d.setDate(d.getDate() - day); return d.toISOString().slice(0, 10); };
+const norm = s => s.toLowerCase().replace(/[’`´]/g, "'").replace(/[¿?¡!.,;:«»"“”]/g, " ").replace(/\s+/g, " ").trim();
+const plain = s => norm(s).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ł/g, "l").replace(/ß/g, "ss");
+const tokens = s => s.replace(/[¿?¡!.,;:]/g, " ").split(/\s+/).filter(Boolean);
+const shuffle = (a, seed) => { const r = [...a]; let x = seed || Math.random() * 1e9; for (let i = r.length - 1; i > 0; i--) { x = (x * 9301 + 49297) % 233280; const j = Math.floor((x / 233280) * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
+const hash = s => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 1e9; return h; };
+
+const fresh = () => ({
+  v: 2, onboarded: false, name: "", ui: "de", sound: true, goal: 50, course: "de",
+  xp: 0, gems: 50, hearts: MAX_HEARTS, heartsAt: Date.now(), streak: 0, bestStreak: 0, lastDay: null, freezes: 0,
+  dayXp: 0, day: today(), weekXp: 0, week: weekId(), done: {}, mistakes: [], unlockedAch: {},
+  lessonsCompleted: 0, perfects: 0, maxCombo: 0, fixed: 0, chests: {}, quests: null, goalPaid: false,
+});
+const load = () => { try { const s = JSON.parse(localStorage.getItem(STORE)); if (s && s.v === 2) return { ...fresh(), ...s }; } catch (e) { } return fresh(); };
+const save = s => { try { localStorage.setItem(STORE, JSON.stringify(s)); } catch (e) { } };
+
+const makeQuests = () => ([
+  { id: "xp", goal: 30, prog: 0, gems: 5, de: "Sammle 30 XP", en: "Earn 30 XP" },
+  { id: "lessons", goal: 2, prog: 0, gems: 5, de: "Schliesse 2 Lektionen ab", en: "Finish 2 lessons" },
+  { id: "combo", goal: 5, prog: 0, gems: 5, de: "Erreiche eine Serie von 5", en: "Reach a combo of 5" },
+]);
+
+// Regenerate hearts, roll day/week, refresh quests
+function tick(s) {
+  const n = { ...s }; const now = Date.now();
+  if (n.hearts < MAX_HEARTS) { const g = Math.floor((now - n.heartsAt) / HEART_MS); if (g > 0) { n.hearts = Math.min(MAX_HEARTS, n.hearts + g); n.heartsAt = n.hearts >= MAX_HEARTS ? now : n.heartsAt + g * HEART_MS; } } else n.heartsAt = now;
+  if (n.day !== today()) { n.day = today(); n.dayXp = 0; n.goalPaid = false; }
+  if (n.week !== weekId()) { n.week = weekId(); n.weekXp = 0; }
+  if (!n.quests || n.quests.date !== today()) n.quests = { date: today(), items: makeQuests() };
+  if (n.lastDay && dayDiff(n.lastDay, today()) > 1 && !(n.freezes > 0 && dayDiff(n.lastDay, today()) === 2)) n.streak = 0;
+  return n;
+}
+
+// ─── SOUND ──────────────────────────────────────────────────────────────────
+let actx = null;
+function beep(kind, on) {
+  if (!on) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const seq = { ok: [[660, .08], [880, .12]], bad: [[220, .18]], win: [[523, .1], [659, .1], [784, .1], [1047, .22]], tap: [[440, .04]] }[kind];
+    let t = actx.currentTime;
+    seq.forEach(([f, d]) => { const o = actx.createOscillator(), g = actx.createGain(); o.type = kind === "bad" ? "triangle" : "sine"; o.frequency.value = f; g.gain.setValueAtTime(.12, t); g.gain.exponentialRampToValueAtTime(.001, t + d); o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + d); t += d * .9; });
+  } catch (e) { }
+}
+function speak(text, lang) { try { const u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = .9; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) { } }
+
+// ─── SMALL COMPONENTS ───────────────────────────────────────────────────────
+const Flag = ({ id, size = 28 }) => <img src={FLAG(id)} alt="" width={size} height={Math.round(size * .7)} className="flag" />;
+
+function Confetti({ run }) {
+  if (!run) return null;
+  const bits = Array.from({ length: 60 }, (_, i) => i);
+  const colors = ["#f2b705", "#107c5c", "#e63946", "#3a86ff", "#8338ec", "#ff8fab"];
+  return <div className="confetti" aria-hidden="true">{bits.map(i => <i key={i} style={{ left: (i * 37 % 100) + "%", background: colors[i % colors.length], animationDelay: (i % 12) * .05 + "s", transform: `rotate(${i * 29}deg)` }} />)}</div>;
+}
+
+function Bubble({ children }) { return <div className="bubble" role="status">{children}</div>; }
+
+function Ring({ value, max, size = 54, color = "#107c5c", children }) {
+  const r = (size - 8) / 2, c = 2 * Math.PI * r, p = Math.min(1, value / max);
+  return <div className="ring" style={{ width: size, height: size }}>
+    <svg width={size} height={size}><circle cx={size / 2} cy={size / 2} r={r} className="ring-bg" /><circle cx={size / 2} cy={size / 2} r={r} stroke={color} className="ring-fg" strokeDasharray={c} strokeDashoffset={c * (1 - p)} /></svg>
+    <span>{children}</span></div>;
+}
+
+// ─── EXERCISES ──────────────────────────────────────────────────────────────
+function Choice({ ex, onAnswer, locked, picked, seed }) {
+  const order = useMemo(() => shuffle(ex.options.map((_, i) => i), seed), [ex, seed]);
+  useEffect(() => {
+    const h = e => { if (locked) return; const n = parseInt(e.key, 10); if (n >= 1 && n <= order.length) onAnswer(order[n - 1]); };
+    window.addEventListener("keydown", h); return () => window.removeEventListener("keydown", h);
+  }, [order, locked, onAnswer]);
+  return <div className="choices">{order.map((oi, k) => {
+    let cls = "choice"; if (locked) { if (oi === ex.answer) cls += " is-right"; else if (oi === picked) cls += " is-wrong"; }
+    return <button key={oi} className={cls} disabled={locked} onClick={() => onAnswer(oi)}><kbd>{k + 1}</kbd>{ex.options[oi]}</button>;
+  })}</div>;
+}
+
+function Build({ ex, value, setValue, locked, seed }) {
+  const bank = useMemo(() => shuffle([...tokens(ex.answer), ...(ex.extra || [])].map((w, i) => ({ w, i })), seed), [ex, seed]);
+  const used = new Set(value.map(v => v.i));
+  return <div className="build">
+    <div className="build-line" aria-label="Antwort">{value.length ? value.map(v => <button key={v.i} className="tile" disabled={locked} onClick={() => setValue(value.filter(x => x.i !== v.i))}>{v.w}</button>) : <span className="ph">…</span>}</div>
+    <div className="build-bank">{bank.map(v => <button key={v.i} className={"tile" + (used.has(v.i) ? " is-used" : "")} disabled={locked || used.has(v.i)} onClick={() => setValue([...value, v])}>{v.w}</button>)}</div>
+  </div>;
+}
+
+function Match({ ex, onDone, onMiss, sound }) {
+  const left = useMemo(() => shuffle(ex.pairs.map((p, i) => ({ t: p[0], i })), hash(ex.pairs[0][0])), [ex]);
+  const right = useMemo(() => shuffle(ex.pairs.map((p, i) => ({ t: p[1], i })), hash(ex.pairs[0][1]) + 3), [ex]);
+  const [sel, setSel] = useState(null), [okL, setOkL] = useState([]), [okR, setOkR] = useState([]), [bad, setBad] = useState(null);
+  const pickRight = i => {
+    if (sel === null) return;
+    if (ex.pairs[i][1] === ex.pairs[sel][1]) { beep("tap", sound); const n = [...okL, sel]; setOkL(n); setOkR([...okR, i]); setSel(null); if (n.length === ex.pairs.length) onDone(); }
+    else { setBad(i); onMiss(); beep("bad", sound); setTimeout(() => setBad(null), 500); setSel(null); }
+  };
+  return <div className="match">
+    <div>{left.map(l => <button key={l.i} className={"tile wide" + (okL.includes(l.i) ? " is-done" : sel === l.i ? " is-sel" : "")} disabled={okL.includes(l.i)} onClick={() => setSel(l.i)}>{l.t}</button>)}</div>
+    <div>{right.map(r => <button key={r.i} className={"tile wide" + (okR.includes(r.i) ? " is-done" : bad === r.i ? " is-wrong" : "")} disabled={okR.includes(r.i)} onClick={() => pickRight(r.i)}>{r.t}</button>)}</div>
+  </div>;
+}
+
+// ─── LESSON PLAYER ──────────────────────────────────────────────────────────
+function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHeart }) {
+  const [phase, setPhase] = useState(mode === "lesson" ? "intro" : "ex");
+  const [queue, setQueue] = useState(items);
+  const [idx, setIdx] = useState(0);
+  const [result, setResult] = useState(null); // {ok, almost, picked}
+  const [buildVal, setBuildVal] = useState([]);
+  const [typed, setTyped] = useState("");
+  const [combo, setCombo] = useState(0);
+  const [stats, setStats] = useState({ right: 0, wrong: 0, xp: 0, maxCombo: 0, wrongItems: [], fixedItems: [] });
+  const [matchMiss, setMatchMiss] = useState(false);
+  const [quit, setQuit] = useState(false);
+  const inputRef = useRef(null);
+  const cur = queue[idx];
+  const total = items.length;
+  const doneCount = Math.min(total, stats.right + (mode === "lesson" ? 0 : 0));
+  const lang = SPEECH[course.id];
+
+  useEffect(() => { setBuildVal([]); setTyped(""); setResult(null); setMatchMiss(false); if (inputRef.current) inputRef.current.focus(); }, [idx, phase]);
+
+  const grade = (ok, almost, picked) => {
+    const ex = cur.ex;
+    const nc = ok ? combo + 1 : 0;
+    setCombo(nc);
+    setResult({ ok, almost, picked });
+    beep(ok ? "ok" : "bad", st.sound);
+    setStats(s => {
+      const xpGain = ok ? (cur.retry ? 5 : 10) + (nc >= 3 ? 2 : 0) : 0;
+      const wrongItems = ok ? s.wrongItems : [...s.wrongItems, cur.ref];
+      const fixedItems = ok && mode === "practice" ? [...s.fixedItems, cur.ref] : s.fixedItems;
+      return { right: s.right + (ok ? 1 : 0), wrong: s.wrong + (ok ? 0 : 1), xp: s.xp + xpGain, maxCombo: Math.max(s.maxCombo, nc), wrongItems, fixedItems };
+    });
+    if (!ok) {
+      if (mode === "lesson") spendHeart();
+      if (!cur.retry) setQueue(q => [...q, { ...cur, retry: true }]);
+    }
+  };
+
+  const check = () => {
+    const ex = cur.ex;
+    if (ex.type === "build") {
+      const a = norm(buildVal.map(v => v.w).join(" ")), b = norm(ex.answer);
+      grade(a === b, false);
+    } else if (ex.type === "type") {
+      const a = norm(typed), okExact = ex.accept.some(x => norm(x) === a), okPlain = ex.accept.some(x => plain(x) === plain(typed));
+      grade(okExact || okPlain, !okExact && okPlain);
+    }
+  };
+  const next = () => {
+    if (idx + 1 >= queue.length) { setPhase("end"); beep("win", st.sound); return; }
+    setIdx(idx + 1);
+  };
+
+  useEffect(() => {
+    const h = e => {
+      if (e.key !== "Enter" || phase !== "ex" || !cur) return;
+      if (result) { e.preventDefault(); next(); }
+      else if ((cur.ex.type === "build" && buildVal.length) || (cur.ex.type === "type" && typed.trim())) { e.preventDefault(); check(); }
+    };
+    window.addEventListener("keydown", h); return () => window.removeEventListener("keydown", h);
+  });
+
+  const outOfHearts = mode === "lesson" && st.hearts <= 0 && !result;
+
+  if (phase === "intro") return (
+    <div className="screen lesson-intro">
+      <header className="lesson-top"><button className="x" onClick={onExit} aria-label={t.quit}>✕</button><span className="crumb"><Flag id={course.flag} size={22} /> {lesson.title}</span></header>
+      <div className="mascot-row"><Mascot mood="think" size={70} /><Bubble>{course.explain === "en" ? "First the rule, then practice." : "Zuerst die Regel, dann üben wir."}</Bubble></div>
+      <section className="card rule-card" style={{ borderColor: course.accent }}>
+        <h2>{t.rule}</h2><p>{lesson.rule}</p>
+        <h3>{t.structure}</h3><div className="structure">{lesson.structure}</div>
+        <h3>{t.examples}</h3>
+        <ul className="examples">{lesson.examples.map(([a, b], i) => <li key={i}><button className="speak" onClick={() => speak(a, lang)} aria-label={t.listen + ": " + a}>🔊</button><div><b>{a}</b><span>{b}</span></div></li>)}</ul>
+        <div className="tip">💡 {lesson.tip}</div>
+      </section>
+      <button className="btn primary big" onClick={() => setPhase("ex")}>{t.start}</button>
     </div>
   );
-};
 
-// ─── APP ──────────────────────────────────────────────────────────────────────
+  if (phase === "end") {
+    const acc = Math.round(stats.right / Math.max(1, stats.right + stats.wrong) * 100);
+    const perfect = stats.wrong === 0;
+    return (
+      <div className="screen lesson-end">
+        <Confetti run />
+        <Mascot mood="cheer" size={130} />
+        <h2>{mode === "practice" ? t.practice : t.done}</h2>
+        {perfect && <p className="perfect">{t.perfect}</p>}
+        <div className="end-stats">
+          <div className="stat gold"><small>{t.earned}</small><b>+{stats.xp + (mode === "lesson" ? 10 + (perfect ? 10 : 0) : 0)} XP</b></div>
+          <div className="stat green"><small>{t.accuracy}</small><b>{acc}%</b></div>
+          <div className="stat red"><small>{t.combo}</small><b>{stats.maxCombo}</b></div>
+        </div>
+        <button className="btn primary big" onClick={() => onFinish({ ...stats, perfect, acc })}>{t.cont}</button>
+      </div>
+    );
+  }
+
+  const ex = cur.ex;
+  const canCheck = (ex.type === "build" && buildVal.length > 0) || (ex.type === "type" && typed.trim().length > 0);
+  const correctText = ex.type === "choice" ? ex.options[ex.answer] : ex.type === "build" ? ex.answer : ex.type === "type" ? ex.accept[0] : "";
+  return (
+    <div className="screen lesson">
+      <header className="lesson-top">
+        <button className="x" onClick={() => setQuit(true)} aria-label={t.quit}>✕</button>
+        <div className="bar" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={Math.min(total, idx)}><i style={{ width: Math.min(100, idx / queue.length * 100) + "%", background: course.accent === "#ffffff" ? "#107c5c" : course.accent }} /></div>
+        {mode === "lesson" ? <span className="hearts" aria-label={st.hearts + " " + t.hearts}>❤️ {st.hearts}</span> : <span className="hearts">🛠️</span>}
+      </header>
+      {combo >= 3 && <div className="combo-badge">🔥 {combo} {t.combo}</div>}
+      {cur.retry && <div className="retry-badge">↺</div>}
+      <div className="mascot-row small"><Mascot mood={result ? (result.ok ? "cheer" : "sad") : "happy"} size={56} /><Bubble>{ex.prompt}</Bubble></div>
+      <div className="ex-body">
+        {ex.type === "choice" && <Choice ex={ex} seed={hash(ex.prompt) + idx} locked={!!result || outOfHearts} picked={result && result.picked} onAnswer={i => !result && grade(i === ex.answer, false, i)} />}
+        {ex.type === "build" && <><p className="hint">{t.tapWords}</p><Build ex={ex} seed={hash(ex.answer) + idx} value={buildVal} setValue={setBuildVal} locked={!!result || outOfHearts} /></>}
+        {ex.type === "type" && <input ref={inputRef} className="type-in" value={typed} onChange={e => setTyped(e.target.value)} placeholder={t.typeHere} disabled={!!result || outOfHearts} autoCapitalize="off" autoComplete="off" spellCheck="false" lang={lang} />}
+        {ex.type === "match" && !result && <><p className="hint">{t.matchHint}</p><Match key={idx} ex={ex} sound={st.sound} onMiss={() => setMatchMiss(true)} onDone={() => grade(!matchMiss, false)} /></>}
+        {ex.type === "match" && result && <div className="match-done">{ex.pairs.map(([a, b]) => <span key={a}>{a} = {b}</span>)}</div>}
+      </div>
+      {ex.type === "choice" && !result && <p className="keyhint">{t.keyHint}</p>}
+      <footer className={"feedback" + (result ? (result.ok ? " ok" : " bad") : "")} aria-live="polite">
+        {result ? <div className="fb-text">
+          <b>{result.ok ? (result.almost ? t.almost : t.correct) : t.wrong}</b>
+          {(!result.ok || result.almost) && ex.type !== "match" && <span>{t.answer} <em>{correctText}</em></span>}
+          {ex.explain && <span className="explain">{ex.explain}</span>}
+        </div> : <div className="fb-text" />}
+        {result ? <button className={"btn " + (result.ok ? "primary" : "danger")} onClick={next}>{t.cont}</button>
+          : (ex.type === "build" || ex.type === "type") && <button className="btn primary" disabled={!canCheck || outOfHearts} onClick={check}>{t.check}</button>}
+      </footer>
+      {outOfHearts && <div className="modal"><div className="modal-card"><Mascot mood="sad" size={90} /><h3>{t.outOfHearts}</h3><p>{t.outText}</p><button className="btn primary" onClick={onExit}>{t.cont}</button></div></div>}
+      {quit && <div className="modal"><div className="modal-card"><Mascot mood="sad" size={80} /><p>{t.quitConfirm}</p><div className="row"><button className="btn primary" onClick={() => setQuit(false)}>{t.stay}</button><button className="btn ghost" onClick={onExit}>{t.quit}</button></div></div></div>}
+    </div>
+  );
+}
+
+// ─── MAIN APP ───────────────────────────────────────────────────────────────
 export default function App() {
-  const [users,      setUsers]      = useState(SEED_USERS);
-  const [me,         setMe]         = useState(null);   // username string
-  const [authTab,    setAuthTab]    = useState("login");
-  const [form,       setForm]       = useState({ username:"", password:"", confirm:"" });
-  const [authErr,    setAuthErr]    = useState("");
+  const [st, setSt] = useState(() => tick(load()));
+  const [tab, setTab] = useState("learn");
+  const [play, setPlay] = useState(null); // {lesson, items, mode}
+  const [toast, setToast] = useState(null);
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [pickCourse, setPickCourse] = useState(false);
+  const [now, setNow] = useState(Date.now());
+  const t = T[st.ui] || T.de;
+  const course = byId[st.course] || DE;
 
-  const [screen,     setScreen]     = useState("home");
-  const [activeLang, setActiveLang] = useState("Italian");
-  const [lesson,     setLesson]     = useState(null);
-  const [phase,      setPhase]      = useState("grammar");
-  const [exIdx,      setExIdx]      = useState(0);
-  const [answered,   setAnswered]   = useState(false);
-  const [selOpt,     setSelOpt]     = useState(null);
-  const [sesScore,   setSesScore]   = useState(0);
-  const [toast,      setToast]      = useState(null);
-  const toastRef = useRef(null);
+  useEffect(() => { save(st); }, [st]);
+  useEffect(() => { const i = setInterval(() => { setNow(Date.now()); setSt(s => tick(s)); }, 30000); return () => clearInterval(i); }, []);
+  const notify = (msg, icon = "⭐") => { setToast({ msg, icon, k: Date.now() }); setTimeout(() => setToast(x => x && Date.now() - x.k > 2500 ? null : x), 2800); };
+  const update = fn => setSt(s => checkAch(fn(s)));
 
-  const u = me ? users[me] : null;
+  function checkAch(s) {
+    const n = { ...s, unlockedAch: { ...s.unlockedAch } };
+    ACH.forEach(a => { if (!n.unlockedAch[a.id] && a.test(n)) { n.unlockedAch[a.id] = today(); n.gems += 10; setTimeout(() => notify((a[n.ui] || a.de)[0] + " +10 💎", a.icon), 600); } });
+    return n;
+  }
 
-  const showToast = (msg, type="info") => {
-    setToast({ msg, type });
-    clearTimeout(toastRef.current);
-    toastRef.current = setTimeout(() => setToast(null), 3200);
-  };
+  const lessons = allLessons(course);
+  const isUnlocked = (l, i) => i === 0 || !!st.done[lessons[i - 1].id];
 
-  // ── AUTH ────────────────────────────────────────────────────────────────────
-  const doLogin = () => {
-    const { username, password } = form;
-    if (!username||!password) { setAuthErr("Please fill in all fields."); return; }
-    const user = users[username.toLowerCase()];
-    if (!user||user.password!==password) { setAuthErr("Incorrect username or password."); return; }
-    const today = new Date().toDateString();
-    const yesterday = new Date(Date.now()-86400000).toDateString();
-    if (user.lastActive !== today) {
-      const streak = user.lastActive===yesterday ? user.streak+1 : 1;
-      setUsers(p=>({...p,[username.toLowerCase()]:{...user,streak,lastActive:today}}));
-    }
-    setMe(username.toLowerCase());
-    setAuthErr(""); setForm({username:"",password:"",confirm:""});
-  };
-
-  const doRegister = () => {
-    const { username, password, confirm } = form;
-    if (!username||!password||!confirm) { setAuthErr("Please fill in all fields."); return; }
-    if (username.length<3) { setAuthErr("Username must be at least 3 characters."); return; }
-    if (password.length<5) { setAuthErr("Password must be at least 5 characters."); return; }
-    if (password!==confirm) { setAuthErr("Passwords do not match."); return; }
-    if (users[username.toLowerCase()]) { setAuthErr("Username already taken."); return; }
-    const newUser = { username:username.toLowerCase(), password, xp:0, streak:1, completedLessons:[], perfectLessons:0, badges:[], lastActive:new Date().toDateString(), joinDate:new Date().toISOString().slice(0,10) };
-    setUsers(p=>({...p,[username.toLowerCase()]:newUser}));
-    setMe(username.toLowerCase());
-    setAuthErr(""); setForm({username:"",password:"",confirm:""});
-  };
-
-  // ── LESSON FLOW ─────────────────────────────────────────────────────────────
   const startLesson = l => {
-    setLesson(l); setPhase("grammar"); setExIdx(0);
-    setAnswered(false); setSelOpt(null); setSesScore(0);
-    setScreen("lesson");
+    if (st.hearts <= 0) { notify(t.outOfHearts, "💔"); return; }
+    const items = l.ex.map((ex, i) => ({ ex, ref: { c: course.id, l: l.id, i } }));
+    setPlay({ lesson: l, items, mode: "lesson" });
+  };
+  const startPractice = () => {
+    const list = st.mistakes.filter(m => byId[m.c]).slice(0, 8);
+    if (!list.length) { notify(t.noMistakes, "✅"); return; }
+    const items = list.map(m => { const l = allLessons(byId[m.c]).find(x => x.id === m.l); return l && { ex: l.ex[m.i], ref: m }; }).filter(Boolean);
+    setPlay({ lesson: { title: t.practice }, items, mode: "practice", courseId: list[0].c });
   };
 
-  const handleAnswer = idx => {
-    setSelOpt(idx); setAnswered(true);
-    if (idx===lesson.exercises[exIdx].correct) setSesScore(s=>s+1);
-  };
+  const spendHeart = () => setSt(s => ({ ...s, hearts: Math.max(0, s.hearts - 1), heartsAt: s.hearts >= MAX_HEARTS ? Date.now() : s.heartsAt }));
 
-  const nextExercise = () => {
-    const isLast = exIdx+1 >= lesson.exercises.length;
-    if (!isLast) { setExIdx(i=>i+1); setAnswered(false); setSelOpt(null); }
-    else {
-      const correct = sesScore + (selOpt===lesson.exercises[exIdx].correct?1:0);
-      const isPerfect = correct===lesson.exercises.length;
-      const xpGain = correct*10 + (isPerfect?20:0);
-      setUsers(p => {
-        const user = {...p[me]};
-        const prevLvl = getLevel(user.xp);
-        user.xp += xpGain;
-        if (!user.completedLessons.includes(lesson.id)) user.completedLessons=[...user.completedLessons,lesson.id];
-        if (isPerfect) user.perfectLessons=(user.perfectLessons||0)+1;
-        const newBadges = BADGES.filter(b=>!user.badges.includes(b.id)&&b.check(user)).map(b=>b.id);
-        user.badges=[...user.badges,...newBadges];
-        if (newBadges.length) {
-          const bd=BADGES.find(b=>b.id===newBadges[0]);
-          setTimeout(()=>showToast(`${bd.icon} Badge unlocked: ${bd.name}!`,"badge"),1200);
+  const finish = res => {
+    const { lesson, mode } = play;
+    update(s => {
+      const n = { ...s, done: { ...s.done }, quests: { ...s.quests, items: s.quests.items.map(q => ({ ...q })) } };
+      let gain = res.xp;
+      const key = r => r.c + "|" + r.l + "|" + r.i;
+      const fixedKeys = new Set(res.fixedItems.map(key));
+      let mistakes = n.mistakes.filter(m => !fixedKeys.has(key(m)));
+      res.wrongItems.forEach(r => { if (!mistakes.some(m => key(m) === key(r))) mistakes.push(r); });
+      if (mode === "practice") mistakes = mistakes.filter(m => !fixedKeys.has(key(m)));
+      n.mistakes = mistakes.slice(-60);
+      if (mode === "lesson") {
+        gain += 10 + (res.perfect ? 10 : 0);
+        const prev = n.done[lesson.id] || { crown: 0, best: 0 };
+        n.done[lesson.id] = { crown: Math.min(3, prev.crown + 1), best: Math.max(prev.best, res.acc) };
+        n.lessonsCompleted += 1; if (res.perfect) n.perfects += 1;
+        n.gems += 5 + (res.perfect ? 5 : 0);
+        // streak
+        if (n.lastDay !== today()) {
+          const d = n.lastDay ? dayDiff(n.lastDay, today()) : null;
+          if (d === 1) n.streak += 1; else if (d === 2 && n.freezes > 0) { n.freezes -= 1; n.streak += 1; } else n.streak = 1;
+          n.lastDay = today(); n.bestStreak = Math.max(n.bestStreak, n.streak);
+          setTimeout(() => notify(st.ui === "en" ? (n.streak === 1 ? "Streak started: day 1" : n.streak + "-day streak!") : (n.streak === 1 ? "Serie gestartet: Tag 1" : "Serie: " + n.streak + " Tage!"), "🔥"), 300);
         }
-        if (getLevel(user.xp).level > prevLvl.level)
-          setTimeout(()=>showToast(`🎉 Level up! You are now ${getLevel(user.xp).name}`,"levelup"),800);
-        return {...p,[me]:user};
-      });
-      setScreen("complete");
-    }
+        n.quests.items.forEach(q => { if (q.id === "lessons") q.prog += 1; });
+      } else {
+        n.fixed += res.fixedItems.length;
+        n.hearts = Math.min(MAX_HEARTS, n.hearts + Math.max(1, res.fixedItems.length));
+      }
+      const oldLevel = levelOf(n.xp);
+      n.xp += gain; n.dayXp += gain; n.weekXp += gain; n.maxCombo = Math.max(n.maxCombo, res.maxCombo);
+      if (levelOf(n.xp) > oldLevel) setTimeout(() => notify(t.newLevel + " " + levelOf(n.xp), "🎉"), 900);
+      n.quests.items.forEach(q => { if (q.id === "xp") q.prog += gain; if (q.id === "combo") q.prog = Math.max(q.prog, res.maxCombo); if (!q.paid && q.prog >= q.goal) { q.paid = true; n.gems += q.gems; } });
+      if (!n.goalPaid && n.dayXp >= n.goal) { n.goalPaid = true; n.gems += 10; setTimeout(() => notify(t.dailyDone + " +10 💎", "🎯"), 1200); }
+      return n;
+    });
+    setPlay(null);
   };
 
-  const finalScore = answered ? sesScore+(selOpt===lesson?.exercises[exIdx]?.correct?1:0) : sesScore;
-  const langs = [{name:"Italian",flag:"🇮🇹",color:"#e05c5c"},{name:"Irish",flag:"🇮🇪",color:"#52b788"}];
-  const board = Object.values(users).sort((a,b)=>b.xp-a.xp).slice(0,10);
+  const openChest = ui => { const k = course.id + ui; if (st.chests[k]) return; const g = 20 + (hash(k) % 21); update(s => ({ ...s, gems: s.gems + g, chests: { ...s.chests, [k]: true } })); notify("+" + g + " 💎", "🎁"); beep("win", st.sound); };
+  const buy = (what) => {
+    if (what === "freeze") { if (st.freezes >= 2) return; if (st.gems < 100) return notify(t.notEnough, "💎"); update(s => ({ ...s, gems: s.gems - 100, freezes: s.freezes + 1 })); notify(t.freeze + " ✓", "🧊"); }
+    if (what === "hearts") { if (st.hearts >= MAX_HEARTS) return; if (st.gems < 50) return notify(t.notEnough, "💎"); update(s => ({ ...s, gems: s.gems - 50, hearts: MAX_HEARTS, heartsAt: Date.now() })); notify(t.heartRefill + " ✓", "❤️"); }
+  };
 
-  const inp = (key,type,ph) => (
-    <input type={type} placeholder={ph} value={form[key]}
-      onChange={e=>setForm(f=>({...f,[key]:e.target.value}))}
-      onKeyDown={e=>e.key==="Enter"&&(authTab==="login"?doLogin():doRegister())}
-      style={{ width:"100%", background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:10, padding:"12px 16px", color:"#e8f4ea", fontSize:15 }}
-    />
+  const nextHeartIn = st.hearts < MAX_HEARTS ? Math.max(0, HEART_MS - (now - st.heartsAt)) : 0;
+  const mm = Math.ceil(nextHeartIn / 60000);
+  const level = levelOf(st.xp), lvlFrom = LEVELS[level - 1], lvlTo = LEVELS[level] || LEVELS[level - 1] + 1500;
+  const mood = st.dayXp >= st.goal ? "cheer" : st.dayXp > 0 ? "happy" : "wave";
+  const greet = st.dayXp >= st.goal ? (st.ui === "en" ? "Goal reached! Keep it up." : "Ziel erreicht! Weiter so.")
+    : st.streak > 0 && st.lastDay !== today() ? (st.ui === "en" ? `Keep your ${st.streak}-day streak alive!` : `Halte deine Serie von ${st.streak} Tagen!`)
+      : (st.ui === "en" ? `Hi ${st.name || "there"}! Ready for today's grammar?` : `Hoi ${st.name || "du"}! Bereit für die Grammatik von heute?`);
+
+  // ── ONBOARDING ──
+  if (!st.onboarded) return (
+    <div className="app"><style>{CSS}</style>
+      <div className="screen onboarding">
+        <div className="lang-toggle"><button className={st.ui === "de" ? "on" : ""} onClick={() => setSt({ ...st, ui: "de" })}>DE</button><button className={st.ui === "en" ? "on" : ""} onClick={() => setSt({ ...st, ui: "en" })}>EN</button></div>
+        <Mascot mood="wave" size={120} />
+        <h1>GrammarFirst</h1>
+        <p className="lead"><b>{t.hello}</b> {t.introText}</p>
+        <label className="field"><span>{t.yourName}</span><input value={st.name} maxLength={24} onChange={e => setSt({ ...st, name: e.target.value })} placeholder="Fabio" /></label>
+        <h3>{t.chooseCourse}</h3>
+        <div className="course-grid">{COURSES.map(c => <button key={c.id} className={"course-pick" + (st.course === c.id ? " on" : "")} onClick={() => setSt({ ...st, course: c.id })}><Flag id={c.flag} size={34} /><b>{c.name}</b><small>{c.native}</small></button>)}</div>
+        <h3>{t.goal}</h3>
+        <div className="goal-row">{[20, 50, 100].map(g => <button key={g} className={"goal" + (st.goal === g ? " on" : "")} onClick={() => setSt({ ...st, goal: g })}><b>{t.goals[g]}</b><small>{g} {t.xpDay}</small></button>)}</div>
+        <button className="btn primary big" onClick={() => setSt({ ...st, onboarded: true })}>{t.start}</button>
+      </div>
+    </div>
   );
 
-  return (
-    <div style={{ minHeight:"100vh", background:"#0d0d1a", fontFamily:"'DM Sans',system-ui,sans-serif", color:"#cdd6dd" }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
-        *{box-sizing:border-box;margin:0;padding:0;}
-        input{outline:none;}
-        button{transition:all 0.18s;}
-        button:hover{filter:brightness(1.13);}
-        @keyframes slideUp{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
-        @keyframes pop{0%{transform:scale(0.7);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
-      `}</style>
+  // ── LESSON ──
+  if (play) {
+    const pc = byId[play.courseId] || course;
+    return <div className="app"><style>{CSS}</style>
+      <Lesson course={pc} lesson={play.lesson} items={play.items} mode={play.mode} st={st} t={t} onExit={() => setPlay(null)} onFinish={finish} spendHeart={spendHeart} />
+      {toast && <div className="toast" key={toast.k}>{toast.icon} {toast.msg}</div>}
+    </div>;
+  }
 
-      {toast && <Toast msg={toast.msg} type={toast.type} />}
+  // ── HUD ──
+  const hud = <div className="hud">
+    <button className="hud-course" onClick={() => setPickCourse(true)} aria-label={t.course + ": " + course.name}><Flag id={course.flag} size={30} /></button>
+    <span className="hud-item" title={t.streak}>🔥 <b>{st.streak}</b></span>
+    <span className="hud-item" title={t.gems}>💎 <b>{st.gems}</b></span>
+    <span className="hud-item" title={t.hearts}>❤️ <b>{st.hearts}</b>{st.hearts < MAX_HEARTS && <small>{mm}′</small>}</span>
+    <Ring value={st.dayXp} max={st.goal} size={44}><small>{Math.min(st.dayXp, 999)}</small></Ring>
+  </div>;
 
-      {/* ═══════════════ AUTH ═══════════════ */}
-      {!me && (
-        <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
-          <div style={{ width:"100%", maxWidth:400 }}>
-            <div style={{ textAlign:"center", marginBottom:36 }}>
-              <div style={{ fontSize:48, marginBottom:12 }}>📖</div>
-              <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:36, color:"#e8f4ea", fontWeight:400, marginBottom:6 }}>GrammarFirst</h1>
-              <p style={{ color:"#556672", fontSize:14 }}>Learn languages the right way</p>
-            </div>
-
-            <div style={{ display:"flex", background:"rgba(255,255,255,0.04)", borderRadius:12, padding:4, marginBottom:24 }}>
-              {["login","register"].map(tab=>(
-                <button key={tab} onClick={()=>{setAuthTab(tab);setAuthErr("");}} style={{
-                  flex:1, padding:"10px", borderRadius:9, border:"none", cursor:"pointer",
-                  background:authTab===tab?"rgba(255,255,255,0.08)":"transparent",
-                  color:authTab===tab?"#e8f4ea":"#556672", fontWeight:authTab===tab?600:400, fontSize:14
-                }}>{tab==="login"?"Log In":"Register"}</button>
-              ))}
-            </div>
-
-            <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, padding:"28px 24px" }}>
-              <div style={{ marginBottom:18 }}>
-                <label style={{ fontSize:12, color:"#7a9aaa", letterSpacing:1, textTransform:"uppercase", display:"block", marginBottom:7 }}>Username</label>
-                {inp("username","text","your_username")}
-              </div>
-              <div style={{ marginBottom:18 }}>
-                <label style={{ fontSize:12, color:"#7a9aaa", letterSpacing:1, textTransform:"uppercase", display:"block", marginBottom:7 }}>Password</label>
-                {inp("password","password","••••••••")}
-              </div>
-              {authTab==="register" && (
-                <div style={{ marginBottom:18 }}>
-                  <label style={{ fontSize:12, color:"#7a9aaa", letterSpacing:1, textTransform:"uppercase", display:"block", marginBottom:7 }}>Confirm Password</label>
-                  {inp("confirm","password","••••••••")}
-                </div>
-              )}
-              {authErr && (
-                <div style={{ background:"rgba(220,80,80,0.15)", border:"1px solid rgba(220,80,80,0.3)", borderRadius:8, padding:"10px 14px", color:"#ffb3b3", fontSize:13, marginBottom:16 }}>{authErr}</div>
-              )}
-              <button onClick={authTab==="login"?doLogin:doRegister} style={{ width:"100%", padding:"14px", background:"linear-gradient(135deg,#2d6a4f,#52b788)", border:"none", borderRadius:12, color:"#fff", fontSize:16, fontWeight:600, cursor:"pointer" }}>
-                {authTab==="login"?"Log In →":"Create Account →"}
-              </button>
-              {authTab==="login" && (
-                <div style={{ textAlign:"center", marginTop:14, color:"#3a4a56", fontSize:12 }}>
-                  Demo: <strong style={{color:"#52b788"}}>demo</strong> / <strong style={{color:"#52b788"}}>demo123</strong>
-                </div>
-              )}
-            </div>
-          </div>
+  // ── LEARN TAB ──
+  let li = 0;
+  const learn = <div className="screen">
+    <div className="mascot-row"><Mascot mood={mood} size={82} /><Bubble>{greet}</Bubble></div>
+    <div className="course-head" style={{ background: course.color }}><Flag id={course.flag} size={40} /><div><b>{course.name}</b><small>{course.tagline}</small></div><button className="btn small light" onClick={() => setPickCourse(true)}>{t.change}</button></div>
+    {course.units.map((u, ui) => {
+      const unitDone = u.lessons.every(l => st.done[l.id]);
+      return <section key={ui} className="unit">
+        <h2 className="unit-title">{u.title}</h2>
+        <div className="path">{u.lessons.map((l, k) => {
+          const i = li++; const un = isUnlocked(l, i); const d = st.done[l.id];
+          const off = [0, 48, -32, 40, -44, 24][k % 6];
+          return <div key={l.id} className="node-wrap" style={{ transform: `translateX(${off}px)` }}>
+            <button className={"node" + (d ? " done" : un ? " open" : " locked")} style={un ? { "--acc": course.accent === "#ffffff" ? "#0b3d91" : course.accent } : null} disabled={!un} onClick={() => startLesson(l)} aria-label={l.title + (un ? "" : ", " + t.locked)}>
+              <span className="node-icon">{d ? "★" : un ? i + 1 : "🔒"}</span>
+              {d && <span className="crowns">{"👑".repeat(d.crown)}</span>}
+            </button>
+            <span className="node-label">{l.title}</span>
+          </div>;
+        })}
+          <div className="node-wrap"><button className={"chest" + (unitDone ? (st.chests[course.id + ui] ? " opened" : " ready") : "")} disabled={!unitDone || st.chests[course.id + ui]} onClick={() => openChest(ui)} aria-label={t.chestOpen}>{st.chests[course.id + ui] ? "📭" : "🎁"}</button><span className="node-label">{unitDone ? t.unitDone : t.chest}</span></div>
         </div>
-      )}
+      </section>;
+    })}
+    <section className="card practice-card"><div><b>🛠️ {t.practice}</b><p>{t.practiceDesc}</p></div><button className="btn primary" onClick={startPractice}>{st.mistakes.length ? st.mistakes.length : "✓"}</button></section>
+    <section className="card">
+      <h3>{t.quests}</h3>
+      {st.quests.items.map(q => <div key={q.id} className="quest"><span>{q[st.ui] || q.de}</span><div className="bar"><i style={{ width: Math.min(100, q.prog / q.goal * 100) + "%" }} /></div><small>{q.paid ? "✓" : `${Math.min(q.prog, q.goal)}/${q.goal}`} · {q.gems}💎</small></div>)}
+    </section>
+  </div>;
 
-      {/* ═══════════════ APP ═══════════════ */}
-      {me && u && (
-        <>
-          {/* NAV */}
-          <div style={{ borderBottom:"1px solid rgba(255,255,255,0.05)" }}>
-            <div style={{ maxWidth:640, margin:"0 auto", display:"flex", alignItems:"center", gap:4, height:52, padding:"0 16px" }}>
-              <span style={{ fontFamily:"'Playfair Display',serif", fontSize:18, color:"#e8f4ea", marginRight:"auto" }}>📖 GrammarFirst</span>
-              {[{id:"home",label:"Learn"},{id:"leaderboard",label:"🏆"},{id:"profile",label:"👤"}].map(t=>(
-                <button key={t.id} onClick={()=>setScreen(t.id)} style={{ padding:"6px 14px", borderRadius:8, border:"none", cursor:"pointer", fontSize:13, background:screen===t.id?"rgba(82,183,136,0.15)":"transparent", color:screen===t.id?"#95d5b2":"#556672", fontWeight:screen===t.id?600:400 }}>{t.label}</button>
-              ))}
-              <button onClick={()=>{setMe(null);setScreen("home");}} style={{ padding:"5px 12px", borderRadius:8, border:"1px solid rgba(255,255,255,0.08)", cursor:"pointer", fontSize:12, background:"transparent", color:"#3a4a56", marginLeft:4 }}>Out</button>
-            </div>
-          </div>
+  // ── LEAGUE TAB ──
+  const wk = st.week, dayIdx = (new Date().getDay() + 6) % 7 + 1;
+  const rows = BOTS.slice(0, 9).map((n, i) => { const h = hash(wk + n); const pace = 15 + (h % 60); return { n, xp: Math.round(pace * dayIdx * (.6 + (h % 50) / 100)), bot: true }; });
+  rows.push({ n: st.name || t.you, xp: st.weekXp, me: true });
+  rows.sort((a, b) => b.xp - a.xp);
+  const league = <div className="screen">
+    <div className="mascot-row"><Mascot mood="cheer" size={76} /><Bubble>{t.promote}</Bubble></div>
+    <section className="card"><h2>🏅 {t.leagueTitle}</h2><p className="muted">{t.leagueNote}</p>
+      <ol className="board">{rows.map((r, i) => <li key={r.n + i} className={(r.me ? "me " : "") + (i < 3 ? "top" : "")}><span className="pos">{i + 1}</span><span className="av">{r.n[0]}</span><span className="nm">{r.n}{r.bot ? " 🤖" : ""}</span><b>{r.xp} XP</b></li>)}</ol>
+    </section>
+  </div>;
 
-          {/* ─── HOME ─── */}
-          {screen==="home" && (
-            <div style={{ maxWidth:560, margin:"0 auto", padding:"28px 20px" }}>
-              {/* User card */}
-              <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:16, padding:"18px 20px", marginBottom:24 }}>
-                <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:12 }}>
-                  <div style={{ width:42, height:42, borderRadius:"50%", background:`${getLevel(u.xp).color}22`, border:`2px solid ${getLevel(u.xp).color}`, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:700, color:getLevel(u.xp).color, fontSize:17 }}>
-                    {u.username[0].toUpperCase()}
-                  </div>
-                  <div style={{ flex:1 }}>
-                    <div style={{ display:"flex", justifyContent:"space-between" }}>
-                      <span style={{ fontWeight:600, color:"#e8f4ea" }}>{u.username}</span>
-                      <div style={{ display:"flex", gap:12 }}>
-                        <span style={{ fontSize:13, color:"#f0d080" }}>🔥 {u.streak}d</span>
-                        <span style={{ fontSize:13, color:getLevel(u.xp).color }}>⭐ {u.xp} XP</span>
-                      </div>
-                    </div>
-                    <div style={{ fontSize:12, color:getLevel(u.xp).color, marginTop:2 }}>{getLevel(u.xp).name} · Level {getLevel(u.xp).level}</div>
-                  </div>
-                </div>
-                <XPBar val={u.xp-getLevel(u.xp).minXP} max={(getNextLvl(u.xp)?.minXP||u.xp+1)-getLevel(u.xp).minXP} color={getLevel(u.xp).color} />
-                <div style={{ fontSize:11, color:"#3a4a56", marginTop:5 }}>
-                  {getNextLvl(u.xp) ? `${getNextLvl(u.xp).minXP-u.xp} XP to ${getNextLvl(u.xp).name}` : "🏆 Max level!"}
-                </div>
-              </div>
+  // ── PROFILE TAB ──
+  const profile = <div className="screen">
+    <section className="card profile-head"><Mascot mood="happy" size={70} /><div><h2>{st.name || "GrammarFirst"}</h2><p className="muted">{t.level} {level}</p><div className="bar"><i style={{ width: ((st.xp - lvlFrom) / (lvlTo - lvlFrom) * 100) + "%" }} /></div><small className="muted">{st.xp} / {lvlTo} XP</small></div></section>
+    <div className="stat-grid">
+      <div className="stat"><small>🔥 {t.streak}</small><b>{st.streak}</b></div>
+      <div className="stat"><small>⭐ XP</small><b>{st.xp}</b></div>
+      <div className="stat"><small>📚 {t.lessons}</small><b>{st.lessonsCompleted}</b></div>
+      <div className="stat"><small>✨ {t.perfect.split(",")[0]}</small><b>{st.perfects}</b></div>
+    </div>
+    <section className="card"><h3>{t.achievements}</h3><div className="ach-grid">{ACH.map(a => { const on = st.unlockedAch[a.id]; const [n, d] = a[st.ui] || a.de; return <div key={a.id} className={"ach" + (on ? " on" : "")} title={d}><span>{a.icon}</span><b>{n}</b><small>{d}</small></div>; })}</div></section>
+    <section className="card"><h3>{t.course}</h3>{COURSES.map(c => { const ls = allLessons(c); const n = ls.filter(l => st.done[l.id]).length; return <button key={c.id} className="course-row" onClick={() => { setSt({ ...st, course: c.id }); setTab("learn"); }}><Flag id={c.flag} size={26} /><span>{c.name}</span><div className="bar"><i style={{ width: n / ls.length * 100 + "%" }} /></div><small>{n}/{ls.length}</small></button>; })}</section>
+    <section className="card"><h3>{t.settings}</h3>
+      <label className="set"><span>{t.sound}</span><input type="checkbox" checked={st.sound} onChange={e => setSt({ ...st, sound: e.target.checked })} /></label>
+      <label className="set"><span>{t.lang}</span><select value={st.ui} onChange={e => setSt({ ...st, ui: e.target.value })}><option value="de">Deutsch</option><option value="en">English</option></select></label>
+      <label className="set"><span>{t.goal}</span><select value={st.goal} onChange={e => setSt({ ...st, goal: +e.target.value })}>{[20, 50, 100].map(g => <option key={g} value={g}>{t.goals[g]} · {g} XP</option>)}</select></label>
+      <label className="set"><span>Name</span><input value={st.name} maxLength={24} onChange={e => setSt({ ...st, name: e.target.value })} /></label>
+      <button className="btn ghost danger-text" onClick={() => setConfirmReset(true)}>{t.reset}</button>
+    </section>
+  </div>;
 
-              {/* Lang tabs */}
-              <div style={{ display:"flex", gap:8, marginBottom:22 }}>
-                {langs.map(l=>(
-                  <button key={l.name} onClick={()=>setActiveLang(l.name)} style={{ flex:1, padding:"10px", borderRadius:12, cursor:"pointer", border:activeLang===l.name?`1px solid ${l.color}`:"1px solid rgba(255,255,255,0.08)", background:activeLang===l.name?`${l.color}22`:"rgba(255,255,255,0.03)", color:activeLang===l.name?l.color:"#7a9aaa", fontSize:14, fontWeight:activeLang===l.name?600:400 }}>
-                    {l.flag} {l.name}
-                  </button>
-                ))}
-              </div>
+  // ── SHOP TAB ──
+  const shop = <div className="screen">
+    <div className="mascot-row"><Mascot mood="happy" size={76} /><Bubble>💎 {st.gems} {t.gems}</Bubble></div>
+    <section className="card shop-item"><span className="big-ic">❤️</span><div><b>{t.heartRefill}</b><p className="muted">{st.hearts}/{MAX_HEARTS} {t.hearts}{st.hearts < MAX_HEARTS ? ` · ${t.wait} ${mm} min` : ""}</p></div><button className="btn primary" disabled={st.hearts >= MAX_HEARTS} onClick={() => buy("hearts")}>50 💎</button></section>
+    <section className="card shop-item"><span className="big-ic">🧊</span><div><b>{t.freeze}</b><p className="muted">{t.freezeDesc} ({st.freezes}/2)</p></div><button className="btn primary" disabled={st.freezes >= 2} onClick={() => buy("freeze")}>{st.freezes >= 2 ? t.owned : "100 💎"}</button></section>
+  </div>;
 
-              <div style={{ fontSize:12, letterSpacing:3, color:"#556672", textTransform:"uppercase", marginBottom:14 }}>{activeLang} Lessons</div>
-              {lessons.filter(l=>l.language===activeLang).map((l,i)=>{
-                const done = u.completedLessons.includes(l.id);
-                return (
-                  <div key={l.id} onClick={()=>startLesson(l)} style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:16, padding:"18px 20px", marginBottom:12, cursor:"pointer", position:"relative", overflow:"hidden" }}
-                    onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}
-                    onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.03)"}
-                  >
-                    <div style={{ position:"absolute", top:0, left:0, width:4, height:"100%", background:`linear-gradient(180deg,${l.color},${l.accent})` }} />
-                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingLeft:8 }}>
-                      <div>
-                        <div style={{ fontSize:12, color:"#556672", marginBottom:3 }}>{l.flag} {l.language} · Lesson {i+1}</div>
-                        <div style={{ fontSize:17, fontFamily:"'Playfair Display',serif", color:"#e8f4ea" }}>{l.title}</div>
-                        <div style={{ fontSize:12, color:"#7a9aaa", marginTop:4 }}>{l.exercises.length} exercises · up to +{l.exercises.length*10+20} XP</div>
-                      </div>
-                      <div style={{ width:36, height:36, borderRadius:"50%", background:done?"rgba(82,183,136,0.2)":"rgba(255,255,255,0.05)", border:done?"1px solid #52b788":"1px solid rgba(255,255,255,0.1)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>
-                        {done?"✓":"→"}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-
-              {u.badges.length>0 && (
-                <div style={{ marginTop:24 }}>
-                  <div style={{ fontSize:12, letterSpacing:3, color:"#556672", textTransform:"uppercase", marginBottom:12 }}>Your Badges</div>
-                  <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-                    {u.badges.map(bid=>{const b=BADGES.find(x=>x.id===bid);return b?(<div key={bid} title={b.desc} style={{ background:"rgba(168,85,247,0.12)", border:"1px solid rgba(168,85,247,0.3)", borderRadius:10, padding:"7px 14px", fontSize:13, color:"#c084fc" }}>{b.icon} {b.name}</div>):null;})}
-                  </div>
-                </div>
-              )}
-              <div style={{ textAlign:"center", marginTop:32, padding:"20px", borderTop:"1px solid rgba(255,255,255,0.05)", color:"#3a4a56", fontSize:13 }}>More languages coming soon — Welsh, Scots Gaelic, Spanish…</div>
-            </div>
-          )}
-
-          {/* ─── LEADERBOARD ─── */}
-          {screen==="leaderboard" && (
-            <div style={{ maxWidth:520, margin:"0 auto", padding:"28px 20px" }}>
-              <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:28, color:"#e8f4ea", fontWeight:400, marginBottom:4 }}>Leaderboard</h2>
-              <div style={{ fontSize:13, color:"#556672", marginBottom:24 }}>Top learners by XP</div>
-              {board.map((lu,i)=>{
-                const isMe=lu.username===me;
-                const lv=getLevel(lu.xp);
-                return(
-                  <div key={lu.username} style={{ display:"flex", alignItems:"center", gap:14, background:isMe?"rgba(82,183,136,0.08)":"rgba(255,255,255,0.03)", border:isMe?"1px solid rgba(82,183,136,0.3)":"1px solid rgba(255,255,255,0.07)", borderRadius:14, padding:"14px 18px", marginBottom:10 }}>
-                    <div style={{ fontSize:i<3?22:14, width:32, textAlign:"center", color:i===0?"#f0d080":i===1?"#aab8c2":i===2?"#c97c2a":"#3a4a56", fontWeight:700 }}>
-                      {i===0?"🥇":i===1?"🥈":i===2?"🥉":`#${i+1}`}
-                    </div>
-                    <div style={{ width:36, height:36, borderRadius:"50%", background:`${lv.color}22`, border:`2px solid ${lv.color}`, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:700, color:lv.color, fontSize:15 }}>
-                      {lu.username[0].toUpperCase()}
-                    </div>
-                    <div style={{ flex:1 }}>
-                      <div style={{ color:isMe?"#95d5b2":"#e8f4ea", fontWeight:isMe?600:400 }}>{lu.username}{isMe?" (you)":""}</div>
-                      <div style={{ fontSize:12, color:lv.color }}>{lv.name}</div>
-                    </div>
-                    <div style={{ textAlign:"right" }}>
-                      <div style={{ color:"#f0d080", fontWeight:600 }}>{lu.xp} XP</div>
-                      <div style={{ fontSize:11, color:"#3a4a56" }}>🔥 {lu.streak}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* ─── PROFILE ─── */}
-          {screen==="profile" && (
-            <div style={{ maxWidth:520, margin:"0 auto", padding:"28px 20px" }}>
-              <div style={{ textAlign:"center", marginBottom:28 }}>
-                <div style={{ width:80, height:80, borderRadius:"50%", background:`${getLevel(u.xp).color}22`, border:`3px solid ${getLevel(u.xp).color}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:32, fontWeight:700, color:getLevel(u.xp).color, margin:"0 auto 14px" }}>
-                  {u.username[0].toUpperCase()}
-                </div>
-                <div style={{ fontSize:22, fontFamily:"'Playfair Display',serif", color:"#e8f4ea", marginBottom:4 }}>{u.username}</div>
-                <div style={{ fontSize:14, color:getLevel(u.xp).color, marginBottom:4 }}>{getLevel(u.xp).name} · Level {getLevel(u.xp).level}</div>
-                <div style={{ fontSize:12, color:"#3a4a56" }}>Member since {u.joinDate}</div>
-              </div>
-
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10, marginBottom:24 }}>
-                {[{icon:"⭐",label:"Total XP",value:u.xp},{icon:"🔥",label:"Streak",value:`${u.streak}d`},{icon:"📚",label:"Lessons",value:u.completedLessons.length},{icon:"✨",label:"Perfect",value:u.perfectLessons||0},{icon:"🏅",label:"Badges",value:u.badges.length},{icon:"🎯",label:"Level",value:getLevel(u.xp).level}].map((s,i)=>(
-                  <div key={i} style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:14, padding:"16px 12px", textAlign:"center" }}>
-                    <div style={{ fontSize:22 }}>{s.icon}</div>
-                    <div style={{ fontSize:22, fontFamily:"'Playfair Display',serif", color:"#e8f4ea", marginTop:4 }}>{s.value}</div>
-                    <div style={{ fontSize:11, color:"#3a4a56", marginTop:2 }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:16, padding:"18px 20px", marginBottom:24 }}>
-                <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-                  <span style={{ fontSize:13, color:"#7a9aaa" }}>Level Progress</span>
-                  <span style={{ fontSize:13, color:getLevel(u.xp).color, fontWeight:600 }}>{getLevel(u.xp).name} → {getNextLvl(u.xp)?.name||"MAX"}</span>
-                </div>
-                <XPBar val={u.xp-getLevel(u.xp).minXP} max={(getNextLvl(u.xp)?.minXP||u.xp+1)-getLevel(u.xp).minXP} color={getLevel(u.xp).color} />
-                {getNextLvl(u.xp)&&<div style={{ fontSize:12, color:"#3a4a56", marginTop:6 }}>{getNextLvl(u.xp).minXP-u.xp} XP to next level</div>}
-              </div>
-
-              <div style={{ fontSize:12, letterSpacing:3, color:"#556672", textTransform:"uppercase", marginBottom:14 }}>All Badges</div>
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
-                {BADGES.map(b=>{const earned=u.badges.includes(b.id);return(
-                  <div key={b.id} style={{ background:earned?"rgba(168,85,247,0.1)":"rgba(255,255,255,0.02)", border:earned?"1px solid rgba(168,85,247,0.3)":"1px solid rgba(255,255,255,0.06)", borderRadius:12, padding:"12px 14px", opacity:earned?1:0.4 }}>
-                    <div style={{ fontSize:22, marginBottom:4 }}>{b.icon}</div>
-                    <div style={{ fontSize:13, fontWeight:600, color:earned?"#c084fc":"#556672" }}>{b.name}</div>
-                    <div style={{ fontSize:11, color:"#3a4a56", marginTop:2 }}>{b.desc}</div>
-                  </div>
-                );})}
-              </div>
-            </div>
-          )}
-
-          {/* ─── LESSON ─── */}
-          {screen==="lesson" && lesson && (
-            <div style={{ maxWidth:600, margin:"0 auto", padding:"24px 20px" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:16, marginBottom:28 }}>
-                <button onClick={()=>setScreen("home")} style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:8, padding:"6px 14px", color:"#7a9aaa", fontSize:13, cursor:"pointer" }}>← Back</button>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontSize:11, color:"#556672", marginBottom:3 }}>{phase==="grammar"?"GRAMMAR RULE":`EXERCISE ${exIdx+1} / ${lesson.exercises.length}`}</div>
-                  <XPBar val={phase==="grammar"?0:(exIdx/lesson.exercises.length)*100} max={100} color={lesson.accent} />
-                </div>
-              </div>
-              <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:28, color:"#e8f4ea", marginBottom:6, fontWeight:400 }}>{lesson.title}</h2>
-              <div style={{ fontSize:13, color:"#556672", marginBottom:24 }}>{lesson.flag} {lesson.language} · Grammar-first method</div>
-
-              {phase==="grammar" && (
-                <div>
-                  <div style={{ background:`linear-gradient(135deg,${lesson.color}22,${lesson.accent}11)`, border:`1px solid ${lesson.accent}33`, borderRadius:16, padding:"20px 22px", marginBottom:20 }}>
-                    <div style={{ fontSize:12, letterSpacing:3, color:lesson.accent, textTransform:"uppercase", marginBottom:10 }}>The Rule</div>
-                    <p style={{ fontSize:16, color:"#dde8ee", lineHeight:1.7, marginBottom:12 }}>{lesson.grammar.rule}</p>
-                    <div style={{ background:"rgba(0,0,0,0.3)", borderRadius:10, padding:"10px 16px", fontFamily:"monospace", fontSize:14, color:lesson.accent }}>{lesson.grammar.structure}</div>
-                  </div>
-                  <div style={{ fontSize:12, letterSpacing:3, color:"#556672", textTransform:"uppercase", marginBottom:12 }}>Examples</div>
-                  {lesson.grammar.examples.map((ex,i)=><GrammarCard key={i} ex={ex} />)}
-                  <div style={{ background:"rgba(255,200,100,0.08)", border:"1px solid rgba(255,200,100,0.2)", borderRadius:12, padding:"14px 18px", marginBottom:28, color:"#f0d080", fontSize:14 }}>{lesson.grammar.tip}</div>
-                  <button onClick={()=>setPhase("exercises")} style={{ width:"100%", padding:"16px", background:`linear-gradient(135deg,${lesson.color},${lesson.accent})`, border:"none", borderRadius:14, color:"#fff", fontSize:16, fontWeight:600, cursor:"pointer" }}>
-                    Start Exercises →
-                  </button>
-                </div>
-              )}
-
-              {phase==="exercises" && (
-                <div>
-                  <ExerciseView exercise={lesson.exercises[exIdx]} onAnswer={handleAnswer} answered={answered} selectedIdx={selOpt} />
-                  {answered && (
-                    <button onClick={nextExercise} style={{ width:"100%", marginTop:20, padding:"15px", background:`linear-gradient(135deg,${lesson.color},${lesson.accent})`, border:"none", borderRadius:14, color:"#fff", fontSize:16, fontWeight:600, cursor:"pointer" }}>
-                      {exIdx+1<lesson.exercises.length?"Next Exercise →":"Finish Lesson ✓"}
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ─── COMPLETE ─── */}
-          {screen==="complete" && lesson && (
-            <div style={{ maxWidth:480, margin:"0 auto", padding:"50px 20px", textAlign:"center" }}>
-              <div style={{ fontSize:64, marginBottom:16, animation:"pop 0.5s ease" }}>
-                {finalScore===lesson.exercises.length?"🏆":finalScore>=lesson.exercises.length/2?"⭐":"📚"}
-              </div>
-              <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:32, color:"#e8f4ea", fontWeight:400, marginBottom:8 }}>
-                {finalScore===lesson.exercises.length?"Perfect!":"Lesson Complete!"}
-              </h2>
-              <div style={{ color:"#7a9aaa", fontSize:16, marginBottom:28 }}>{finalScore} / {lesson.exercises.length} correct</div>
-
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10, marginBottom:28 }}>
-                {[
-                  {label:"Score",value:`${Math.round((finalScore/lesson.exercises.length)*100)}%`},
-                  {label:"XP Earned",value:`+${finalScore*10+(finalScore===lesson.exercises.length?20:0)}`},
-                  {label:"Streak",value:`🔥 ${u.streak}d`},
-                ].map((s,i)=>(
-                  <div key={i} style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:14, padding:"16px 10px" }}>
-                    <div style={{ fontSize:22, fontFamily:"'Playfair Display',serif", color:"#95d5b2" }}>{s.value}</div>
-                    <div style={{ fontSize:12, color:"#556672", marginTop:4 }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              {u.badges.length>0 && (
-                <div style={{ marginBottom:22 }}>
-                  <div style={{ fontSize:12, color:"#556672", marginBottom:10 }}>RECENT BADGES</div>
-                  <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap" }}>
-                    {u.badges.slice(-3).map(bid=>{const b=BADGES.find(x=>x.id===bid);return b?<span key={bid} style={{ background:"rgba(168,85,247,0.15)", border:"1px solid rgba(168,85,247,0.3)", borderRadius:8, padding:"5px 12px", fontSize:13, color:"#c084fc" }}>{b.icon} {b.name}</span>:null;})}
-                  </div>
-                </div>
-              )}
-
-              <div style={{ display:"flex", gap:12, justifyContent:"center" }}>
-                <button onClick={()=>startLesson(lesson)} style={{ padding:"13px 28px", background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, color:"#aab8c2", fontSize:15, cursor:"pointer" }}>Retry</button>
-                <button onClick={()=>setScreen("home")} style={{ padding:"13px 28px", background:"linear-gradient(135deg,#2d6a4f,#52b788)", border:"none", borderRadius:12, color:"#fff", fontSize:15, fontWeight:600, cursor:"pointer" }}>Back to Lessons</button>
-              </div>
-            </div>
-          )}
-        </>
-      )}
+  return (
+    <div className="app"><style>{CSS}</style>
+      {hud}
+      <main className="main">{tab === "learn" ? learn : tab === "league" ? league : tab === "shop" ? shop : profile}</main>
+      <nav className="tabs" aria-label="GrammarFirst">
+        {[["learn", "📖", t.learn], ["league", "🏅", t.league], ["shop", "💎", t.shop], ["profile", "🙂", t.profile]].map(([k, ic, lb]) => <button key={k} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined} onClick={() => setTab(k)}><span>{ic}</span><small>{lb}</small></button>)}
+      </nav>
+      {pickCourse && <div className="modal" onClick={() => setPickCourse(false)}><div className="modal-card wide" onClick={e => e.stopPropagation()}><h3>{t.chooseCourse}</h3><div className="course-grid">{COURSES.map(c => { const ls = allLessons(c); const n = ls.filter(l => st.done[l.id]).length; return <button key={c.id} className={"course-pick" + (st.course === c.id ? " on" : "")} onClick={() => { setSt({ ...st, course: c.id }); setPickCourse(false); setTab("learn"); }}><Flag id={c.flag} size={34} /><b>{c.name}</b><small>{n}/{ls.length} {t.lessons}</small></button>; })}</div></div></div>}
+      {confirmReset && <div className="modal"><div className="modal-card"><Mascot mood="sad" size={80} /><p>{t.resetConfirm}</p><div className="row"><button className="btn danger" onClick={() => { const f = fresh(); setSt(tick(f)); setConfirmReset(false); setTab("learn"); }}>{t.yes}</button><button className="btn ghost" onClick={() => setConfirmReset(false)}>{t.no}</button></div></div></div>}
+      {toast && <div className="toast" key={toast.k}>{toast.icon} {toast.msg}</div>}
     </div>
   );
 }
