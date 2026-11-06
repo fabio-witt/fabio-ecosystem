@@ -9,7 +9,7 @@
   display:inline-flex;align-items:center;justify-content:center;transition:background .18s,transform .18s,box-shadow .18s;
 }
 .fw-lang-btn:hover{background:#eef4f7;transform:translateY(-1px)}
-.fw-lang-btn.is-active{background:#fff;box-shadow:0 0 0 2px #149a72,0 2px 8px rgba(20,154,114,.16)}
+.fw-lang-btn.is-active{background:#fff;box-shadow:0 0 0 2px #107c5c,0 2px 8px rgba(20,154,114,.16)}
 .fw-lang-btn img{display:block;width:22px;height:15px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(13,35,66,.15)}
 .fw-lang-btn:focus-visible{outline:3px solid rgba(20,154,114,.28);outline-offset:2px}
 .fw-lang-label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}

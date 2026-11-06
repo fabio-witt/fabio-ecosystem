@@ -1,6 +1,6 @@
 # Fabio Witt SAP Consulting v4
 
-Statische Website ohne Build-Schritt.
+Statische Website ohne Build-Schritt. Bereiche: Fabio Witt (/), DACHWERK (/dachwerk/), SPRACHWERK (/sprachschule/), LERNWERK (/sprachlernapp/), GrammarFirst (/grammarfirst/). Release Notes und Audits liegen in docs/ und werden nicht veröffentlicht.
 
 ## Vor Veröffentlichung
 - Platzhalter-E-Mail in `index.html` ersetzen.

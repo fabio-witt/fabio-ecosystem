@@ -8,7 +8,7 @@
   "theme_color": "#071a2b",
   "icons": [
     {
-      "src": "/assets/favicon.svg",
+      "src": "/dachwerk/assets/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

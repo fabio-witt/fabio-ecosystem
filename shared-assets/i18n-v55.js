@@ -99,6 +99,6 @@
     var s=document.createElement('script');s.async=true;s.defer=true;s.dataset.fwGoogleTranslate='1';
     s.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';document.head.appendChild(s);
   }
-  function init(){insertSwitchers();loadTranslator();}
+  function init(){insertSwitchers();if(active!=='de')loadTranslator();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

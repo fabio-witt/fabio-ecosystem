@@ -14,7 +14,7 @@
   --white: #ffffff;
   --teal-700: #087a72;
   --teal-600: #0a9085;
-  --teal-500: #11a99b;
+  --teal-500: #0c7b71;
   --teal-400: #28c4b5;
   --teal-300: #73ddd2;
   --teal-100: #dff8f4;
@@ -2330,7 +2330,7 @@ summary:focus-visible {
 
 .footer__bottom p {
   margin: 0;
-  color: #6f8393;
+  color: #5f707e;
   font-size: 0.72rem;
 }
 
