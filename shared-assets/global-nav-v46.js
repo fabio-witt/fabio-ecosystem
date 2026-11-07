@@ -13,7 +13,7 @@
       menu.classList.toggle('is-open',open);
       backdrop?.classList.toggle('is-open',open);
       btn.setAttribute('aria-expanded',String(open));
-      btn.setAttribute('aria-label',open?'Menü schließen':'Menü öffnen');
+      btn.setAttribute('aria-label',open?'Menü schliessen':'Menü öffnen');
       document.body.classList.toggle('eco-menu-open',open);
       if(!open && restoreFocus) btn.focus({preventScroll:true});
     };

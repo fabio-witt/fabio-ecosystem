@@ -1,6 +1,6 @@
 window.SPRACHWERK_COMMERCE = {
-  monthlyPriceDisplay: "9,90 €",
-  annualPriceDisplay: "79 €",
+  monthlyPriceDisplay: "CHF 9.90",
+  annualPriceDisplay: "CHF 79",
   trialDays: 7,
   checkoutFunction: "create-checkout",
   portalFunction: "customer-portal"

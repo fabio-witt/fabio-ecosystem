@@ -24,7 +24,7 @@ const setMenuState = (isOpen) => {
   nav.classList.toggle('is-open', isOpen);
   document.body.classList.toggle('menu-open', isOpen);
   const label = menuToggle.querySelector('.sr-only');
-  if (label) label.textContent = isOpen ? 'Navigation schließen' : 'Navigation öffnen';
+  if (label) label.textContent = isOpen ? 'Navigation schliessen' : 'Navigation öffnen';
 };
 
 if (menuToggle && nav) {
@@ -217,7 +217,7 @@ if (homepageTeamInputs.length && homepageTeamResult) {
 
     if (!selected.length) {
       title.textContent = '1 DACH-Projektleiter:in + passendes Senior Delivery Team';
-      copy.textContent = 'Wählen Sie links mindestens einen Workstream. Anschließend zeigen wir eine mögliche Rollenstruktur.';
+      copy.textContent = 'Wählen Sie links mindestens einen Workstream. Anschliessend zeigen wir eine mögliche Rollenstruktur.';
       list.replaceChildren(
         ...['Persönliche Kunden- und Qualitätsverantwortung', 'Transparente Rollen und Arbeitspakete', 'Projektkommunikation auf Deutsch und Englisch'].map((text) => {
           const item = document.createElement('li'); item.textContent = text; return item;
@@ -402,7 +402,7 @@ if (projectCheck) {
     let recommendedStart;
     if (score <= 4) {
       title = 'Fundament vor Umsetzung stärken';
-      intro = 'Mehrere Grundlagen sind noch offen. Ein großer Implementierungsstart wäre derzeit unnötig riskant.';
+      intro = 'Mehrere Grundlagen sind noch offen. Ein grosser Implementierungsstart wäre derzeit unnötig riskant.';
       recommendedStart = `Discover- und Scoping-Sprint für ${projectType}: Zielbild, Scope, Prozess- und Datenreife sowie Governance klären.`;
     } else if (score <= 8) {
       title = 'Gute Basis mit gezieltem Klärungsbedarf';
@@ -430,7 +430,7 @@ if (projectCheck) {
     if (maturity === 'Noch kaum dokumentiert') risks.push('Prozess- und Stammdatenreife vor Konfiguration sichtbar machen.');
     if (capacity === 'Sehr begrenzt') risks.push('Key-User- und Business-Kapazität verbindlich absichern.');
     if (timeline === 'Unter 6 Monate') risks.push('Scope stark begrenzen oder den Zieltermin realistisch neu bewerten.');
-    if (english === 'Nein, ausschließlich Deutsch') risks.push('Teammodell und Kostenwirkung eines rein deutschsprachigen Setups prüfen.');
+    if (english === 'Nein, ausschliesslich Deutsch') risks.push('Teammodell und Kostenwirkung eines rein deutschsprachigen Setups prüfen.');
     if (plants.startsWith('4')) risks.push('Template-, Varianten- und Rollout-Governance früh festlegen.');
     if (!risks.length) risks.push('Quality Gates, Datenmigration und Cutover auch bei guter Ausgangslage früh detaillieren.');
 

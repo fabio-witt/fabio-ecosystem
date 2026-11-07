@@ -36,7 +36,7 @@
     menu.classList.toggle('open',open);
     btn.classList.toggle('is-active',open);
     btn.setAttribute('aria-expanded',String(open));
-    const label=open?'Navigation schließen':'Navigation öffnen';
+    const label=open?'Navigation schliessen':'Navigation öffnen';
     if(btn.hasAttribute('aria-label')) btn.setAttribute('aria-label',label);
     const sr=btn.querySelector('.sr-only');
     if(sr) sr.textContent=label;

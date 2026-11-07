@@ -7,7 +7,7 @@ async function initCommerce(){
 }
 document.querySelectorAll("[data-billing]").forEach(b=>b.onclick=()=>{
  billing=b.dataset.billing;document.querySelectorAll("[data-billing]").forEach(x=>x.classList.toggle("active",x===b));
- document.getElementById("pro-price").innerHTML=billing==="annual"?"79 € <small>/ Jahr</small>":"9,90 € <small>/ Monat</small>";
+ document.getElementById("pro-price").innerHTML=billing==="annual"?"CHF 79 <small>/ Jahr</small>":"CHF 9.90 <small>/ Monat</small>";
 });
 document.getElementById("start-pro")?.addEventListener("click",async()=>{
  if(!sb)return msg("Supabase muss zuerst konfiguriert werden.");
