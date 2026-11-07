@@ -1,6 +1,6 @@
 // GrammarFirst offline support: network first for the app, cache as fallback.
-const CACHE = "grammarfirst-v69";
-const CORE = ["/grammarfirst/", "/grammarfirst/app.js?v=69", "/grammarfirst/icon-192.png", "/grammarfirst/manifest.webmanifest",
+const CACHE = "grammarfirst-v71";
+const CORE = ["/grammarfirst/", "/grammarfirst/app.js?v=71", "/grammarfirst/icon-192.png", "/grammarfirst/manifest.webmanifest",
   "/shared-assets/flags/de.svg", "/shared-assets/flags/gb.svg", "/shared-assets/flags/es.svg", "/shared-assets/flags/fr.svg", "/shared-assets/flags/ru.svg",
   "/shared-assets/flags/pl.svg", "/shared-assets/flags/zh.svg", "/shared-assets/flags/it.svg", "/shared-assets/flags/ie.svg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });

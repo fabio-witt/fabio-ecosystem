@@ -114,7 +114,7 @@ export const EN = {
           ch("She ___ TV in the evening.", ["watchs", "watches", "watch"], 1, "-ch → -es"),
           ty("my sister ___ (study) law", ["studies"], "Konsonant + y → -ies"),
           bu("Übersetze: Er wohnt in Bern.", "He lives in Bern", ["live", "living"], "he → lives"),
-          ch("Which sentence is correct?", ["They plays football.", "They play football.", "They playing football."], 1, "they → kein -s"),
+          ch("Welcher Satz ist richtig?", ["They plays football.", "They play football.", "They playing football."], 1, "they → kein -s"),
         ] } ] },
     { title: "Einheit 2 · Fragen und Zeiten", lessons: [
       { id: "en4", title: "do / does", rule: "Fragen und Verneinungen bildest du im Simple Present mit do/does. Bei does verliert das Hauptverb das -s.",

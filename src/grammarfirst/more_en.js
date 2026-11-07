@@ -171,7 +171,7 @@ export default [
        ch("If I were you, I ___ apologise.", ["will", "would", "am"], 1, "Hauptsatz → would."),
        ty("If she ___ (be) here, she would help.", ["were", "was"], "were ist die Standardform, was ist umgangssprachlich."),
        bu("Übersetze: Ich würde kommen, wenn ich könnte.", "I would come if I could", ["can", "will"], "would + if + could."),
-       ch("Which is a second conditional?", ["If it rains, I stay.", "If it rained, I would stay.", "If it rains, I will stay."], 1, "Past + would.")]),
+       ch("Welcher Satz ist ein Second Conditional?", ["If it rains, I stay.", "If it rained, I would stay.", "If it rains, I will stay."], 1, "Past + would.")]),
     L("en25", "Passiv", "Das Passiv betont die Handlung, nicht den Handelnden: be + 3. Form. Der Handelnde folgt mit by.",
       "Present: is/are + Partizip · Past: was/were + Partizip · English is spoken here. · The house was built in 1900.",
       [["Cheese is made from milk.", "Käse wird aus Milch hergestellt."], ["The letter was written by Anna.", "Der Brief wurde von Anna geschrieben."], ["The windows are cleaned every week.", "Die Fenster werden jede Woche geputzt."]],
