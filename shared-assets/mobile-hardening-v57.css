@@ -72,3 +72,9 @@ textarea{resize:vertical}
   .placement-benefits{grid-template-columns:1fr!important}
   .v41-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
+
+/* v73: navbar with the extra "Digital" item stays on one line on small laptops */
+@media (min-width: 1081px) and (max-width: 1240px){
+  .fw50-menu{gap:2px!important}
+  .fw50-menu a{padding-left:8px!important;padding-right:8px!important;font-size:13px!important}
+}
