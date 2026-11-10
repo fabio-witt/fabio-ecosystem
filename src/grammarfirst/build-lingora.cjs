@@ -56,7 +56,7 @@ try {
   ));
   const dist = path.join(temp, "dist");
   const result = spawnSync(process.execPath, [
-    path.join(temp, "node_modules/expo/bin/cli"), "export", "--platform", "web", "--output-dir", dist,
+    path.join(temp, "node_modules/expo/bin/cli"), "export", "--platform", "web", "--output-dir", dist, "--clear",
   ], {
     cwd: temp, stdio: "inherit",
     env: { ...process.env, CI: "1", EXPO_PUBLIC_SUPABASE_URL: url.origin, EXPO_PUBLIC_SUPABASE_ANON_KEY: key },
