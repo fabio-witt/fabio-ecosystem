@@ -49,10 +49,13 @@ try {
     "#292B35": "#202B3F", "#F1F1F5": "#E7EBF3", "#353844": "#2A3447",
   };
   fs.writeFileSync(themeFile, read(themeFile).replace(/#[0-9A-F]{6}/g, (color) => palette[color] || color));
-  const registerFile = path.join(temp, "src/app/register.tsx");
-  fs.writeFileSync(registerFile, read(registerFile).replace(
-    "Linking.createURL('auth/callback')",
-    `typeof window !== 'undefined' ? new URL('${route}/auth/callback', window.location.origin).href : Linking.createURL('auth/callback')`
+  // Email confirmation links must come back to /grammarfirst/lingora/auth/callback.
+  const redirectFile = path.join(temp, "src/lib/auth-redirect.ts");
+  const redirectCall = "Linking.createURL('auth/callback')";
+  if (!read(redirectFile).includes(redirectCall)) throw new Error("auth-redirect.ts changed: update the callback patch.");
+  fs.writeFileSync(redirectFile, read(redirectFile).replace(
+    redirectCall,
+    `typeof window !== 'undefined' ? new URL('${route}/auth/callback', window.location.origin).href : ${redirectCall}`
   ));
   const dist = path.join(temp, "dist");
   const result = spawnSync(process.execPath, [
