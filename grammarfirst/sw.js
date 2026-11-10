@@ -1,13 +1,14 @@
 // GrammarFirst offline support: network first for the app, cache as fallback.
-const CACHE = "grammarfirst-v72";
-const CORE = ["/grammarfirst/", "/grammarfirst/app.js?v=72", "/grammarfirst/icon-192.png", "/grammarfirst/manifest.webmanifest",
+const CACHE = "grammarfirst-v74";
+const CORE = ["/grammarfirst/", "/grammarfirst/app.js?v=74", "/grammarfirst/icon-192.png", "/grammarfirst/manifest.webmanifest",
   "/shared-assets/flags/de.svg", "/shared-assets/flags/gb.svg", "/shared-assets/flags/es.svg", "/shared-assets/flags/fr.svg", "/shared-assets/flags/ru.svg",
   "/shared-assets/flags/pl.svg", "/shared-assets/flags/zh.svg", "/shared-assets/flags/it.svg", "/shared-assets/flags/ie.svg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
-self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith("grammarfirst-") && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {
   const u = new URL(e.request.url);
   if (e.request.method !== "GET" || u.origin !== location.origin) return;
+  if (u.pathname.startsWith("/grammarfirst/lingora/")) return;
   if (!(u.pathname.startsWith("/grammarfirst") || u.pathname.startsWith("/shared-assets") || u.pathname === "/styles.css")) return;
   e.respondWith(fetch(e.request).then(r => { if (r.ok) { const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); } return r; }).catch(() => caches.match(e.request, { ignoreSearch: u.pathname.endsWith(".js") ? false : true })));
 });

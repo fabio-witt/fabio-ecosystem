@@ -5,10 +5,12 @@ import { RU, PL, GSW, IT, GA } from "./courses2.js";
 import "./extend.js";
 import { applyLang, NAME_EN } from "./lang.js";
 import * as cloud from "./cloud.js";
+import { appendLingoraUnits, isSharedEntry, mergeProgress, scoresFromDevice, workspaceUrl } from "./lingora-learning.js";
 import { Flash, dueCards, BOXES } from "./flash.jsx";
 import CSS from "./styles.js";
 
 const COURSES = [DE, EN, ES, FR, RU, PL, GSW, IT, GA];
+COURSES.forEach(appendLingoraUnits);
 const byId = Object.fromEntries(COURSES.map(c => [c.id, c]));
 const allLessons = c => c.units.flatMap(u => u.lessons);
 const FLAG = f => "/shared-assets/flags/" + f + ".svg";
@@ -121,13 +123,15 @@ const hash = s => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0))
 // ─── LEARNING ENGINE ────────────────────────────────────────────────────────
 const INTERVALS = [1, 3, 7, 16, 35], DAYMS = 86400000;
 const CEFR = ui => ["A1", "A1", "A2", "A2", "B1", "B1", "B2"][ui] || "B2";
+const unitLevel = (course, index) => course.units[index].level || CEFR(index);
+const unitKey = (course, index) => course.id + (course.units[index].originalIndex ?? (course.id === "ga" ? index : ":" + (course.units[index].lessons[0]?.id || course.units[index].reading.id)));
 const NO_TTS = { gsw: 1, ga: 1 };
 const LEVELS_ALL = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const CANDO = {
   de: { A1: "Du verstehst vertraute Alltagsausdrücke, stellst dich vor und stellst einfache Fragen.", A2: "Du verständigst dich in einfachen Routinesituationen und erzählst von dir, deiner Herkunft und deinem Alltag.", B1: "Du kommst in den meisten Alltagssituationen zurecht, erzählst von Erlebnissen und begründest kurz deine Meinung.", B2: "Du verstehst anspruchsvolle Texte und unterhältst dich spontan und fliessend mit Muttersprachlern.", C1: "Du drückst dich fliessend und präzise aus, auch im Beruf und im Studium.", C2: "Du verstehst praktisch alles mühelos und drückst dich sehr fein und genau aus." },
   en: { A1: "You understand familiar everyday expressions, introduce yourself and ask simple questions.", A2: "You manage simple routine situations and talk about yourself, your background and your daily life.", B1: "You handle most everyday situations, describe experiences and briefly explain your opinion.", B2: "You understand demanding texts and talk spontaneously and fluently with native speakers.", C1: "You express yourself fluently and precisely, also at work and in your studies.", C2: "You understand virtually everything with ease and express yourself very precisely." },
 };
-const levelUnits = (c, lv) => c.units.map((u, ui) => ({ u, ui })).filter(x => CEFR(x.ui) === lv);
+const levelUnits = (c, lv) => c.units.map((u, ui) => ({ u, ui })).filter(x => unitLevel(c, x.ui) === lv);
 const levelDone = (st, c, lv) => { const ls = levelUnits(c, lv).flatMap(x => x.u.lessons); return ls.length > 0 && ls.every(l => st.done[l.id]); };
 const currentLevel = (st, c) => { let cur = null; for (const lv of LEVELS_ALL) { if (levelDone(st, c, lv)) cur = lv; else break; } return cur; };
 const canSpeak = () => { try { return "speechSynthesis" in window; } catch (e) { return false; } };
@@ -176,8 +180,8 @@ const fresh = () => ({
   lessonsCompleted: 0, perfects: 0, maxCombo: 0, fixed: 0, chests: {}, quests: null, goalPaid: false,
   srs: {}, tests: {}, readDone: {}, placed: {}, cards: {}, stats: true, theme: "auto",
 });
-const load = () => { try { const s = JSON.parse(localStorage.getItem(STORE)); if (s && s.v === 2) return { ...fresh(), ...s }; } catch (e) { } return fresh(); };
-const save = s => { try { localStorage.setItem(STORE, JSON.stringify(s)); } catch (e) { } };
+const load = (key = STORE) => { try { const s = JSON.parse(localStorage.getItem(key)); if (s && s.v === 2) return { ...fresh(), ...s }; } catch (e) { } return fresh(); };
+const save = (s, key) => { try { localStorage.setItem(key, JSON.stringify(s)); } catch (e) { } };
 
 const makeQuests = () => ([
   { id: "xp", goal: 30, prog: 0, gems: 5, de: "Sammle 30 XP", en: "Earn 30 XP" },
@@ -358,6 +362,7 @@ function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHea
     const ex = cur.ex;
     if (ex.type === "build") grade(norm(buildVal.map(v => v.w).join(" ")) === norm(ex.answer), false);
     else if (ex.type === "type") { const a = norm(typed), okExact = ex.accept.some(x => norm(x) === a), okPlain = ex.accept.some(x => plain(x) === plain(typed)); grade(okExact || okPlain, !okExact && okPlain); }
+    else if (ex.type === "writing") grade(true, false);
     else if (ex.type === "table") { const exact = ex.rows.every(([, b], i) => norm(rows[i] || "") === norm(b)); const pl = ex.rows.every(([, b], i) => plain(rows[i] || "") === plain(b)); grade(exact || pl, !exact && pl); }
     else if (ex.type === "hear") { const a = plain(typed), b = plain(ex.text); const exact = norm(typed) === norm(ex.text); const close = a === b || lev(a, b) <= Math.max(1, Math.floor(b.length / 20)); grade(exact || close, !exact && close); }
   };
@@ -368,7 +373,7 @@ function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHea
 
   useEffect(() => {
     const h = e => {
-      if (e.key !== "Enter" || phase !== "ex" || !cur) return;
+      if (e.key !== "Enter" || phase !== "ex" || !cur || e.target?.tagName === "TEXTAREA") return;
       if (result) { e.preventDefault(); next(); }
       else if (canCheck) { e.preventDefault(); check(); }
     };
@@ -411,7 +416,7 @@ function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHea
   }
 
   const ex = cur.ex;
-  const canCheck = !result && !outOfHearts && ((ex.type === "build" && buildVal.length > 0) || ((ex.type === "type" || ex.type === "hear") && typed.trim().length > 0) || (ex.type === "table" && ex.rows.every((_, i) => (rows[i] || "").trim())));
+  const canCheck = !result && !outOfHearts && ((ex.type === "build" && buildVal.length > 0) || ((ex.type === "type" || ex.type === "hear" || ex.type === "writing") && typed.trim().length > 0) || (ex.type === "table" && ex.rows.every((_, i) => (rows[i] || "").trim())));
   const correctText = ex.type === "choice" ? ex.options[ex.answer] : ex.type === "build" || ex.type === "fix" ? ex.answer : ex.type === "type" ? ex.accept[0] : ex.type === "hear" ? ex.text : ex.type === "table" ? ex.rows.map(r => r.join(" = ")).join(" · ") : "";
   const report = "mailto:fabiowitt@gmx.de?subject=" + encodeURIComponent("GrammarFirst Fehler " + (cur.ref ? cur.ref.l + "/" + cur.ref.i : "")) + "&body=" + encodeURIComponent("Aufgabe: " + ex.prompt + "\nLösung in der App: " + correctText + "\n\nWas ist falsch?\n");
   return (
@@ -429,6 +434,12 @@ function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHea
         {ex.type === "choice" && <Choice ex={ex} seed={hash(ex.prompt) + idx} locked={!!result || outOfHearts} picked={result && result.picked} onAnswer={i => !result && grade(i === ex.answer, false, i)} />}
         {ex.type === "build" && <><p className="hint">{t.tapWords}</p><Build ex={ex} seed={hash(ex.answer) + idx} value={buildVal} setValue={setBuildVal} locked={!!result || outOfHearts} /></>}
         {ex.type === "type" && <input ref={inputRef} className="type-in" value={typed} onChange={e => setTyped(e.target.value)} placeholder={t.typeHere} disabled={!!result || outOfHearts} autoCapitalize="off" autoComplete="off" spellCheck="false" lang={lang} />}
+        {ex.type === "writing" && <section className="card">
+          <p className="muted">{st.ui === "en" ? "Write a response, then compare it with the model." : "Schreibe eine Antwort und vergleiche sie mit dem Beispiel."}</p>
+          <ul>{ex.checklist.map(item => <li key={item}>{item}</li>)}</ul>
+          <textarea className="type-in" rows={5} aria-label={t.typeHere} value={typed} onChange={e => setTyped(e.target.value)} readOnly={!!result} lang={lang} />
+          {result && <p>{ex.model}</p>}
+        </section>}
         {ex.type === "match" && !result && <><p className="hint">{t.matchHint}</p><Match key={idx} ex={ex} sound={st.sound} onMiss={() => setMatchMiss(true)} onDone={() => grade(!matchMiss, false)} /></>}
         {ex.type === "match" && result && <div className="match-done">{ex.pairs.map(([a, b]) => <span key={a}>{a} = {b}</span>)}</div>}
         {ex.type === "table" && <TableEx ex={ex} value={rows} setValue={setRows} locked={!!result || outOfHearts} result={result} />}
@@ -438,7 +449,7 @@ function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHea
       {ex.type === "choice" && !result && <p className="keyhint">{t.keyHint}</p>}
       <footer className={"feedback" + (result ? (result.ok ? " ok" : " bad") : "")} aria-live="polite">
         {result ? <div className="fb-text">
-          <b>{result.ok ? (result.almost ? t.almost : t.correct) : t.wrong}</b>
+          <b>{ex.type === "writing" ? (st.ui === "en" ? "Self-review" : "Selbstkontrolle") : result.ok ? (result.almost ? t.almost : t.correct) : t.wrong}</b>
           {!result.ok && ex.type === "choice" && result.picked != null && <span>{t.yourAnswer} <s>{ex.options[result.picked]}</s></span>}
           {(!result.ok || result.almost) && ex.type !== "match" && <span>{t.answer} <em>{correctText}</em></span>}
           {ex.explain && <span className="explain">{ex.explain}</span>}
@@ -446,7 +457,7 @@ function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHea
           <span className="fb-links">{!result.ok && ruleLesson && !ruleLesson.text && <button className="linkbtn" onClick={() => setRuleOpen(true)}>📘 {t.showRule}</button>}<a className="linkbtn" href={report}>⚑ {t.report}</a></span>
         </div> : <div className="fb-text" />}
         {result ? <button className={"btn " + (result.ok ? "primary" : "danger")} onClick={next}>{t.cont}</button>
-          : (ex.type === "build" || ex.type === "type" || ex.type === "table" || ex.type === "hear") && <button className="btn primary" disabled={!canCheck} onClick={check}>{t.check}</button>}
+          : (ex.type === "build" || ex.type === "type" || ex.type === "table" || ex.type === "hear" || ex.type === "writing") && <button className="btn primary" disabled={!canCheck} onClick={check}>{t.check}</button>}
       </footer>
       {ruleOpen && ruleLesson && <div className="modal" onClick={() => setRuleOpen(false)}><div className="modal-card wide rule-modal" onClick={e => e.stopPropagation()}><RuleCard lesson={ruleLesson} course={course} t={t} lang={lang} open /><button className="btn primary" onClick={() => setRuleOpen(false)}>{t.back}</button></div></div>}
       {outOfHearts && <div className="modal"><div className="modal-card"><Mascot mood="sad" size={90} /><h3>{t.outOfHearts}</h3><p>{t.outText}</p><button className="btn primary" onClick={onExit}>{t.cont}</button></div></div>}
@@ -457,10 +468,14 @@ function Lesson({ course, lesson, items, mode, st, t, onExit, onFinish, spendHea
 
 // ─── MAIN APP ───────────────────────────────────────────────────────────────
 export default function App() {
-  const [st, setSt] = useState(() => { const s = tick(load()); try { const q = new URLSearchParams(location.search).get("course"); if (q && byId[q] && !s.onboarded) s.course = q; } catch (e) { } applyLang(s.expl || "en"); return s; });
+  const [local, setSt] = useState(() => { const s = tick(load()); try { const q = new URLSearchParams(location.search).get("course"); if (q && byId[q] && !s.onboarded) s.course = q; } catch (e) { } applyLang(s.expl || "en"); return s; });
+  const [shared, setShared] = useState(null);
+  const st = useMemo(() => mergeProgress(local, shared?.rows), [local, shared]);
   const [langV, setLangV] = useState(0);
   useEffect(() => { applyLang(st.expl || "en"); for (const k in poolCache) delete poolCache[k]; setLangV(v => v + 1); }, [st.expl]);
   const [tab, setTab] = useState("learn");
+  const [openedWorkspace, setOpenedWorkspace] = useState(false);
+  const openWorkspace = () => { setOpenedWorkspace(true); setTab("lingora"); };
   const [play, setPlay] = useState(null); // {lesson, items, mode}
   const [toast, setToast] = useState(null);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -468,31 +483,75 @@ export default function App() {
   const [now, setNow] = useState(Date.now());
   const [libQ, setLibQ] = useState("");
   const [user, setUser] = useState(null);
+  const owner = useRef(null);
+  const syncing = useRef(null);
+  const [password, setPassword] = useState("");
+  const [accountBusy, setAccountBusy] = useState(false);
+  const [syncError, setSyncError] = useState(false);
   const [mail, setMail] = useState(""), [mailMsg, setMailMsg] = useState("");
   const [lmail, setLmail] = useState(""), [lmsg, setLmsg] = useState("");
   const [syncAt, setSyncAt] = useState(null);
   const [flash, setFlash] = useState(null);
   const ev = (e, d = {}) => cloud.track(e, { course: st.course, ui: st.ui, ...d }, st.stats !== false);
   useEffect(() => {
-    const fromLink = cloud.captureLogin();
-    if (!st.statsOpen || st.statsOpen !== today()) { ev("open"); setSt(s => ({ ...s, statsOpen: today() })); }
-    (async () => {
-      if (!cloud.session()) return;
-      const u = await cloud.me(); if (!u) return; setUser(u);
-      const remote = await cloud.pull(u.id);
-      if (remote && remote.state && remote.state.v === 2) {
-        setSt(s => { const r = remote.state; const take = (r.xp || 0) > (s.xp || 0) || (!s.onboarded && r.onboarded); return take ? tick({ ...fresh(), ...r, ui: s.ui, expl: r.expl || s.expl }) : s; });
-      }
-      setSyncAt(Date.now());
-      if (fromLink) { ev("signup"); setTab("profile"); }
-    })();
+    if (st.statsOpen !== today()) { ev("open"); setSt(s => ({ ...s, statsOpen: today() })); }
+    const { data: { subscription } } = cloud.client.auth.onAuthStateChange((_event, session) => {
+      const next = session?.user ?? null;
+      const uid = next?.id ?? null;
+      if (owner.current === uid) return;
+      owner.current = uid;
+      setUser(next);
+      setShared(null);
+      setSyncAt(null);
+      setSyncError(false);
+      setPlay(null);
+      const guest = load();
+      if (!uid) { setSt(tick(guest)); return; }
+      const account = load(STORE + "." + uid);
+      setSt(tick(account.onboarded ? account : {
+        ...account, onboarded: true, ui: guest.ui, expl: guest.expl, course: guest.course,
+        theme: guest.theme, stats: guest.stats, name: next.user_metadata?.display_name || "",
+      }));
+    });
+    return () => subscription.unsubscribe();
   }, []);
-  useEffect(() => { if (!user) return; const id = setTimeout(async () => { if (await cloud.push(user.id, st)) setSyncAt(Date.now()); }, 4000); return () => clearTimeout(id); }, [st, user]);
+
+  const syncAccount = useCallback(async uid => {
+    if (!uid || owner.current !== uid) return;
+    if (syncing.current?.uid === uid) return syncing.current.promise;
+    const run = cloud.syncProgress(uid).then(result => {
+      if (owner.current !== uid) return;
+      setShared(result);
+      setSyncAt(Date.now());
+      setSyncError(result.pending > 0);
+    }).catch(() => {
+      if (owner.current === uid) setSyncError(true);
+    }).finally(() => {
+      if (syncing.current?.promise === run) syncing.current = null;
+    });
+    syncing.current = { uid, promise: run };
+    return run;
+  }, []);
+  const uid = user?.id;
+  useEffect(() => {
+    if (!uid) return;
+    const sync = () => { void syncAccount(uid); };
+    sync();
+    window.addEventListener("online", sync);
+    window.addEventListener("focus", sync);
+    return () => {
+      window.removeEventListener("online", sync);
+      window.removeEventListener("focus", sync);
+    };
+  }, [syncAccount, uid]);
+  useEffect(() => { if (uid && tab !== "lingora") void syncAccount(uid); }, [syncAccount, tab, uid]);
   const [code, setCode] = useState("");
   const t = { ...(T[st.ui] || T.de), ...(X[st.ui] || X.de) };
   const course = byId[st.course] || DE;
 
-  useEffect(() => { save(st); }, [st]);
+  useEffect(() => {
+    if ((uid ?? null) === owner.current) save(local, uid ? STORE + "." + uid : STORE);
+  }, [local, uid]);
   useEffect(() => { const i = setInterval(() => { setNow(Date.now()); setSt(s => tick(s)); }, 30000); return () => clearInterval(i); }, []);
   const notify = (msg, icon = "⭐") => { setToast({ msg, icon, k: Date.now() }); setTimeout(() => setToast(x => x && Date.now() - x.k > 2500 ? null : x), 2800); };
   const update = fn => setSt(s => checkAch(fn(s)));
@@ -532,7 +591,13 @@ export default function App() {
     setPlay({ lesson: { title: t.unitTest + " " + (ui + 1) }, items, mode: "test", unit: ui });
   };
   const startPlacement = () => {
-    const items = course.units.flatMap((u, ui) => [u.lessons[0], u.lessons[u.lessons.length - 1]].map(l => { const ex = l.ex.find(e => e.type === "choice") || l.ex[0]; return { ex, ref: { c: course.id, l: l.id, i: l.ex.indexOf(ex), u: ui } }; }));
+    const items = course.units.flatMap((u, ui) => {
+      if (!u.lessons.length) return [];
+      return [...new Set([u.lessons[0], u.lessons[u.lessons.length - 1]])].flatMap(l => {
+        const ex = l.ex.find(e => e.type === "choice");
+        return ex ? [{ ex, ref: { c: course.id, l: l.id, i: l.ex.indexOf(ex), u: ui } }] : [];
+      });
+    });
     setPlay({ lesson: { title: t.placement }, items, mode: "placement" });
   };
   const startReading = r => setPlay({ lesson: r, items: r.ex.map((ex, i) => ({ ex, ref: { c: course.id, l: r.id, i } })), mode: "reading" });
@@ -573,13 +638,13 @@ export default function App() {
         Object.entries(byL).forEach(([id, ok]) => { n.srs = bumpSrs(n.srs, id, ok, tnow); });
         n.gems += 3; activity();
       } else if (mode === "test") {
-        const k = play.lesson && course.id + play.unit;
+        const k = unitKey(course, play.unit);
         if (res.passed) { if (!n.tests[k]) { n.gems += 30; setTimeout(() => notify(t.trophy + " +30 💎", "🏆"), 500); } n.tests[k] = Math.max(n.tests[k] || 0, res.firstAcc); }
         activity();
       } else if (mode === "placement") {
         const okU = {}; res.results.forEach(r => { const u = r.ref.u; okU[u] = (okU[u] === undefined ? true : okU[u]) && r.ok; });
         let reached = 0;
-        for (let ui = 0; ui < course.units.length; ui++) { if (!okU[ui]) break; course.units[ui].lessons.forEach(l => { if (!n.done[l.id]) { n.done[l.id] = { crown: 1, best: 80 }; n.srs = bumpSrs(n.srs, l.id, true, tnow); } }); reached = ui + 1; }
+        for (let ui = 0; ui < course.units.length; ui++) { if (!course.units[ui].lessons.length) continue; if (!okU[ui]) break; course.units[ui].lessons.forEach(l => { if (!n.done[l.id]) { n.done[l.id] = { crown: 1, best: 80 }; n.srs = bumpSrs(n.srs, l.id, true, tnow); } }); reached = ui + 1; }
         n.placed[course.id] = reached;
         gain = Math.min(gain, 30);
         setTimeout(() => notify(reached ? t.placedAt + " " + (reached + 1) : t.placedStart, "🧭"), 500);
@@ -597,10 +662,15 @@ export default function App() {
       if (!n.goalPaid && n.dayXp >= n.goal) { n.goalPaid = true; n.gems += 10; setTimeout(() => notify(t.dailyDone + " +10 💎", "🎯"), 1200); }
       return n;
     });
+    if (uid && (mode === "lesson" || mode === "reading") && isSharedEntry(lesson.id)) {
+      cloud.queueCompletion(uid, lesson.id, res.firstAcc);
+      // A focus refresh may already be running. Send the new result once it finishes.
+      void (syncing.current?.promise ?? Promise.resolve()).then(() => syncAccount(uid));
+    }
     setPlay(null);
   };
 
-  const openChest = ui => { const k = course.id + ui; if (st.chests[k]) return; const g = 20 + (hash(k) % 21); update(s => ({ ...s, gems: s.gems + g, chests: { ...s.chests, [k]: true } })); notify("+" + g + " 💎", "🎁"); beep("win", st.sound); };
+  const openChest = ui => { const k = unitKey(course, ui); if (st.chests[k]) return; const g = 20 + (hash(k) % 21); update(s => ({ ...s, gems: s.gems + g, chests: { ...s.chests, [k]: true } })); notify("+" + g + " 💎", "🎁"); beep("win", st.sound); };
   const openCert = lv => {
     const esc = x => String(x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     const html = `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>GrammarFirst ${lv}</title><style>body{font-family:system-ui,sans-serif;margin:0;display:grid;place-items:center;min-height:100vh;background:#eef1f7}.c{background:#fff;width:min(780px,92vw);padding:56px;border:10px solid #0f3e92;border-radius:18px;text-align:center}h1{color:#0f3e92;font-size:40px;margin:8px 0}h2{font-size:28px;margin:24px 0 4px}.k{color:#d52b1e;font-weight:800;letter-spacing:.14em;text-transform:uppercase}p{color:#5d6878}@media print{body{background:#fff}button{display:none}}</style></head><body><div class="c"><div class="k">GrammarFirst</div><h1>${st.ui === "en" ? "Certificate" : "Zertifikat"} ${lv}</h1><p>${st.ui === "en" ? "This certifies that" : "Hiermit wird bestätigt, dass"}</p><h2>${esc(st.name || "GrammarFirst")}</h2><p>${st.ui === "en" ? "has completed all grammar lessons of level" : "alle Grammatiklektionen des Niveaus"} <b>${lv}</b> ${st.ui === "en" ? "in" : "im Kurs"} <b>${esc(course.name)}</b>${st.ui === "en" ? "" : " abgeschlossen hat"}.</p><p>${new Date().toLocaleDateString(st.ui === "en" ? "en-GB" : "de-CH")} · Fabio Witt, Zürich</p><button onclick="print()">${st.ui === "en" ? "Print" : "Drucken"}</button></div></body></html>`;
@@ -674,10 +744,10 @@ export default function App() {
     {!user && st.lessonsCompleted >= 2 && <section className="card practice-card save-card"><div><b>☁️ {t.saveTitle}</b><p>{t.saveDesc}</p></div><button className="btn primary" onClick={() => setTab("profile")}>{t.saveBtn}</button></section>}
     {course.units.map((u, ui) => {
       const unitDone = u.lessons.every(l => st.done[l.id]);
-      const lv = CEFR(ui), lastOfLevel = ui === course.units.length - 1 || CEFR(ui + 1) !== lv;
+      const lv = unitLevel(course, ui), lastOfLevel = ui === course.units.length - 1 || unitLevel(course, ui + 1) !== lv;
       const ms = lastOfLevel ? (() => { const ls = levelUnits(course, lv).flatMap(x => x.u.lessons); const n = ls.filter(l => st.done[l.id]).length; const ok = n === ls.length; return <div key={"ms" + ui} className={"milestone" + (ok ? " reached" : "")}><div className="ms-badge">{lv}</div><div className="ms-body"><small>{t.milestone}</small><b>{ok ? t.msReached.replace("{lv}", lv) : t.msGoal.replace("{lv}", lv)}</b><p>{(CANDO[st.ui] || CANDO.en)[lv]}</p><div className="bar"><i style={{ width: Math.round(n / ls.length * 100) + "%" }} /></div><small>{n}/{ls.length} {t.lessons}</small>{ok && <button className="btn small light" onClick={() => openCert(lv)}>🎓 {t.cert} {lv}</button>}</div></div>; })() : null;
       return <React.Fragment key={ui}><section className="unit">
-        <h2 className="unit-title">{u.title}<small className="cefr">{CEFR(ui)}</small></h2>
+        <h2 className="unit-title">{u.title}<small className="cefr">{unitLevel(course, ui)}</small></h2>
         <div className="path">{u.lessons.map((l, k) => {
           const i = li++; const un = isUnlocked(l, i); const d = st.done[l.id];
           const off = [0, 48, -32, 40, -44, 24][k % 6];
@@ -690,12 +760,12 @@ export default function App() {
           </div>;
         })}
           {u.reading && <div className="node-wrap"><button className={"node reading" + (st.readDone[u.reading.id] ? " done" : unitDone ? " open" : " locked")} style={unitDone ? { "--acc": "#3a86ff" } : null} disabled={!unitDone} onClick={() => startReading(u.reading)} aria-label={t.reading + ": " + u.reading.title}><span className="node-icon">{unitDone ? "📖" : "🔒"}</span></button><span className="node-label">{t.reading}: {u.reading.title}</span></div>}
-          <div className="node-wrap"><button className={"chest" + (unitDone ? (st.chests[course.id + ui] ? " opened" : " ready") : "")} disabled={!unitDone || st.chests[course.id + ui]} onClick={() => openChest(ui)} aria-label={t.chestOpen}>{st.chests[course.id + ui] ? "📭" : "🎁"}</button><span className="node-label">{unitDone ? t.unitDone : t.chest}</span></div>
-          <div className="node-wrap"><button className={"node test" + (st.tests[course.id + ui] ? " done" : unitDone ? " open" : " locked")} style={unitDone ? { "--acc": "#8338ec" } : null} disabled={!unitDone} onClick={() => startTest(ui)} aria-label={t.unitTest + " " + (ui + 1)}><span className="node-icon">{st.tests[course.id + ui] ? "🏆" : unitDone ? "🎯" : "🔒"}</span>{st.tests[course.id + ui] && <span className="crowns">{st.tests[course.id + ui]}%</span>}</button><span className="node-label">{t.unitTest} {ui + 1}</span></div>
+          {!!u.lessons.length && <><div className="node-wrap"><button className={"chest" + (unitDone ? (st.chests[unitKey(course, ui)] ? " opened" : " ready") : "")} disabled={!unitDone || st.chests[unitKey(course, ui)]} onClick={() => openChest(ui)} aria-label={t.chestOpen}>{st.chests[unitKey(course, ui)] ? "📭" : "🎁"}</button><span className="node-label">{unitDone ? t.unitDone : t.chest}</span></div>
+          <div className="node-wrap"><button className={"node test" + (st.tests[unitKey(course, ui)] ? " done" : unitDone ? " open" : " locked")} style={unitDone ? { "--acc": "#8338ec" } : null} disabled={!unitDone} onClick={() => startTest(ui)} aria-label={t.unitTest + " " + (ui + 1)}><span className="node-icon">{st.tests[unitKey(course, ui)] ? "🏆" : unitDone ? "🎯" : "🔒"}</span>{st.tests[unitKey(course, ui)] && <span className="crowns">{st.tests[unitKey(course, ui)]}%</span>}</button><span className="node-label">{t.unitTest} {ui + 1}</span></div></>}
         </div>
       </section>{ms}</React.Fragment>;
     })}
-    {LEVELS_ALL.filter(lv => !course.units.some((u, ui) => CEFR(ui) === lv)).map(lv => <div key={lv} className="milestone future"><div className="ms-badge">{lv}</div><div className="ms-body"><small>{t.milestone}</small><b>{t.msGoal.replace("{lv}", lv)}</b><p>{(CANDO[st.ui] || CANDO.en)[lv]}</p><small className="soon">🔒 {t.msSoon}</small></div></div>)}
+    {LEVELS_ALL.filter(lv => !course.units.some((u, ui) => unitLevel(course, ui) === lv)).map(lv => <div key={lv} className="milestone future"><div className="ms-badge">{lv}</div><div className="ms-body"><small>{t.milestone}</small><b>{t.msGoal.replace("{lv}", lv)}</b><p>{(CANDO[st.ui] || CANDO.en)[lv]}</p><small className="soon">🔒 {t.msSoon}</small></div></div>)}
     {(!st.listJoined || lmsg === t.listOk) && <section className="card list-card"><b>✉️ {t.listTitle}</b><p>{t.listDesc}</p><form className="list-form" onSubmit={async e => { e.preventDefault(); setLmsg("…"); const r = await cloud.joinList((lmail || (user && user.email) || "").trim(), { course: course.id, lang: st.ui, source: "app" }); if (r.ok) { setLmsg(t.listOk); setSt(s => ({ ...s, listJoined: true })); ev("signup", { course: course.id, ui: "list" }); } else setLmsg(t.listFail); }}><input type="email" required aria-label={t.email} placeholder={t.email} value={lmail || (user && user.email) || ""} onChange={e => setLmail(e.target.value)} /><button className="btn primary" type="submit">{t.listBtn}</button></form>{lmsg && <p className="list-msg" role="status">{lmsg}</p>}<small>{t.listNote} <a href="/datenschutz" target="_blank" rel="noopener">{t.listPriv}</a>.</small></section>}
     <p className="muted small-note ms-note">{t.msNote}</p>
     <section className="card practice-card"><div><b>🛠️ {t.practice}</b><p>{t.practiceDesc}</p></div><button className="btn primary" onClick={() => startPractice()}>{st.mistakes.length ? st.mistakes.length : "✓"}</button></section>
@@ -722,7 +792,7 @@ export default function App() {
     {course.units.map((u, ui) => {
       const ls = u.lessons.filter(l => !q || (l.title + " " + l.rule + " " + l.structure + " " + (l.more || "")).toLowerCase().includes(q));
       if (!ls.length) return null;
-      return <section key={ui} className="lib-unit"><h3 className="unit-title">{u.title}<small className="cefr">{CEFR(ui)}</small></h3>
+      return <section key={ui} className="lib-unit"><h3 className="unit-title">{u.title}<small className="cefr">{unitLevel(course, ui)}</small></h3>
         {ls.map(l => { const stt = statusOf(st, l.id, now); const idx = lessons.indexOf(l); const un = isUnlocked(l, idx); return <details key={l.id} className="lib-item"><summary><span className={"dot mb-" + stt} /><b>{l.title}</b><span className="lib-str"><i style={{ width: Math.round(strengthOf(st, l.id, now) * 100) + "%" }} /></span><small className="muted">{t["st_" + stt]}</small></summary>
           <RuleCard lesson={l} course={course} t={t} lang={SPEECH[course.id]} />
           <div className="row">{un && <button className="btn primary small" onClick={() => startLesson(l)}>{st.done[l.id] ? t.reviewAll : t.learnThis}</button>}{mcount[l.id] && <button className="btn small" onClick={() => startPractice([l.id])}>{t.practiceThis} ({mcount[l.id]})</button>}</div>
@@ -745,12 +815,52 @@ export default function App() {
   // ── PROFILE TAB ──
   const profile = <div className="screen">
     <section className="card profile-head"><Mascot mood="happy" size={70} /><div><h2>{st.name || "GrammarFirst"}</h2><p className="muted">{t.level} {level}</p><div className="bar"><i style={{ width: ((st.xp - lvlFrom) / (lvlTo - lvlFrom) * 100) + "%" }} /></div><small className="muted">{st.xp} / {lvlTo} XP</small></div></section>
-    <section className="card account"><h3>☁️ {t.account}</h3>
-      {user ? <><p>{t.loggedAs} <b>{user.email}</b></p><p className="muted small-note">{syncAt ? t.synced + " " + new Date(syncAt).toLocaleTimeString(st.ui === "en" ? "en-GB" : "de-CH", { hour: "2-digit", minute: "2-digit" }) : ""}</p>
-        <div className="row"><button className="btn small primary" onClick={async () => { if (await cloud.push(user.id, st)) { setSyncAt(Date.now()); notify(t.synced, "☁️"); } }}>{t.syncNow}</button><button className="btn small" onClick={async () => { await cloud.logout(); setUser(null); }}>{t.logout}</button><button className="btn small ghost danger-text" onClick={async () => { if (await cloud.wipe(user.id)) notify(t.wiped, "🗑️"); }}>{t.wipe}</button></div></>
-        : <><p className="muted">{t.accountDesc}</p><label className="field"><span>{t.email}</span><input type="email" value={mail} onChange={e => setMail(e.target.value)} placeholder="name@example.com" autoComplete="email" /></label>
-          <button className="btn primary" disabled={!/^\S+@\S+\.\S+$/.test(mail)} onClick={async () => { setMailMsg("…"); const r = await cloud.sendLink(mail.trim()); setMailMsg(r.ok ? t.linkSent : /not_authorized|rate/.test(r.code) || r.status === 429 ? t.linkLimit : t.linkFail); }}>{t.sendLink}</button>
-          {mailMsg && <p className="muted small-note">{mailMsg}</p>}</>}
+    <section className="card account"><h3>☁️ Lingora</h3>
+      {user ? <>
+        <p>{t.loggedAs} <b>{user.email}</b></p>
+        {shared && <p>{shared.summary.total_xp} XP · {shared.summary.streak} {t.streak} · {shared.summary.completed_lessons} {t.lessons}</p>}
+        <p className="muted small-note" role="status">{syncError
+          ? (st.ui === "en" ? "Some progress is waiting to sync. Try again when online." : "Ein Teil des Fortschritts wartet auf die Synchronisierung.")
+          : syncAt ? t.synced + " " + new Date(syncAt).toLocaleTimeString(st.ui, { hour: "2-digit", minute: "2-digit" }) : ""}</p>
+        <div className="row">
+          <button className="btn small primary" onClick={() => syncAccount(uid)}>{t.syncNow}</button>
+          <button className="btn small" onClick={async () => {
+            const { error } = await cloud.logout();
+            setMailMsg(error ? (st.ui === "en" ? "Could not sign out. Try again." : "Abmelden fehlgeschlagen. Versuche es erneut.") : "");
+          }}>{t.logout}</button>
+        </div>
+        {Object.keys(scoresFromDevice(load())).length > 0 && <button className="btn small ghost" disabled={accountBusy} onClick={async () => {
+          setAccountBusy(true);
+          try {
+            const count = await cloud.importScores(uid, scoresFromDevice(load()));
+            setMailMsg(st.ui === "en" ? `Imported ${count} activities.` : `${count} Aktivitäten übernommen.`);
+            await (syncing.current?.promise ?? Promise.resolve());
+            await syncAccount(uid);
+          } catch {
+            setMailMsg(st.ui === "en" ? "Could not import progress. Try again." : "Import fehlgeschlagen. Versuche es erneut.");
+          } finally { setAccountBusy(false); }
+        }}>{st.ui === "en" ? "Import guest progress from this browser" : "Gastfortschritt aus diesem Browser übernehmen"}</button>}
+      </> : <form onSubmit={async e => {
+        e.preventDefault();
+        setAccountBusy(true);
+        setMailMsg("");
+        try {
+          const { error } = await cloud.signIn(mail.trim(), password);
+          if (error) throw error;
+          setPassword("");
+        } catch {
+          setMailMsg(st.ui === "en" ? "Could not sign in. Check your Lingora credentials and connection." : "Anmeldung fehlgeschlagen. Prüfe deine Lingora-Zugangsdaten und Verbindung.");
+        } finally { setAccountBusy(false); }
+      }}>
+        <p className="muted">{st.ui === "en" ? "Use your Lingora account to sync lessons and XP across the app and the web." : "Mit deinem Lingora-Konto synchronisierst du Lektionen und XP zwischen App und Web."}</p>
+        <label className="field"><span>{t.email}</span><input type="email" required value={mail} onChange={e => setMail(e.target.value)} placeholder="name@example.com" autoComplete="email" /></label>
+        <label className="field"><span>{st.ui === "en" ? "Password" : "Passwort"}</span><input type="password" required value={password} onChange={e => setPassword(e.target.value)} autoComplete="current-password" /></label>
+        <div className="row">
+          <button className="btn primary" type="submit" disabled={accountBusy}>{st.ui === "en" ? "Sign in" : "Anmelden"}</button>
+          <a className="btn small ghost" href={workspaceUrl + "register"}>{st.ui === "en" ? "Create a Lingora account" : "Lingora-Konto erstellen"}</a>
+        </div>
+      </form>}
+      {mailMsg && <p className="muted small-note" role="status">{mailMsg}</p>}
     </section>
     <div className="stat-grid">
       <div className="stat"><small>🔥 {t.streak}</small><b>{st.streak}</b></div>
@@ -760,7 +870,7 @@ export default function App() {
     </div>
     <section className="card"><h3>{t.achievements}</h3><div className="ach-grid">{ACH.map(a => { const on = st.unlockedAch[a.id]; const [n, d] = a[st.ui] || a.de; return <div key={a.id} className={"ach" + (on ? " on" : "")} title={d}><span>{a.icon}</span><b>{n}</b><small>{d}</small></div>; })}</div></section>
     <section className="card"><h3>{t.course}</h3>{COURSES.map(c => { const ls = allLessons(c); const n = ls.filter(l => st.done[l.id]).length; return <button key={c.id} className="course-row" onClick={() => { setSt({ ...st, course: c.id }); setTab("learn"); }}><Flag id={c.flag} size={26} /><span>{c.name}</span><div className="bar"><i style={{ width: n / ls.length * 100 + "%" }} /></div><small>{n}/{ls.length}</small></button>; })}</section>
-    <section className="card"><h3>{t.certs}</h3>{["A1", "A2", "B1"].map(lv => { const ls = course.units.filter((u, ui) => CEFR(ui) === lv).flatMap(u => u.lessons); const ok = ls.length && ls.every(l => st.done[l.id]); return <div key={lv} className="weak-row"><span>🎓 {t.cert} {lv} · {course.name}</span>{ok ? <button className="btn small primary" onClick={() => openCert(lv)}>{t.certOpen}</button> : <small className="muted">{ls.filter(l => st.done[l.id]).length}/{ls.length}</small>}</div>; })}<p className="muted small-note">{t.certLocked}</p></section>
+    <section className="card"><h3>{t.certs}</h3>{["A1", "A2", "B1"].map(lv => { const ls = course.units.filter((u, ui) => unitLevel(course, ui) === lv).flatMap(u => u.lessons); const ok = ls.length && ls.every(l => st.done[l.id]); return <div key={lv} className="weak-row"><span>🎓 {t.cert} {lv} · {course.name}</span>{ok ? <button className="btn small primary" onClick={() => openCert(lv)}>{t.certOpen}</button> : <small className="muted">{ls.filter(l => st.done[l.id]).length}/{ls.length}</small>}</div>; })}<p className="muted small-note">{t.certLocked}</p></section>
     <section className="card"><h3>{t.transfer}</h3><p className="muted">{t.transferDesc}</p>
       <div className="row"><button className="btn small" onClick={() => { const c = exportCode(st); setCode(c); try { navigator.clipboard.writeText(c).then(() => notify(t.copied, "📋"), () => { }); } catch (e) { } }}>{t.copy}</button><button className="btn small" onClick={() => { const n = importCode(code); if (n) { setSt(tick({ ...fresh(), ...n })); notify(t.loaded, "✅"); setCode(""); } else notify(t.badCode, "⚠️"); }}>{t.load}</button></div>
       <textarea className="type-in code-box" value={code} onChange={e => setCode(e.target.value)} rows={3} aria-label={t.transfer} />
@@ -789,9 +899,15 @@ export default function App() {
   return (
     <div className={"app theme-" + (st.theme || "auto")}><style>{CSS}</style>
       {hud}
-      <main className="main">{tab === "learn" ? learn : tab === "grammar" ? grammarTab : tab === "league" ? league : tab === "shop" ? shop : profile}</main>
+      <main className="main">
+        {tab === "learn" ? learn : tab === "grammar" ? grammarTab : tab === "league" ? league : tab === "shop" ? shop : tab === "profile" ? profile : null}
+        {openedWorkspace && <section className="lingora-workspace" hidden={tab !== "lingora"} aria-label="Lingora">
+          <iframe src={workspaceUrl} title="Lingora" loading="lazy" allow="microphone 'self'; clipboard-write 'self'" />
+          <a className="linkbtn" href={workspaceUrl} target="_blank" rel="noopener">{st.ui === "en" ? "Open Lingora in a new tab" : "Lingora in einem neuen Tab öffnen"}</a>
+        </section>}
+      </main>
       <nav className="tabs" aria-label="GrammarFirst navigation">
-        {[["learn", "🏠", t.learn], ["grammar", "📘", t.grammar], ["league", "🏅", t.league], ["shop", "💎", t.shop], ["profile", "🙂", t.profile]].map(([k, ic, lb]) => <button key={k} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined} onClick={() => setTab(k)}><span>{ic}</span><small>{lb}</small></button>)}
+        {[["learn", "🏠", t.learn], ["grammar", "📘", t.grammar], ["lingora", "🌐", "Lingora"], ["league", "🏅", t.league], ["shop", "💎", t.shop], ["profile", "🙂", t.profile]].map(([k, ic, lb]) => <button key={k} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined} onClick={() => k === "lingora" ? openWorkspace() : setTab(k)}><span>{ic}</span><small>{lb}</small></button>)}
       </nav>
       {pickCourse && <div className="modal" onClick={() => setPickCourse(false)}><div className="modal-card wide" onClick={e => e.stopPropagation()}><h3>{t.chooseCourse}</h3><div className="course-grid">{COURSES.map(c => { const ls = allLessons(c); const n = ls.filter(l => st.done[l.id]).length; return <button key={c.id} className={"course-pick" + (st.course === c.id ? " on" : "")} onClick={() => { setSt({ ...st, course: c.id }); setPickCourse(false); setTab("learn"); }}><Flag id={c.flag} size={34} /><b>{c.name}</b><small>{n}/{ls.length} {t.lessons}</small></button>; })}</div></div></div>}
       {confirmReset && <div className="modal"><div className="modal-card"><Mascot mood="sad" size={80} /><p>{t.resetConfirm}</p><div className="row"><button className="btn danger" onClick={() => { const f = fresh(); setSt(tick(f)); setConfirmReset(false); setTab("learn"); }}>{t.yes}</button><button className="btn ghost" onClick={() => setConfirmReset(false)}>{t.no}</button></div></div></div>}

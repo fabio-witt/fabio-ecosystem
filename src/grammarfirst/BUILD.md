@@ -13,13 +13,30 @@ Dateien:
 * extend.js: hängt die zusätzlichen Einheiten an die Kurse an
 * lang.js, en_dict.js: Erklärsprache Englisch oder Deutsch für alle Kurse ausser Deutsch und Englisch
 * styles.js: CSS, läuft im Shadow DOM (mit Dunkelmodus)
-* cloud.js: Konto per E-Mail-Link, Synchronisation und anonyme Statistik (Supabase, Projekt grammarfirst, Region Zürich)
+* cloud.js: Lingora-Login und Synchronisierung des Lernfortschritts. Die bestehende Warteliste und anonyme Statistik nutzen weiterhin ihr ursprüngliches Supabase-Projekt.
 * flash.jsx: Wortschatz-Karteikarten mit Leitner-Boxen
 * entry.jsx: Einstieg
 
-Bauen (im Ordner src/grammarfirst):
+Bauen (im Ordner src/grammarfirst, mit Node.js 22 oder neuer):
 
-    npm i react@18.3.1 react-dom@18.3.1 esbuild@0.23.1
-    npx esbuild entry.jsx --bundle --minify --format=iife --jsx=automatic --define:process.env.NODE_ENV='"production"' --target=es2019 --outfile=../../grammarfirst/app.js
+    npm ci
+    npm run build:lingora -- /absoluter/pfad/zu/Lingora
+    npm run build
+
+Der Lingora-Ordner muss seine Expo-Abhängigkeiten installiert haben. Der Build liest
+aus dessen .env nur die öffentliche Supabase-URL und den öffentlichen Schlüssel.
+Er exportiert die Webansicht unter /grammarfirst/lingora/ und aktualisiert den
+Lektionskatalog für den vorhandenen GrammarFirst-Lernpfad. Nach Änderungen an
+GrammarFirst die Version von app.js in index.html und sw.js gemeinsam erhöhen.
+
+Vercel und Netlify liefern die Webansicht auch für direkte Links zu Lektionen,
+Unterhaltungen und zum E-Mail-Callback aus. Für neue Konten muss die exakte
+öffentliche HTTPS-Adresse /grammarfirst/lingora/auth/callback in Supabase Auth
+unter Redirect URLs eingetragen sein. Die Anmeldung mit einem bereits bestätigten
+Lingora-Konto funktioniert unabhängig von dieser Weiterleitung.
+
+Abschlüsse mit gemeinsamen Lektions-IDs verwenden dieselben XP-Regeln wie die App.
+Gastfortschritt aus diesem Browser lässt sich im Profil ausdrücklich importieren.
+Ältere Cloud-Konten und ihr Fortschritt bleiben im ursprünglichen Supabase-Projekt.
 
 Neue Lektion: in courses1.js, courses2.js oder der passenden more_xx.js eine Lektion mit eindeutiger id, rule, structure, examples, tip und ex (Aufgaben mit ch, bu, ty, ma) ergänzen.

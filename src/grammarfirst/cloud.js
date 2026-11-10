@@ -1,69 +1,82 @@
-// GrammarFirst cloud: login per E-Mail-Link, Fortschritt synchronisieren, anonyme Nutzungsstatistik (Supabase, Region Zürich).
+import { createClient } from "@supabase/supabase-js";
+import { url, key } from "./lingora-config.js";
+
+// Keep existing website analytics and the waitlist on their original project.
 const API = "https://bedhhkrzgsewficmdkhq.supabase.co";
 const KEY = "sb_publishable_jKbS6t0cRoTXBc-SCU9uCA_P0KW0vFi";
-const SESS = "grammarfirst-session", ANON = "grammarfirst-anon";
+const ANON = "grammarfirst-anon";
 
-const ls = { get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }, del: k => { try { localStorage.removeItem(k); } catch (e) { } } };
-const online = () => { try { if (/[?&]debug/.test(location.search)) return false; return location.protocol === "https:" || /localhost|127\.0\.0\.1/.test(location.hostname); } catch (e) { return false; } };
+const ls = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { } },
+};
+const online = () => !/[?&]debug/.test(location.search)
+  && (location.protocol === "https:" || ["localhost", "127.0.0.1"].includes(location.hostname));
 
-export const session = () => ls.get(SESS);
+export const client = createClient(url, key, { auth: { detectSessionInUrl: false } });
+export const signIn = (email, password) => client.auth.signInWithPassword({ email, password });
+export const logout = () => client.auth.signOut({ scope: "local" });
+const zone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
+const pendingKey = uid => "grammarfirst-pending." + uid;
 
-// Called on start: the e-mail link returns to /grammarfirst/#access_token=...&refresh_token=...
-export function captureLogin() {
-  try {
-    const h = location.hash || "";
-    if (!/access_token=/.test(h)) return false;
-    const p = new URLSearchParams(h.slice(1));
-    const s = { access_token: p.get("access_token"), refresh_token: p.get("refresh_token"), expires_at: Date.now() + (+p.get("expires_in") || 3600) * 1000 };
-    if (s.access_token && s.refresh_token) ls.set(SESS, s);
-    history.replaceState(null, "", location.pathname + location.search);
-    return !!s.access_token;
-  } catch (e) { return false; }
+async function ownSession(uid) {
+  const { data } = await client.auth.getSession();
+  if (data.session?.user.id !== uid) throw new Error("Please sign in again.");
 }
 
-async function token() {
-  let s = session(); if (!s) return null;
-  if (Date.now() > s.expires_at - 60000) {
-    const r = await fetch(API + "/auth/v1/token?grant_type=refresh_token", { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: JSON.stringify({ refresh_token: s.refresh_token }) });
-    if (!r.ok) { ls.del(SESS); return null; }
-    const j = await r.json(); s = { access_token: j.access_token, refresh_token: j.refresh_token, expires_at: Date.now() + (j.expires_in || 3600) * 1000, email: j.user && j.user.email, id: j.user && j.user.id };
-    ls.set(SESS, s);
+export function queueCompletion(uid, id, score) {
+  const pending = ls.get(pendingKey(uid)) || {};
+  pending[id] = { score: Math.max(score, pending[id]?.score ?? 0), date: Date.now() };
+  ls.set(pendingKey(uid), pending);
+}
+
+export async function importScores(uid, scores) {
+  await ownSession(uid);
+  const { data, error } = await client.rpc("import_learn_progress", { p_scores: scores });
+  if (error) throw error;
+  return data;
+}
+
+async function readProgress(uid) {
+  const rows = [];
+  const size = 500;
+  for (let start = 0; ; start += size) {
+    const { data, error } = await client.from("learn_progress")
+      .select("entry_id,best_score,stars,last_completed_at").eq("user_id", uid)
+      .order("entry_id").range(start, start + size - 1);
+    if (error) throw error;
+    rows.push(...data);
+    if (data.length < size) return rows;
   }
-  return s.access_token;
 }
 
-export async function sendLink(email) {
-  const back = location.origin + "/grammarfirst/";
-  const r = await fetch(API + "/auth/v1/otp?redirect_to=" + encodeURIComponent(back), { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: JSON.stringify({ email, create_user: true }) });
-  if (r.ok) return { ok: true };
-  let code = ""; try { const j = await r.json(); code = j.error_code || j.code || j.msg || ""; } catch (e) { }
-  return { ok: false, code: String(code), status: r.status };
-}
-
-export async function me() {
-  const t = await token(); if (!t) return null;
-  const r = await fetch(API + "/auth/v1/user", { headers: { apikey: KEY, Authorization: "Bearer " + t } });
-  if (!r.ok) return null;
-  const u = await r.json(); const s = session(); if (s) ls.set(SESS, { ...s, email: u.email, id: u.id });
-  return { id: u.id, email: u.email };
-}
-
-export async function pull(uid) {
-  const t = await token(); if (!t) return null;
-  const r = await fetch(API + "/rest/v1/gf_progress?select=state,updated_at&user_id=eq." + uid, { headers: { apikey: KEY, Authorization: "Bearer " + t } });
-  if (!r.ok) return null; const rows = await r.json(); return rows[0] || null;
-}
-
-export async function push(uid, state) {
-  const t = await token(); if (!t) return false;
-  const r = await fetch(API + "/rest/v1/gf_progress?on_conflict=user_id", { method: "POST", headers: { apikey: KEY, Authorization: "Bearer " + t, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates,return=minimal" }, body: JSON.stringify({ user_id: uid, state, updated_at: new Date().toISOString() }) });
-  return r.ok;
-}
-
-export async function wipe(uid) {
-  const t = await token(); if (!t) return false;
-  const r = await fetch(API + "/rest/v1/gf_progress?user_id=eq." + uid, { method: "DELETE", headers: { apikey: KEY, Authorization: "Bearer " + t } });
-  return r.ok;
+export async function syncProgress(uid) {
+  await ownSession(uid);
+  let rows = await readProgress(uid);
+  const pending = ls.get(pendingKey(uid)) || {};
+  const byId = new Map(rows.map(row => [row.entry_id, row]));
+  let changed = false;
+  for (const [id, item] of Object.entries(pending)) {
+    const row = byId.get(id);
+    const saved = row && row.best_score >= item.score && Date.parse(row.last_completed_at) >= item.date - 1000;
+    if (!saved) {
+      await ownSession(uid);
+      const { error } = await client.rpc("complete_lesson", {
+        p_entry_id: id, p_score: item.score, p_time_zone: zone(),
+      });
+      if (error) continue;
+      changed = true;
+    }
+    const latest = ls.get(pendingKey(uid)) || {};
+    if (latest[id]?.date === item.date) {
+      delete latest[id];
+      ls.set(pendingKey(uid), latest);
+    }
+  }
+  if (changed) rows = await readProgress(uid);
+  const { data, error } = await client.rpc("get_learn_summary", { p_time_zone: zone() });
+  if (error) throw error;
+  return { rows, summary: data, pending: Object.keys(ls.get(pendingKey(uid)) || {}).length };
 }
 
 // E-Mail-Liste für neue Lektionen und Kurse
@@ -72,11 +85,6 @@ export async function joinList(email, d = {}) {
     const r = await fetch(API + "/rest/v1/gf_waitlist", { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify({ email: String(email).trim().toLowerCase(), course: d.course || null, lang: d.lang || null, source: d.source || "app" }) });
     return { ok: r.ok || r.status === 409, status: r.status };
   } catch (e) { return { ok: false, status: 0 }; }
-}
-
-export async function logout() {
-  const t = await token(); ls.del(SESS);
-  if (t) { try { await fetch(API + "/auth/v1/logout", { method: "POST", headers: { apikey: KEY, Authorization: "Bearer " + t } }); } catch (e) { } }
 }
 
 // Anonymous usage statistics: a random id, no cookies, no personal data. Can be switched off in the settings.

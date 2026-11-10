@@ -63,7 +63,7 @@ export default `
 .ring-bg{fill:none;stroke:var(--line);stroke-width:6}
 .ring-fg{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .6s}
 .ring span{position:relative;font-weight:800;font-size:12px}
-.tabs{position:sticky;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-top:1px solid var(--line);padding:6px 6px 8px}
+.tabs{position:sticky;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));background:#fff;border-top:1px solid var(--line);padding:6px 6px 8px}
 .tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;border-radius:12px;font-size:12px;font-weight:700;color:var(--muted)}
 .tabs button span{font-size:20px;line-height:1}
 .tabs button.on{color:var(--green);background:#ecfdf5}
@@ -413,4 +413,9 @@ export default `
 .app a{color:inherit}
 @media (max-width:420px){.course-grid{grid-template-columns:repeat(2,1fr)}.app{border-radius:0}.hud-item{font-size:14px}}
 @media (prefers-reduced-motion:reduce){.app *{animation:none!important;transition:none!important}}
+
+.lingora-workspace{padding:0 0 8px;text-align:center}
+.lingora-workspace[hidden]{display:none}
+.lingora-workspace iframe{display:block;width:100%;height:max(420px,calc(100dvh - 10rem));border:1px solid var(--line);border-radius:14px;background:var(--bg);margin:0 0 6px}
+.lingora-workspace .linkbtn{color:var(--ink);padding:8px}
 `;

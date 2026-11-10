@@ -63,5 +63,15 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/grammarfirst/lingora",
+      "destination": "/grammarfirst/lingora/index"
+    },
+    {
+      "source": "/grammarfirst/lingora/:path((?!_expo/|assets/)[^.]*)",
+      "destination": "/grammarfirst/lingora/index"
+    }
   ]
 }
