@@ -68,6 +68,7 @@ try {
   const output = path.resolve(__dirname, "../../grammarfirst/lingora");
   fs.rmSync(output, { recursive: true, force: true });
   fs.cpSync(dist, output, { recursive: true });
+  fs.copyFileSync(path.join(source, "assets/images/apple-touch-icon.png"), path.join(output, "apple-touch-icon.png"));
   patchMobileShell(path.join(output, "index.html"));
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });
@@ -83,11 +84,12 @@ function patchMobileShell(file) {
   if (!html.includes(viewport) || !html.includes(reset)) throw new Error("Expo index.html changed: update the mobile shell patch.");
   html = html.replace(viewport, [
     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />',
-    '<meta name="theme-color" content="#107C5C" />',
+    '<meta name="theme-color" content="#0B0B0D" />',
     '<meta name="apple-mobile-web-app-capable" content="yes" />',
     '<meta name="mobile-web-app-capable" content="yes" />',
     '<meta name="apple-mobile-web-app-status-bar-style" content="default" />',
     '<meta name="apple-mobile-web-app-title" content="Lingora" />',
+    `<link rel="apple-touch-icon" href="${route}/apple-touch-icon.png" />`,
   ].join("\n    "));
   html = html.replace(reset, `
       html, body { height: 100%; height: 100dvh; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
