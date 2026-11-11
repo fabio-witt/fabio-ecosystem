@@ -68,6 +68,32 @@ try {
   const output = path.resolve(__dirname, "../../grammarfirst/lingora");
   fs.rmSync(output, { recursive: true, force: true });
   fs.cpSync(dist, output, { recursive: true });
+  patchMobileShell(path.join(output, "index.html"));
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });
+}
+
+// iPhone Safari: size the app to the visible viewport (dvh) so the browser
+// toolbar never covers the tab bar, respect the home indicator, and stop the
+// automatic zoom when a text field gets focus.
+function patchMobileShell(file) {
+  const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />';
+  const reset = "</style>";
+  let html = read(file);
+  if (!html.includes(viewport) || !html.includes(reset)) throw new Error("Expo index.html changed: update the mobile shell patch.");
+  html = html.replace(viewport, [
+    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />',
+    '<meta name="theme-color" content="#107C5C" />',
+    '<meta name="apple-mobile-web-app-capable" content="yes" />',
+    '<meta name="mobile-web-app-capable" content="yes" />',
+    '<meta name="apple-mobile-web-app-status-bar-style" content="default" />',
+    '<meta name="apple-mobile-web-app-title" content="Lingora" />',
+  ].join("\n    "));
+  html = html.replace(reset, `
+      html, body { height: 100%; height: 100dvh; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
+      #root { height: 100%; height: 100dvh; }
+      * { -webkit-tap-highlight-color: transparent; }
+      @media (max-width: 680px) { input, textarea, select { font-size: 16px !important; } }
+    </style>`);
+  fs.writeFileSync(file, html);
 }

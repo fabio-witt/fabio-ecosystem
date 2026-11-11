@@ -3,7 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#107C5C" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Lingora" />
     <title>Lingora</title>
     <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
     <style id="expo-reset">
@@ -22,6 +27,11 @@
         height: 100%;
         flex: 1;
       }
+    
+      html, body { height: 100%; height: 100dvh; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
+      #root { height: 100%; height: 100dvh; }
+      * { -webkit-tap-highlight-color: transparent; }
+      @media (max-width: 680px) { input, textarea, select { font-size: 16px !important; } }
     </style>
   <link rel="icon" href="/grammarfirst/lingora/favicon.ico"/></head>
 
@@ -30,6 +40,6 @@
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <!-- The root element for your Expo app. -->
     <div id="root"></div>
-  <script src="/grammarfirst/lingora/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" defer></script><script src="/grammarfirst/lingora/_expo/static/js/web/__common-5002431452c8626506dabcdba2558a01.js" defer></script><script src="/grammarfirst/lingora/_expo/static/js/web/entry-797a01856b8eb87e8e603324d87082e8.js" defer></script>
+  <script src="/grammarfirst/lingora/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" defer></script><script src="/grammarfirst/lingora/_expo/static/js/web/__common-3157c8dddb194653936ce49c07ab973b.js" defer></script><script src="/grammarfirst/lingora/_expo/static/js/web/entry-f14ef48ad2bbde0eba18b13fbbf40b5c.js" defer></script>
 </body>
 </html>
