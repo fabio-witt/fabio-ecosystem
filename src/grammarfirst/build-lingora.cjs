@@ -69,6 +69,21 @@ try {
   fs.rmSync(output, { recursive: true, force: true });
   fs.cpSync(dist, output, { recursive: true });
   fs.copyFileSync(path.join(source, "assets/images/apple-touch-icon.png"), path.join(output, "apple-touch-icon.png"));
+  for (const size of [192, 512]) {
+    fs.copyFileSync(path.join(source, `assets/images/pwa-${size}.png`), path.join(output, `pwa-${size}.png`));
+  }
+  // Lets people install Lingora from the browser like an app.
+  fs.writeFileSync(path.join(output, "manifest.webmanifest"), JSON.stringify({
+    name: "Lingora – Learn languages. Connect cultures.",
+    short_name: "Lingora",
+    description: "Learn languages with short lessons, a vocabulary trainer and real language partners.",
+    start_url: `${route}/`,
+    scope: `${route}/`,
+    display: "standalone",
+    background_color: "#0B0B0D",
+    theme_color: "#0B0B0D",
+    icons: [192, 512].map((size) => ({ src: `${route}/pwa-${size}.png`, sizes: `${size}x${size}`, type: "image/png", purpose: "any maskable" })),
+  }, null, 2));
   patchMobileShell(path.join(output, "index.html"));
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });
@@ -90,6 +105,13 @@ function patchMobileShell(file) {
     '<meta name="apple-mobile-web-app-status-bar-style" content="default" />',
     '<meta name="apple-mobile-web-app-title" content="Lingora" />',
     `<link rel="apple-touch-icon" href="${route}/apple-touch-icon.png" />`,
+    `<link rel="manifest" href="${route}/manifest.webmanifest" />`,
+    '<meta name="description" content="Lingora: learn German, English, Spanish, French and more with short lessons, a vocabulary trainer, stories and real language partners. Free to start, no account needed." />',
+    '<meta property="og:title" content="Lingora – Learn languages. Connect cultures." />',
+    '<meta property="og:description" content="Short lessons, vocabulary trainer, stories and real language partners. Free to start." />',
+    '<meta property="og:type" content="website" />',
+    `<meta property="og:image" content="${route}/pwa-512.png" />`,
+    '<meta name="twitter:card" content="summary" />',
   ].join("\n    "));
   html = html.replace(reset, `
       html, body { height: 100%; height: 100dvh; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
@@ -97,5 +119,8 @@ function patchMobileShell(file) {
       * { -webkit-tap-highlight-color: transparent; }
       @media (max-width: 680px) { input, textarea, select { font-size: 16px !important; } }
     </style>`);
+  const title = "<title>Lingora</title>";
+  if (!html.includes(title)) throw new Error("Expo index.html changed: update the title patch.");
+  html = html.replace(title, "<title>Lingora – Learn languages. Connect cultures.</title>");
   fs.writeFileSync(file, html);
 }
