@@ -46,3 +46,13 @@ html[data-brand="sprachschule"] .hero h1 span,html[data-brand="sprachschule"] .h
 /* DACHWERK compact home: competence cards use the full width once the side panel is gone */
 html[data-brand="dachwerk"] .competence-layout{display:block!important}
 html[data-brand="dachwerk"] .competence-cards{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
+
+/* v63: calmer, more editorial look on every page */
+html:not([data-brand="lingora"]):not([data-brand="grammarfirst"]) :is(h1,h2){font-family:ui-serif,"Iowan Old Style","Charter",Georgia,serif!important;font-weight:600!important;letter-spacing:-.015em!important}
+html:not([data-brand="lingora"]):not([data-brand="grammarfirst"]) h1{line-height:1.06!important}
+/* Content is visible immediately – no fade-in while scrolling */
+[data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+/* The navbar "Kontakt" button opens a short form, so bars that cover content are gone */
+.sticky-cta,.floating-cta-v16,.sw56-mobile-cta{display:none!important}
+/* Fewer decorative effects */
+.kicker:before,.kicker:after,.eyebrow:before{display:none!important}

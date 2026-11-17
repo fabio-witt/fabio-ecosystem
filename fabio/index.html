@@ -1,321 +1,58 @@
 <!DOCTYPE html>
-
-<html data-brand="fabio" lang="de"><head>
-<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>Fabio Witt | SAP S/4HANA Supply Chain &amp; Manufacturing Consultant</title>
-<link rel="apple-touch-icon" href="/assets/fabio-witt.jpg"/>
-<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/fabio/">
-<meta content="Persönliche SAP-Beratung für S/4HANA Supply Chain, SAP PP, MM, Public Cloud, Signavio, Cloud ALM und Integrated Toolchain." name="description"/>
-<link href="/styles.css" rel="stylesheet"/><link href="/assets/logo.svg" rel="icon"/>
-<meta content="Fabio Witt | SAP S/4HANA Supply Chain &amp; Manufacturing Consultant" property="og:title"/><meta content="https://fabio-ecosystem-ashy.vercel.app/assets/og-fabio-witt.jpg" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="Persönliche SAP-Beratung für PP, MM, S/4HANA Cloud, Signavio, Cloud ALM und Integrated Toolchain." property="og:description"/><meta content="website" property="og:type"/><meta content="#0b2342" name="theme-color"/><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Fabio Witt","jobTitle":"SAP S/4HANA Supply Chain Consultant","url":"https://www.linkedin.com/in/fabio-witt-8b889117a/","sameAs":["https://www.linkedin.com/in/fabio-witt-8b889117a/"],"knowsAbout":["SAP S/4HANA","SAP PP","SAP Production Planning","SAP MM","SAP Procurement","MRP","DDMRP","SAP Signavio","SAP Cloud ALM","SAP Activate","SAP BTP","SAP LeanIX","Business Process Design","Business Process Management","S/4HANA Public Cloud","S/4HANA Private Cloud","Supply Chain","Manufacturing","3PL"]}</script><style>
-/* ===== Unified DACHWERK Navbar ===== */
-.site-header{
-  position:sticky;top:0;z-index:1000;
-  background:rgba(255,255,255,.97);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(13,35,66,.10);
-}
-.site-header .nav-wrap{
-  width:min(1180px,calc(100% - 36px));
-  margin:auto;height:76px;display:flex;align-items:center;
-  justify-content:space-between;gap:24px;
-}
-.site-header .brand{display:flex;align-items:center;flex:0 0 auto}
-.site-header .brand img{display:block;width:220px;max-height:48px;object-fit:contain}
-.site-header .main-nav{display:flex;align-items:center;gap:22px;font-size:14px;font-weight:700}
-.site-header .main-nav a{color:#17324d;text-decoration:none;white-space:nowrap}
-.site-header .main-nav a:hover{color:#107c5c}
-.site-header .nav-cta{
-  background:#107c5c;color:#fff!important;padding:11px 15px;
-  border-radius:9px;box-shadow:0 8px 20px rgba(20,154,114,.20)
-}
-.site-header .nav-toggle{
-  display:none;background:transparent;border:0;padding:8px;cursor:pointer
-}
-.site-header .nav-toggle span{
-  display:block;width:24px;height:2px;background:#17324d;margin:5px 0
-}
-@media(max-width:980px){
-  .site-header .nav-toggle{display:block}
-  .site-header .main-nav{
-    display:none;position:absolute;left:0;right:0;top:76px;
-    background:#fff;border-bottom:1px solid rgba(13,35,66,.10);
-    box-shadow:0 18px 45px rgba(13,35,66,.10);
-    padding:18px;flex-direction:column;align-items:flex-start;gap:14px
-  }
-  .site-header .main-nav.is-open{display:flex}
-  .site-header .nav-wrap{position:relative}
-}
-@media(max-width:620px){
-  .site-header .brand img{width:185px}
-}
-</style>
-<style>
-.site-header .brand img{width:245px!important;max-height:50px!important;object-fit:contain}
-@media(max-width:620px){.site-header .brand img{width:205px!important}}
-</style>
-<style>
-.flag-icon{display:inline-block!important;width:24px!important;height:16px!important;object-fit:cover!important;vertical-align:-3px!important;border-radius:2px!important;box-shadow:0 0 0 1px rgba(13,35,66,.13)!important;margin:0 3px!important}
-.flag-card-img{display:block!important;width:34px!important;height:23px!important;object-fit:cover!important;border-radius:3px!important;box-shadow:0 0 0 1px rgba(13,35,66,.12)!important}
-.flag-course-icon{padding:0!important;overflow:hidden!important;background:#fff!important}
-.flag-course-icon .flag-card-img{width:48px!important;height:48px!important;object-fit:cover!important;border-radius:12px!important}
-.flag-badge-real{height:42px;display:flex;align-items:center}
-.flag-badge-real .flag-icon{width:48px!important;height:32px!important;border-radius:4px!important;margin:0!important}
-.teacher-language-pills .flag-icon{width:25px!important;height:17px!important}
-.flag-ribbon .flag-icon{width:48px!important;height:32px!important;border-radius:4px!important;margin:0!important}
-.language-blog-hero .flag-icon{width:42px!important;height:28px!important;margin:0 5px!important}
-</style>
-<style>
-/* ===== v29 shared responsive navbar ===== */
-.site-header{position:sticky;top:0;z-index:1200;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(20,55,95,.08)}
-.nav-wrap{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:flex;align-items:center;min-width:0}
-.brand img{display:block;max-height:46px;width:auto;max-width:220px}
-.main-nav{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
-.main-nav>a{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;border-radius:9px;text-decoration:none;white-space:nowrap;font-size:13px;font-weight:800}
-.main-nav>a:hover{background:#f2f6f8}
-.nav-cta{background:#14375f!important;color:#fff!important}
-.nav-toggle{display:none;border:1px solid #dce6ec;background:#fff;border-radius:10px;width:42px;height:42px;align-items:center;justify-content:center;cursor:pointer}
-.nav-toggle span,.nav-toggle:before,.nav-toggle:after{content:"";display:block;width:19px;height:2px;background:#14375f;border-radius:2px;transition:.2s}
-.nav-toggle span{margin:4px 0}
-@media(max-width:980px){
-  .nav-wrap{position:relative}
-  .nav-toggle{display:flex;flex-direction:column;flex:0 0 auto}
-  .main-nav{display:none;position:absolute;left:0;right:0;top:calc(100% + 1px);padding:12px;background:#fff;border:1px solid #dce6ec;border-radius:0 0 16px 16px;box-shadow:0 18px 38px rgba(20,55,95,.12);flex-direction:column;align-items:stretch;gap:5px}
-  .main-nav.is-open{display:flex}
-  .main-nav>a{justify-content:flex-start;width:100%;padding:12px 13px}
-  .nav-cta{justify-content:center!important;margin-top:4px}
-  .brand img{max-width:185px;max-height:42px}
-}
-@media(max-width:520px){
-  .nav-wrap{min-height:64px}
-  .brand img{max-width:155px;max-height:38px}
-}
-</style><style>
-/* ===== v32 contextual CTA + donation ===== */
-.context-cta{margin:36px auto;padding:28px;border-radius:22px;background:linear-gradient(135deg,#0d3158,#247c82);color:#fff;display:flex;justify-content:space-between;gap:22px;align-items:center;box-shadow:0 18px 48px rgba(20,55,95,.12)}
-.context-cta h2{margin:5px 0;font-size:30px;color:#fff}.context-cta p{margin:0;color:#dcebf1;max-width:720px}.context-cta .cta-actions{display:flex;gap:9px;flex-wrap:wrap}
-.context-cta .cta-primary,.donation-box .donate-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:900;border:0;cursor:pointer}
-.context-cta .cta-primary{background:#fff;color:#14375f}.context-cta .cta-secondary{display:inline-flex;align-items:center;padding:12px 16px;border:1px solid #ffffff55;border-radius:10px;color:#fff;text-decoration:none;font-weight:850}
-.donation-box{margin:30px auto 0;padding:22px;border-radius:18px;border:1px solid #dce6ec;background:#fff;display:flex;justify-content:space-between;gap:18px;align-items:center}
-.donation-box h3{margin:0 0 5px;color:#14375f}.donation-box p{margin:0;color:#5c7082;font-size:12px;max-width:720px}
-.donation-box .donate-btn{background:#1776bd;color:#fff}.donation-box small{display:block;margin-top:7px;color:#8a9aa7;font-size:9px}
-@media(max-width:760px){.context-cta,.donation-box{display:block}.context-cta .cta-actions{margin-top:15px}.donation-box .donate-btn{margin-top:14px;width:100%}}
-</style><style>/* v34 final CTA */.page-final-cta{margin:32px auto;padding:0 16px}.page-final-cta__inner{width:min(1180px,100%);margin:auto;padding:26px;border-radius:20px;background:linear-gradient(135deg,#0d3158,#247c82);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:20px}.page-final-cta__inner span{font-size:9px;font-weight:900;letter-spacing:.12em;color:#8ee4d0}.page-final-cta__inner h2{margin:6px 0;color:#fff;font-size:28px}.page-final-cta__inner p{margin:0;color:#dcebf1;max-width:720px}.page-final-cta__inner>a{flex:0 0 auto;padding:12px 15px;border-radius:10px;background:#fff;color:#14375f;text-decoration:none;font-weight:900}@media(max-width:720px){.page-final-cta__inner{display:block}.page-final-cta__inner>a{display:inline-flex;margin-top:14px}}</style><style>
-/* ===== v35 Fabio project form ===== */
-.fabio-project-form{width:min(1180px,calc(100% - 32px));margin:60px auto 28px;padding:28px;border:1px solid #dce6ec;border-radius:22px;background:#fff;box-shadow:0 18px 45px rgba(20,55,95,.07)}
-.fabio-form-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:35px;align-items:start}.fabio-project-form span{font-size:10px;font-weight:900;letter-spacing:.12em;color:#207a6f}.fabio-project-form h2{font-size:34px;color:#14375f;margin:8px 0}.fabio-project-form p{color:#5c7082;line-height:1.6}
-.fabio-project-form form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fabio-project-form label{display:grid;gap:6px;color:#526b80;font-size:11px;font-weight:800}.fabio-project-form label:last-of-type{grid-column:1/-1}.fabio-project-form input,.fabio-project-form textarea{padding:11px;border:1px solid #bdced8;border-radius:9px;font:inherit}.fabio-project-form button{grid-column:1/-1;padding:12px;border:0;border-radius:9px;background:#14375f;color:#fff;font-weight:900;cursor:pointer}
-@media(max-width:800px){.fabio-form-grid{grid-template-columns:1fr}.fabio-project-form form{grid-template-columns:1fr}.fabio-project-form label:last-of-type,.fabio-project-form button{grid-column:auto}}
-</style><style>.webseiten-showcase{padding:60px 16px;background:#f4f8fb}.webseiten-showcase-inner{width:min(1180px,100%);margin:auto}.webseiten-showcase span{font-size:10px;font-weight:900;letter-spacing:.12em;color:#207a6f}.webseiten-showcase h2{font-size:34px;color:#14375f;margin:7px 0}.webseiten-showcase p{color:#5c7082;max-width:760px}.webseiten-showcase img{display:block;width:100%;margin-top:22px;border-radius:20px;box-shadow:0 20px 55px #14375f22}</style><style>/* v37 shared quality */html{scroll-behavior:smooth}body{overflow-x:hidden}img,svg,video{max-width:100%}input,select,textarea,button{box-sizing:border-box}@media(max-width:980px){.main-nav{max-height:calc(100vh - 70px);overflow:auto}}</style><style>/* v40 CV download */.cv-download{padding:54px 0;background:#f4f8fb}.cv-download-card{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:28px;border:1px solid #dce6ec;border-radius:20px;background:#fff;box-shadow:0 14px 40px rgba(20,55,95,.07)}.cv-download-card h2{margin:6px 0;color:#14375f}.cv-download-card p{margin:0;color:#5c7082;max-width:680px}.cv-download-actions{display:flex;gap:10px;flex-wrap:wrap;flex:0 0 auto}@media(max-width:760px){.cv-download-card{display:block}.cv-download-actions{margin-top:18px}}</style>
-<link href="/shared-assets/v51-polish.css" rel="stylesheet"/>
-<style id="v53-monetization-css">
-.v53-money{max-width:1180px;margin:42px auto;padding:0 22px}.v53-money__head{max-width:780px;margin-bottom:20px}.v53-money__kicker{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#26796f}.v53-money h2{margin:6px 0 8px;font-size:clamp(28px,4vw,44px);line-height:1.05;color:#14375f}.v53-money p{color:#5b7083;line-height:1.65}.v53-money__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.v53-money__card{border:1px solid #dce6ec;border-radius:20px;padding:22px;background:#fff;box-shadow:0 14px 34px rgba(20,55,95,.08);display:flex;flex-direction:column}.v53-money__card.featured{border:2px solid #26796f;transform:translateY(-3px)}.v53-money__tag{font-size:11px;font-weight:900;color:#26796f;text-transform:uppercase;letter-spacing:.08em}.v53-money__card h3{font-size:22px;margin:8px 0;color:#14375f}.v53-money__price{font-size:27px;font-weight:950;color:#0d3158;margin:4px 0 10px}.v53-money__card ul{padding-left:18px;color:#526b7f;line-height:1.6;flex:1}.v53-money__btn{display:inline-flex;justify-content:center;align-items:center;padding:12px 15px;border-radius:11px;background:#14375f;color:#fff!important;text-decoration:none;font-weight:900;margin-top:12px}.v53-money__btn.alt{background:#26796f}.v53-money__note{font-size:11px;color:#8393a1;margin-top:14px}.v53-money__strip{max-width:1180px;margin:26px auto;padding:18px 22px;border-radius:18px;background:#0d3158;color:#fff;display:flex;justify-content:space-between;gap:20px;align-items:center}.v53-money__strip strong{font-size:20px}.v53-money__strip span{color:#dcebf1}.v53-money__strip a{white-space:nowrap;background:#fff;color:#14375f;padding:11px 15px;border-radius:10px;text-decoration:none;font-weight:900}@media(max-width:850px){.v53-money__grid{grid-template-columns:1fr}.v53-money__card.featured{transform:none}.v53-money__strip{margin-left:16px;margin-right:16px;display:block}.v53-money__strip a{display:flex;margin-top:14px;justify-content:center}}
-</style>
-<link data-fw-i18n="v55" href="/shared-assets/i18n-v55.css" rel="stylesheet"/>
-<link href="/shared-assets/mobile-hardening-v57.css" rel="stylesheet"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Fabio Witt SAP Consulting", "url": "https://fabio-ecosystem-ashy.vercel.app/fabio/", "image": "https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg", "description": "SAP S/4HANA Beratung für Supply Chain und Manufacturing: MM, Source-to-Pay, Inventory Management, PP und ddMRP.", "areaServed": ["CH", "DE", "AT"], "address": {"@type": "PostalAddress", "addressLocality": "Zürich", "addressCountry": "CH"}, "founder": {"@type": "Person", "name": "Fabio Witt", "jobTitle": "SAP S/4HANA Supply Chain Consultant", "sameAs": ["https://www.linkedin.com/in/fabio-witt-8b889117a"]}, "knowsAbout": ["SAP MM", "SAP PP", "ddMRP", "SAP S/4HANA Public Cloud", "SAP Signavio", "SAP Cloud ALM", "Source-to-Pay"], "knowsLanguage": ["de", "en", "fr", "es", "it", "ru", "pt"]}</script>
-<link href="/shared-assets/nav-v62.css" rel="stylesheet" id="fw50-nav-css"/>
+<html data-brand="fabio" lang="de"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Fabio Witt · SAP S/4HANA Supply Chain Consultant, Zürich</title><meta name="description" content="Fabio Witt, SAP S/4HANA Supply Chain Consultant in Zürich: PP, MM, 3PL, Signavio und Cloud ALM. Projektpraxis, Werdegang, sieben Sprachen und direkter Kontakt."/>
+<link rel="canonical" href="https://fabio-ecosystem-ashy.vercel.app/fabio/"/>
+<meta property="og:title" content="Fabio Witt · SAP S/4HANA Supply Chain Consultant, Zürich"/><meta property="og:description" content="Fabio Witt, SAP S/4HANA Supply Chain Consultant in Zürich: PP, MM, 3PL, Signavio und Cloud ALM. Projektpraxis, Werdegang, sieben Sprachen und direkter Kontakt."/><meta property="og:type" content="website"/><meta property="og:url" content="https://fabio-ecosystem-ashy.vercel.app/fabio/"/><meta property="og:image" content="https://fabio-ecosystem-ashy.vercel.app/assets/og-fabio-witt.jpg"/><meta name="twitter:card" content="summary_large_image"/>
+<meta name="theme-color" content="#fbfaf7"/><link rel="icon" href="/assets/fw-mark.svg" type="image/svg+xml"/><link rel="apple-touch-icon" href="/assets/fabio-witt.jpg"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Fabio Witt", "jobTitle": "SAP S/4HANA Supply Chain Consultant", "url": "https://fabio-ecosystem-ashy.vercel.app/fabio/", "image": "https://fabio-ecosystem-ashy.vercel.app/assets/fabio-witt.jpg", "sameAs": ["https://www.linkedin.com/in/fabio-witt-8b889117a/"], "address": {"@type": "PostalAddress", "addressLocality": "Zürich", "addressCountry": "CH"}, "knowsLanguage": ["de", "en", "fr", "es", "it", "ru", "pt"]}</script>
+<link href="/shared-assets/nav-v63.css" rel="stylesheet" id="fw50-nav-css"/>
 <link href="/shared-assets/fw-design-v61.css" rel="stylesheet"/>
-<style id="fw-split">
-.fw-subhero{background:var(--fw-deep,#0f2f52);color:#fff;padding:60px 0 48px}
-.fw-subhero .fw-sw{width:min(1180px,calc(100% - 32px));margin:auto}
-.fw-crumb{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:14px}.fw-crumb a{color:rgba(255,255,255,.85);text-decoration:none}
-.fw-subhero h1{font-size:clamp(32px,4.4vw,52px);line-height:1.06;margin:0 0 12px;letter-spacing:-.03em;color:#fff}
-.fw-subhero p{font-size:18px;color:rgba(255,255,255,.78);max-width:720px;margin:0}
-.fw-toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-.fw-toc a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);color:#fff;text-decoration:none;font-size:14px;font-weight:700}
-.fw-toc a:hover{background:rgba(255,255,255,.1)}
-.fw-more{padding:68px 0;background:var(--fw-soft,#f5f7f9)}
-.fw-more .fw-sw{width:min(1180px,calc(100% - 32px));margin:auto}
-.fw-more h2{font-size:clamp(26px,3vw,36px);margin:0 0 8px;letter-spacing:-.025em}
-.fw-more .fw-sw>p{color:var(--fw-muted,#64748b);margin:0 0 26px;font-size:17px}
-.fw-more__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.fw-more__grid a{display:flex;flex-direction:column;gap:6px;padding:22px;border-radius:18px;background:#fff;border:1px solid var(--fw-line,#e3e8ee);text-decoration:none;color:var(--fw-ink,#14212e);transition:transform .15s,box-shadow .15s,border-color .15s}
-.fw-more__grid a:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(10,32,52,.1);border-color:var(--fw-accent)}
-.fw-more__grid b{font-size:18px}.fw-more__grid span{color:var(--fw-muted,#64748b);font-size:15px}.fw-more__grid em{margin-top:auto;padding-top:8px;font-style:normal;font-weight:800;color:var(--fw-accent)}
-@media(max-width:900px){.fw-more__grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.fw-more__grid{grid-template-columns:1fr}.fw-subhero{padding:44px 0 36px}}
-</style>
-<script id="fw-hash-redirect">(function(){var m={"leistungen": "erfahrung", "projekte": "erfahrung", "skills": "erfahrung", "zertifizierungen": "erfahrung", "vorgehen": "zusammenarbeit", "best-practices": "zusammenarbeit", "einsatzgebiet": "zusammenarbeit", "angebote": "zusammenarbeit", "blog": "zusammenarbeit", "projekte-online": "zusammenarbeit"};function go(){var h=location.hash.slice(1);if(m[h])location.replace("/fabio/"+m[h]+"#"+h)}go();addEventListener("hashchange",go)})();</script>
-</head><body><a class="fw-skip" href="#main">Zum Inhalt springen</a><header class="fw50-nav" data-fw50-nav=""><div class="fw50-nav__inner">
-<a class="fw50-brand" href="/" translate="no"><span aria-hidden="true" class="fw50-brand__mark">FW</span><span class="fw50-brand__name"><b>Fabio Witt</b><small>Digital Ecosystem</small></span></a>
-<nav aria-label="Hauptnavigation" class="fw50-menu"><div class="fw50-dd"><button type="button" aria-expanded="false" aria-controls="fw50-dd-dachwerk" translate="no">DACHWERK<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel fw50-dd__panel--wide" id="fw50-dd-dachwerk"><a class="fw50-item" href="/dachwerk/"><b>Übersicht</b><small>SAP-Beratung für Produktion & Supply Chain</small></a><a class="fw50-item" href="/dachwerk/#pakete"><b>Leistungen &amp; Pakete</b><small>Readiness Check, Delivery, Toolchain</small></a><a class="fw50-item" href="/dachwerk/vorgehen"><b>Vorgehen &amp; Methodik</b><small>Phasen, Quality Gates, Toolchain</small></a><a class="fw50-item" href="/dachwerk/team"><b>Team &amp; Delivery</b><small>Wer arbeitet in Ihrem Projekt</small></a><a class="fw50-item" href="/dachwerk/use-cases"><b>Use Cases</b><small>Beispiele für SAP-Projekte</small></a><a class="fw50-item" href="/dachwerk/faq"><b>Häufige Fragen</b><small>Ablauf, Kosten, Readiness-Check</small></a><a class="fw50-item" href="/dachwerk/blog.html"><b>SAP-Blog</b><small>PP/DS, PEO, MM, RISE, Signavio</small></a><a class="fw50-item" href="/dachwerk/projekt-check"><b>SAP-Projekt-Check</b><small>Erste Einschätzung in wenigen Fragen</small></a></div></div><div class="fw50-dd"><button type="button" aria-expanded="false" aria-controls="fw50-dd-sprachschule" translate="no">SPRACHWERK<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-sprachschule"><a class="fw50-item" href="/sprachschule/"><b>Übersicht</b><small>Persönliches Sprachcoaching</small></a><a class="fw50-item" href="/sprachschule/#kurse"><b>Kurse &amp; Formate</b><small>1:1, Gruppen, online oder in Zürich</small></a><a class="fw50-item" href="/sprachschule/#firmen"><b>Firmenkurse</b><small>Business-Training für Teams</small></a><a class="fw50-item" href="/sprachschule/#preise"><b>Preise</b><small>Pakete und Stundensätze</small></a><a class="fw50-item" href="/sprachschule/blog.html"><b>Sprachblog</b><small>Tipps und Sprachporträts</small></a><a class="fw50-item" href="/sprachschule/#kursanfrage"><b>Kurs anfragen</b><small>Unverbindlich und persönlich</small></a></div></div><div class="fw50-dd fw50-dd--lingora"><button type="button" aria-expanded="false" aria-controls="fw50-dd-lingora" translate="no">Lingora<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-lingora"><a class="fw50-item" href="/lingora/"><b>Über Lingora</b><small>12 Kurse, A1 bis C2, gratis</small></a><a class="fw50-item" href="/lingora/zuerichdeutsch"><b>Zürichdeutsch für Expats</b><small>Endlich mitreden in Zürich</small></a><a class="fw50-item" href="/lingora/bali"><b>Indonesisch für Bali</b><small>Für digitale Nomaden</small></a><a class="fw50-item" href="/grammarfirst/lingora/"><b>App öffnen</b><small>Direkt im Browser lernen</small></a></div></div><div class="fw50-dd"><button type="button" aria-expanded="false" aria-controls="fw50-dd-grammarfirst" translate="no">GrammarFirst<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-grammarfirst"><a class="fw50-item" href="/grammarfirst/"><b>Grammatik-Trainer</b><small>Regel, Beispiele, Übungen</small></a><a class="fw50-item" href="/grammarfirst/swiss-german/"><b>Swiss German Guides</b><small>30 Grammatik-Guides auf Englisch</small></a></div></div><a class="fw50-top" href="/digital" translate="no">Digital</a><div class="fw50-dd is-current"><button type="button" aria-expanded="false" aria-controls="fw50-dd-fabio" translate="no">Über mich<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-fabio"><a class="fw50-item" href="/fabio/" aria-current="page"><b>Profil</b><small>Erfahrung, Ausbildung, Sprachen</small></a><a class="fw50-item" href="/downloads/Fabio-Witt-CV.pdf"><b>Lebenslauf</b><small>PDF herunterladen</small></a><a class="fw50-item" href="/fabio/#fabio-anfrage"><b>Kontakt</b><small>Direkt eine Anfrage senden</small></a></div></div><a class="fw50-cta" href="/fabio/#fabio-anfrage">Kontakt</a></nav>
+<link href="/shared-assets/fw-page-v63.css" rel="stylesheet"/>
+<link href="/shared-assets/i18n-v55.css" rel="stylesheet"/>
+<style>body{margin:0;background:#fbfaf7}.fw-skip{position:absolute;left:-999px}.fw-skip:focus{left:12px;top:12px;z-index:9999;background:#fff;padding:8px 12px;border-radius:8px}</style>
+</head><body><a class="fw-skip" href="#main">Zum Inhalt springen</a>
+<header class="fw50-nav" data-fw50-nav=""><div class="fw50-nav__inner">
+<a class="fw50-brand" href="/" translate="no" aria-label="Fabio Witt – Startseite"><span aria-hidden="true" class="fw50-brand__mark"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><defs><linearGradient id="fwg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16395f"/><stop offset="1" stop-color="#0b2240"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#fwg)"/><path d="M11 31V13h10M11 21.5h7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 13l3.4 18L28 20l3.6 11L35 13" fill="none" stroke="#6fd6c4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="fw50-brand__name"><b>Fabio Witt</b><small>Beratung · Sprachen · Digital</small></span></a>
+<nav aria-label="Hauptnavigation" class="fw50-menu"><div class="fw50-dd"><a class="fw50-dd__link" href="/dachwerk/" translate="no">DACHWERK</a><button type="button" class="fw50-dd__toggle" aria-expanded="false" aria-controls="fw50-dd-dachwerk" aria-label="DACHWERK Menü"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel fw50-dd__panel--wide" id="fw50-dd-dachwerk"><a class="fw50-item" href="/dachwerk/"><b>Übersicht</b><small>SAP-Beratung für Produktion & Supply Chain</small></a><a class="fw50-item" href="/dachwerk/#pakete"><b>Leistungen &amp; Pakete</b><small>Readiness Check, Delivery, Toolchain</small></a><a class="fw50-item" href="/dachwerk/vorgehen"><b>Vorgehen &amp; Methodik</b><small>Phasen, Quality Gates, Toolchain</small></a><a class="fw50-item" href="/dachwerk/team"><b>Team &amp; Delivery</b><small>Wer arbeitet in Ihrem Projekt</small></a><a class="fw50-item" href="/dachwerk/use-cases"><b>Use Cases</b><small>Beispiele für SAP-Projekte</small></a><a class="fw50-item" href="/dachwerk/faq"><b>Häufige Fragen</b><small>Ablauf, Kosten, Readiness-Check</small></a><a class="fw50-item" href="/dachwerk/blog.html"><b>SAP-Blog</b><small>PP/DS, PEO, MM, RISE, Signavio</small></a><a class="fw50-item" href="/dachwerk/projekt-check"><b>SAP-Projekt-Check</b><small>Erste Einschätzung in wenigen Fragen</small></a></div></div><div class="fw50-dd"><a class="fw50-dd__link" href="/sprachschule/" translate="no">SPRACHWERK</a><button type="button" class="fw50-dd__toggle" aria-expanded="false" aria-controls="fw50-dd-sprachschule" aria-label="SPRACHWERK Menü"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-sprachschule"><a class="fw50-item" href="/sprachschule/"><b>Übersicht</b><small>Persönliches Sprachcoaching</small></a><a class="fw50-item" href="/sprachschule/#kurse"><b>Kurse &amp; Formate</b><small>1:1, Gruppen, online oder in Zürich</small></a><a class="fw50-item" href="/sprachschule/#firmen"><b>Firmenkurse</b><small>Business-Training für Teams</small></a><a class="fw50-item" href="/sprachschule/#preise"><b>Preise</b><small>Pakete und Stundensätze</small></a><a class="fw50-item" href="/sprachschule/blog.html"><b>Sprachblog</b><small>Tipps und Sprachporträts</small></a><a class="fw50-item" href="/sprachschule/#kursanfrage"><b>Kurs anfragen</b><small>Unverbindlich und persönlich</small></a></div></div><div class="fw50-dd fw50-dd--lingora"><a class="fw50-dd__link" href="/lingora/" translate="no">Lingora</a><button type="button" class="fw50-dd__toggle" aria-expanded="false" aria-controls="fw50-dd-lingora" aria-label="Lingora Menü"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-lingora"><a class="fw50-item" href="/lingora/"><b>Über Lingora</b><small>12 Kurse, A1 bis C2, gratis</small></a><a class="fw50-item" href="/lingora/zuerichdeutsch"><b>Zürichdeutsch für Expats</b><small>Endlich mitreden in Zürich</small></a><a class="fw50-item" href="/lingora/bali"><b>Indonesisch für Bali</b><small>Für digitale Nomaden</small></a><a class="fw50-item" href="/grammarfirst/lingora/"><b>App öffnen</b><small>Direkt im Browser lernen</small></a></div></div><div class="fw50-dd"><a class="fw50-dd__link" href="/grammarfirst/" translate="no">GrammarFirst</a><button type="button" class="fw50-dd__toggle" aria-expanded="false" aria-controls="fw50-dd-grammarfirst" aria-label="GrammarFirst Menü"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-grammarfirst"><a class="fw50-item" href="/grammarfirst/"><b>Grammatik-Trainer</b><small>Regel, Beispiele, Übungen</small></a><a class="fw50-item" href="/grammarfirst/swiss-german/"><b>Swiss German Guides</b><small>30 Grammatik-Guides auf Englisch</small></a></div></div><a class="fw50-top" href="/digital" translate="no">Digital</a><div class="fw50-dd is-current"><a class="fw50-dd__link" href="/fabio/" aria-current="page" translate="no">Über mich</a><button type="button" class="fw50-dd__toggle" aria-expanded="false" aria-controls="fw50-dd-fabio" aria-label="Über mich Menü"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fw50-dd__panel" id="fw50-dd-fabio"><a class="fw50-item" href="/fabio/" aria-current="page"><b>Profil</b><small>Erfahrung, Ausbildung, Sprachen</small></a><a class="fw50-item" href="/downloads/Fabio-Witt-CV.pdf"><b>Lebenslauf</b><small>PDF herunterladen</small></a><a class="fw50-item" href="/fabio/#fabio-anfrage"><b>Kontakt</b><small>Direkt eine Anfrage senden</small></a></div></div><a class="fw50-cta" href="/fabio/#fabio-anfrage" data-contact>Kontakt</a></nav>
 <button type="button" class="fw50-burger" aria-expanded="false" aria-controls="fw50-sheet" aria-label="Menü öffnen" data-open="Menü öffnen" data-close="Menü schliessen"><span></span></button>
-<nav class="fw50-sheet fw50-mobile__panel" id="fw50-sheet" aria-label="Mobile Navigation"><details class="fw50-acc"><summary><span><b translate="no">DACHWERK</b><small>SAP-Beratung</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/dachwerk/"><b>Übersicht</b><small>SAP-Beratung für Produktion & Supply Chain</small></a><a class="fw50-item" href="/dachwerk/#pakete"><b>Leistungen &amp; Pakete</b><small>Readiness Check, Delivery, Toolchain</small></a><a class="fw50-item" href="/dachwerk/vorgehen"><b>Vorgehen &amp; Methodik</b><small>Phasen, Quality Gates, Toolchain</small></a><a class="fw50-item" href="/dachwerk/team"><b>Team &amp; Delivery</b><small>Wer arbeitet in Ihrem Projekt</small></a><a class="fw50-item" href="/dachwerk/use-cases"><b>Use Cases</b><small>Beispiele für SAP-Projekte</small></a><a class="fw50-item" href="/dachwerk/faq"><b>Häufige Fragen</b><small>Ablauf, Kosten, Readiness-Check</small></a><a class="fw50-item" href="/dachwerk/blog.html"><b>SAP-Blog</b><small>PP/DS, PEO, MM, RISE, Signavio</small></a><a class="fw50-item" href="/dachwerk/projekt-check"><b>SAP-Projekt-Check</b><small>Erste Einschätzung in wenigen Fragen</small></a></div></details><details class="fw50-acc"><summary><span><b translate="no">SPRACHWERK</b><small>Sprachunterricht</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/sprachschule/"><b>Übersicht</b><small>Persönliches Sprachcoaching</small></a><a class="fw50-item" href="/sprachschule/#kurse"><b>Kurse &amp; Formate</b><small>1:1, Gruppen, online oder in Zürich</small></a><a class="fw50-item" href="/sprachschule/#firmen"><b>Firmenkurse</b><small>Business-Training für Teams</small></a><a class="fw50-item" href="/sprachschule/#preise"><b>Preise</b><small>Pakete und Stundensätze</small></a><a class="fw50-item" href="/sprachschule/blog.html"><b>Sprachblog</b><small>Tipps und Sprachporträts</small></a><a class="fw50-item" href="/sprachschule/#kursanfrage"><b>Kurs anfragen</b><small>Unverbindlich und persönlich</small></a></div></details><details class="fw50-acc fw50-acc--lingora"><summary><span><b translate="no">Lingora</b><small>Gratis Sprach-App</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/lingora/"><b>Über Lingora</b><small>12 Kurse, A1 bis C2, gratis</small></a><a class="fw50-item" href="/lingora/zuerichdeutsch"><b>Zürichdeutsch für Expats</b><small>Endlich mitreden in Zürich</small></a><a class="fw50-item" href="/lingora/bali"><b>Indonesisch für Bali</b><small>Für digitale Nomaden</small></a><a class="fw50-item" href="/grammarfirst/lingora/"><b>App öffnen</b><small>Direkt im Browser lernen</small></a></div></details><details class="fw50-acc"><summary><span><b translate="no">GrammarFirst</b><small>Grammatik verstehen</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/grammarfirst/"><b>Grammatik-Trainer</b><small>Regel, Beispiele, Übungen</small></a><a class="fw50-item" href="/grammarfirst/swiss-german/"><b>Swiss German Guides</b><small>30 Grammatik-Guides auf Englisch</small></a></div></details><a class="fw50-sheet__link" href="/digital">Digital</a><details class="fw50-acc is-current" open><summary><span><b translate="no">Über mich</b><small>Profil &amp; Kontakt</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/fabio/" aria-current="page"><b>Profil</b><small>Erfahrung, Ausbildung, Sprachen</small></a><a class="fw50-item" href="/downloads/Fabio-Witt-CV.pdf"><b>Lebenslauf</b><small>PDF herunterladen</small></a><a class="fw50-item" href="/fabio/#fabio-anfrage"><b>Kontakt</b><small>Direkt eine Anfrage senden</small></a></div></details><a class="fw50-cta" href="/fabio/#fabio-anfrage">Kontakt</a></nav>
+<nav class="fw50-sheet fw50-mobile__panel" id="fw50-sheet" aria-label="Mobile Navigation"><details class="fw50-acc"><summary><span><b translate="no"><a href="/dachwerk/">DACHWERK</a></b><small>SAP-Beratung</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/dachwerk/"><b>Übersicht</b><small>SAP-Beratung für Produktion & Supply Chain</small></a><a class="fw50-item" href="/dachwerk/#pakete"><b>Leistungen &amp; Pakete</b><small>Readiness Check, Delivery, Toolchain</small></a><a class="fw50-item" href="/dachwerk/vorgehen"><b>Vorgehen &amp; Methodik</b><small>Phasen, Quality Gates, Toolchain</small></a><a class="fw50-item" href="/dachwerk/team"><b>Team &amp; Delivery</b><small>Wer arbeitet in Ihrem Projekt</small></a><a class="fw50-item" href="/dachwerk/use-cases"><b>Use Cases</b><small>Beispiele für SAP-Projekte</small></a><a class="fw50-item" href="/dachwerk/faq"><b>Häufige Fragen</b><small>Ablauf, Kosten, Readiness-Check</small></a><a class="fw50-item" href="/dachwerk/blog.html"><b>SAP-Blog</b><small>PP/DS, PEO, MM, RISE, Signavio</small></a><a class="fw50-item" href="/dachwerk/projekt-check"><b>SAP-Projekt-Check</b><small>Erste Einschätzung in wenigen Fragen</small></a></div></details><details class="fw50-acc"><summary><span><b translate="no"><a href="/sprachschule/">SPRACHWERK</a></b><small>Sprachunterricht</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/sprachschule/"><b>Übersicht</b><small>Persönliches Sprachcoaching</small></a><a class="fw50-item" href="/sprachschule/#kurse"><b>Kurse &amp; Formate</b><small>1:1, Gruppen, online oder in Zürich</small></a><a class="fw50-item" href="/sprachschule/#firmen"><b>Firmenkurse</b><small>Business-Training für Teams</small></a><a class="fw50-item" href="/sprachschule/#preise"><b>Preise</b><small>Pakete und Stundensätze</small></a><a class="fw50-item" href="/sprachschule/blog.html"><b>Sprachblog</b><small>Tipps und Sprachporträts</small></a><a class="fw50-item" href="/sprachschule/#kursanfrage"><b>Kurs anfragen</b><small>Unverbindlich und persönlich</small></a></div></details><details class="fw50-acc fw50-acc--lingora"><summary><span><b translate="no"><a href="/lingora/">Lingora</a></b><small>Gratis Sprach-App</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/lingora/"><b>Über Lingora</b><small>12 Kurse, A1 bis C2, gratis</small></a><a class="fw50-item" href="/lingora/zuerichdeutsch"><b>Zürichdeutsch für Expats</b><small>Endlich mitreden in Zürich</small></a><a class="fw50-item" href="/lingora/bali"><b>Indonesisch für Bali</b><small>Für digitale Nomaden</small></a><a class="fw50-item" href="/grammarfirst/lingora/"><b>App öffnen</b><small>Direkt im Browser lernen</small></a></div></details><details class="fw50-acc"><summary><span><b translate="no"><a href="/grammarfirst/">GrammarFirst</a></b><small>Grammatik verstehen</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/grammarfirst/"><b>Grammatik-Trainer</b><small>Regel, Beispiele, Übungen</small></a><a class="fw50-item" href="/grammarfirst/swiss-german/"><b>Swiss German Guides</b><small>30 Grammatik-Guides auf Englisch</small></a></div></details><a class="fw50-sheet__link" href="/digital">Digital</a><details class="fw50-acc is-current" open><summary><span><b translate="no"><a href="/fabio/">Über mich</a></b><small>Profil &amp; Kontakt</small></span></summary><div class="fw50-acc__links"><a class="fw50-item" href="/fabio/" aria-current="page"><b>Profil</b><small>Erfahrung, Ausbildung, Sprachen</small></a><a class="fw50-item" href="/downloads/Fabio-Witt-CV.pdf"><b>Lebenslauf</b><small>PDF herunterladen</small></a><a class="fw50-item" href="/fabio/#fabio-anfrage"><b>Kontakt</b><small>Direkt eine Anfrage senden</small></a></div></details><a class="fw50-cta" href="/fabio/#fabio-anfrage" data-contact>Kontakt</a></nav>
 </div></header>
-<main id="main">
-<section class="hero"><div class="container hero-grid">
-<div>
-<span class="eyebrow"><img width="150" height="150" loading="lazy" decoding="async" alt="Schweiz" class="flag-icon" src="/shared-assets/flags/ch.svg"/> SAP Beratung aus Zürich · DACH &amp; international</span>
-<h1>SAP S/4HANA <span>Supply Chain Consultant.</span></h1>
-<p>Ich unterstütze Unternehmen bei SAP S/4HANA Transformationen in Supply Chain und Manufacturing, von Fit-to-Standard und Prozessdesign bis Testing, Cutover und stabiler Übergabe.</p>
-<div class="hero-proofline">
-<span><img width="150" height="150" loading="lazy" decoding="async" alt="Schweiz" class="flag-icon" src="/shared-assets/flags/ch.svg"/> Zürich</span>
-<span><img width="250" height="150" loading="lazy" decoding="async" alt="Deutschland" class="flag-icon" src="/shared-assets/flags/de.svg"/> DACH-Projekte</span>
-<span>☁️ S/4HANA Cloud</span>
-<span>⚙️ PP &amp; MM</span>
-<span>🧭 Signavio &amp; Cloud ALM</span>
-</div>
-<div class="hero-actions"><a class="btn btn-primary" href="#kontakt">Projekt in 30 Minuten besprechen</a><a class="btn btn-secondary" href="/fabio/erfahrung#leistungen">Kompetenzen ansehen</a><a class="btn btn-secondary" href="https://www.linkedin.com/in/fabio-witt-8b889117a/" rel="noopener" target="_blank">LinkedIn-Profil ↗</a><a class="btn btn-secondary" href="/downloads/Fabio-Witt-CV.pdf" rel="noopener" target="_blank">CV herunterladen ↓</a></div>
-<div class="availability-pill"><span class="availability-dot"></span><strong>Projektbasierte Mandate</strong><span>· DACH / Remote · nach Vereinbarung</span></div></div>
-<article class="hero-card"><img width="800" height="800" loading="lazy" decoding="async" alt="Fabio Witt" src="/assets/fabio-witt.jpg"/><div class="hero-card-body"><h3 role="heading" aria-level="2">Fabio Witt</h3><div class="role">SAP S/4HANA Supply Chain Consultant</div><div class="badges"><span class="badge">SAP PP</span><span class="badge">SAP MM</span><span class="badge">Public Cloud</span><span class="badge">Signavio</span><span class="badge">Cloud ALM</span><span class="badge">SAP Activate</span></div></div></article>
-</div></section>
-<div class="trust"><div class="container trustbox">
-<div class="metric"><strong>M.Sc.</strong><span>Wirtschaftsinformatik</span></div>
-<div class="metric"><strong>PP + MM</strong><span>Manufacturing &amp; Procurement</span></div>
-<div class="metric"><strong>Cloud</strong><span>Public &amp; Private Edition</span></div>
-<div class="metric"><strong>37</strong><span>SAP-/Tech-Zertifizierungen</span></div>
-</div></div>
-<section class="v51-mini-strip" data-v51="fabio-fit"><div class="v51-shell"><div><span><b>SAP PP &amp; MM</b><small>Manufacturing · Procurement · Inventory</small></span></div><div><span><b>S/4HANA Transformation</b><small>Public Cloud · Fit-to-Standard · Testing</small></span></div><div><span><b>Transformation Toolchain</b><small>Signavio · Cloud ALM · LeanIX · BTP</small></span></div><div><span><b>Projektmodell</b><small>Remote-first · DACH &amp; international</small></span></div></div></section>
-<section class="signature-section" id="unique">
-<div class="container">
-<div class="section-head">
-<span class="kicker">Mein Profil</span>
-<h2>Eine ungewöhnlich breite Kombination aus SAP, ERP, Manufacturing und Transformation</h2>
-<p>Meine Erfahrung reicht von direkter Arbeit in der Produktion über Microsoft Dynamics NAV / Business Central bis zu internationalen SAP S/4HANA Transformationsprojekten in der Schweiz.</p>
-</div>
-<div class="signature-grid">
-<article class="signature-card">
-<span class="signature-number">01</span>
-<h3>Shopfloor-Verständnis</h3>
-<p>Frühe praktische Erfahrung in der Produktion. Dadurch betrachte ich SAP-Prozesse nicht nur aus Systemperspektive, sondern auch aus Sicht realer Abläufe.</p>
-</article>
-<article class="signature-card">
-<span class="signature-number">02</span>
-<h3>Mehr als ein ERP-System</h3>
-<p>Drei Jahre Microsoft Dynamics NAV / Business Central im Automotive-Umfeld, Entwicklung, Rollout, Third-Level Support und DACH-Projekte.</p>
-</article>
-<article class="signature-card">
-<span class="signature-number">03</span>
-<h3>S/4HANA Supply Chain</h3>
-<p>Praxis in SAP PP, MM, 3PL, Inventory Management, MRP/DDMRP, Testing, Defect Management und Functional Specification Design.</p>
-</article>
-<article class="signature-card">
-<span class="signature-number">04</span>
-<h3>Transformation &amp; Toolchain</h3>
-<p>Signavio, SAP Cloud ALM, LeanIX, SAP Activate, BTP und Integrated Toolchain, von Prozessdesign bis Umsetzung und Qualitätssicherung.</p>
-</article>
-<article class="signature-card">
-<span class="signature-number">05</span>
-<h3>Industriebreite</h3>
-<p>Projektkontext in Electrification, Semiconductor, Construction Materials, Swiss Watch und Automotive.</p>
-</article>
-<article class="signature-card">
-<span class="signature-number">06</span>
-<h3>Multilingual</h3>
-<p>Sieben Sprachen ermöglichen sichere Kommunikation in internationalen Projektteams und im DACH-Umfeld.</p>
-</article>
-</div>
-</div>
-</section>
-<section class="alt" id="profil"><div class="container">
-<div class="section-head"><span class="kicker">Profil &amp; Projekterfahrung</span><h2>Supply Chain, Manufacturing und Transformation aus der Praxis</h2><p>Meine Erfahrung verbindet SAP S/4HANA Implementierungen, Prozessdesign, Testing, Toolchain-Steuerung und internationale Projektarbeit im DACH-Umfeld.</p></div>
-<div class="split" style="align-items:start">
-<div>
-<div class="feature-list">
-<div class="feature"><span class="check">✓</span><div><strong>Aktueller Fokus</strong><br/><span>SAP Supply Chain Operations Transformation mit PP, MM, Signavio, Cloud ALM, Public Cloud, LeanIX und Integrated Toolchain.</span></div></div>
-<div class="feature"><span class="check">✓</span><div><strong>Industrien</strong><br/><span>Erfahrung u. a. in Electrification, Semiconductor, Construction Materials, Swiss Watch und Automotive.</span></div></div>
-<div class="feature"><span class="check">✓</span><div><strong>Projektarbeit</strong><br/><span>Fit-to-Standard Workshops, Show-&amp;-Tell, UAT/SIT, Defect Management, Functional Specifications, Change Requests, RICEFW und Rollen-/Berechtigungsthemen.</span></div></div>
-<div class="feature"><span class="check">✓</span><div><strong>3PL &amp; Inventory</strong><br/><span>Third-Party Logistics, Inventory Management und integrierte Beschaffungs-/Bestandsprozesse im S/4HANA-Kontext.</span></div></div>
-</div>
-</div>
-<div class="service" style="padding:36px">
-<span class="kicker">Kurzprofil</span>
-<h3 style="font-size:30px">Fabio Witt</h3>
-<p><strong>M.Sc. Wirtschaftsinformatik</strong> und SAP S/4HANA Supply Chain Consultant mit Schwerpunkt Manufacturing, Procurement und Business Transformation.</p>
-<div class="badges">
-<span class="badge">SAP PP</span><span class="badge">SAP MM</span><span class="badge">3PL</span><span class="badge">Public Cloud</span><span class="badge">Signavio</span><span class="badge">Cloud ALM</span><span class="badge">LeanIX</span><span class="badge">BTP</span>
-</div>
-<p style="margin-top:18px"><strong>Sprachen:</strong> Deutsch C2, Englisch C1, Französisch B2, Spanisch B2, Italienisch B2, Russisch B2, Portugiesisch B1.</p>
-<a class="btn btn-secondary" href="https://www.linkedin.com/in/fabio-witt-8b889117a/" rel="noopener" target="_blank">LinkedIn-Profil ansehen ↗</a>
-</div>
-</div>
-</div></section>
-<section class="alt project-situations"><div class="container">
-<div class="section-head"><span class="kicker">Projektbeispiele</span><h2>Vier Programme, in denen ich Verantwortung getragen habe</h2><p>Kunden sind anonymisiert, Rolle und Inhalte entsprechen meiner tatsächlichen Arbeit.</p></div>
-<div class="project-grid">
-<article><span class="project-type">Elektrifizierung · Schweiz · S/4HANA Public Cloud</span><h3>Anbindung eines externen Lagers (3PL)</h3><p><strong>Rolle:</strong> SAP Logistics Stream bei PwC.</p><p>Inventory Management und Anbindung des Logistikdienstleisters, Functional Specifications und Change Requests, Testskripte, SIT und UAT, Defect Management in SAP Cloud ALM.</p></article>
-<article><span class="project-type">Halbleiter · Schweiz · S/4HANA ddMRP</span><h3>Level-3-Support in der Produktionsplanung</h3><p><strong>Rolle:</strong> Production Planning Stream bei Capgemini.</p><p>Ursachenanalyse in einem stark kundenspezifischen System mit IDoc-Schnittstellen zwischen SAP, SAP IBP und MES, Change-Request-Management und Functional Specification Documents.</p></article>
-<article><span class="project-type">Baustoff und Glas · Frankreich · S/4HANA Implementierung</span><h3>Source-to-Pay mit MM und TM</h3><p><strong>Rolle:</strong> Mitglied und Koordination des SCM-Streams.</p><p>Leitung von Fit-to-Standard-Workshops und Show-&amp;-Tell-Sessions mit Key Usern, RICEFW-Steuerung, Signavio-L3-Prozesse, Rollen und Berechtigungen mit GRC, UAT-Testfälle.</p></article>
-<article><span class="project-type">Luxusuhren · Schweiz · S/4HANA Transformation</span><h3>Prozessmodellierung mit SAP Signavio</h3><p><strong>Rolle:</strong> Business Process Modeling.</p><p>Aufnahme und Modellierung der Geschäftsprozesse als Grundlage für die Transformation.</p></article>
-</div>
-</div></section>
-<section id="sprachen">
-<div class="container">
-<div class="section-head">
-<span class="kicker">Sprachen</span>
-<h2>Sieben Sprachen für internationale Projektarbeit</h2>
-<p>Besonders in internationalen SAP-Programmen erleichtert Mehrsprachigkeit Workshops, Abstimmungen und Stakeholder-Kommunikation.</p>
-</div>
-<div class="language-grid">
-<div class="language-card"><span class="flag"><img width="250" height="150" loading="lazy" decoding="async" alt="Deutschland" class="flag-icon" src="/shared-assets/flags/de.svg"/></span><div><strong>Deutsch</strong><span>C2</span></div></div>
-<div class="language-card"><span class="flag"><img width="300" height="150" loading="lazy" decoding="async" alt="Vereinigtes Königreich" class="flag-icon" src="/shared-assets/flags/gb.svg"/></span><div><strong>Englisch</strong><span>C1</span></div></div>
-<div class="language-card"><span class="flag"><img width="225" height="150" loading="lazy" decoding="async" alt="Frankreich" class="flag-icon" src="/shared-assets/flags/fr.svg"/></span><div><strong>Französisch</strong><span>B2 · DELF</span></div></div>
-<div class="language-card"><span class="flag"><img width="225" height="150" loading="lazy" decoding="async" alt="Spanien" class="flag-icon" src="/shared-assets/flags/es.svg"/></span><div><strong>Spanisch</strong><span>B2</span></div></div>
-<div class="language-card"><span class="flag"><img width="225" height="150" loading="lazy" decoding="async" alt="Italien" class="flag-icon" src="/shared-assets/flags/it.svg"/></span><div><strong>Italienisch</strong><span>B2</span></div></div>
-<div class="language-card"><span class="flag"><img width="225" height="150" loading="lazy" decoding="async" alt="Russland" class="flag-icon" src="/shared-assets/flags/ru.svg"/></span><div><strong>Russisch</strong><span>B2</span></div></div>
-<div class="language-card"><span class="flag"><img width="225" height="150" loading="lazy" decoding="async" alt="Portugal" class="flag-icon" src="/shared-assets/flags/pt.svg"/></span><div><strong>Portugiesisch</strong><span>B1</span></div></div>
-</div>
-<p class="micro-note">Die Flaggen dienen nur als visuelle Orientierung für die jeweilige Sprache.</p>
-</div>
-</section>
-<section class="alt"><div class="container">
-<div class="section-head"><span class="kicker">Zusammenarbeit</span><h2>Was Kollegen an der Zusammenarbeit hervorheben</h2><p>Auszüge aus veröffentlichten LinkedIn-Empfehlungen, sinngemäss zusammengefasst.</p></div>
-<div class="grid3">
-<article class="service"><h3>Klare Kommunikation</h3><p>Kollegen beschreiben meine Kommunikation als klar und sicher, besonders in multilingualen Projektumfeldern.</p></article>
-<article class="service"><h3>Struktur &amp; Verlässlichkeit</h3><p>Hervorgehoben werden strukturierte Arbeitsweise, Zuverlässigkeit und ein konsequenter Fokus auf definierte Ziele.</p></article>
-<article class="service"><h3>Manufacturing-Fachlichkeit</h3><p>Meine Stärke in SAP Manufacturing, Prozessoptimierung und der Umsetzung fachlicher Anforderungen wird besonders betont.</p></article>
-</div>
-</div></section>
-<section class="fw-more" id="mehr"><div class="fw-sw"><h2>Mehr von Fabio Witt</h2><p>Die Details finden Sie auf eigenen Seiten – kurz und gezielt.</p><div class="fw-more__grid"><a href="/fabio/erfahrung"><b>Erfahrung &amp; Kompetenzen</b><span>Projekte, Skills, Branchen, Ausbildung und Zertifikate.</span><em>Ansehen →</em></a><a href="/fabio/zusammenarbeit"><b>Zusammenarbeit</b><span>Vorgehen, Best Practices, Engagement-Modelle und Pakete.</span><em>Ansehen →</em></a><a href="/dachwerk/"><b>DACHWERK</b><span>SAP-Beratung mit Team – für grössere Vorhaben.</span><em>Ansehen →</em></a></div></div></section>
-<section class="cv-download" id="cv"><div class="container"><div class="cv-download-card"><div><span class="kicker">Curriculum Vitae</span><h2>Fabio Witt · SAP Consulting CV</h2><p>Professioneller CV mit SAP S/4HANA Supply Chain Erfahrung, Projektübersicht, Zertifizierungen, Ausbildung und Sprachkenntnissen.</p></div><div class="cv-download-actions"><a class="btn btn-primary" href="/downloads/Fabio-Witt-CV.pdf" rel="noopener" target="_blank">CV als PDF öffnen</a><a class="btn btn-secondary" download="" href="/downloads/Fabio-Witt-CV.pdf">PDF herunterladen</a></div></div></div></section>
-<section id="kontakt"><div class="container"><div class="contact-layout"><div><span class="kicker">Unverbindliches Erstgespräch</span><h2>Ihr SAP-Thema in 30 Minuten strukturieren.</h2><p>Beschreiben Sie kurz Ausgangslage, Modul/Workstream und Projektphase. Ich melde mich persönlich.</p><div class="contact-points"><span>✓ Direkter Kontakt</span><span>✓ Kein Newsletter</span><span>✓ Keine Weitergabe an Dritte durch diese statische Demo</span></div><a class="btn btn-secondary" href="https://www.linkedin.com/in/fabio-witt-8b889117a/" rel="noopener" target="_blank">Alternativ über LinkedIn ↗</a></div>
-<form action="https://formsubmit.co/fabiowitt@gmx.de" class="contact-form" data-email-form="true" data-success-path="/danke.html" method="POST" name="projektanfrage"><input aria-hidden="true" autocomplete="off" name="_honey" style="position:absolute;left:-9999px;opacity:0;pointer-events:none" tabindex="-1" type="text"/><input name="_next" type="hidden" value=""/><input name="_template" type="hidden" value="table"/><input name="_captcha" type="hidden" value="false"/><input name="_subject" type="hidden" value="Neue Projektanfrage über fabio-ecosystem"/><input name="form-name" type="hidden" value="projektanfrage"/><p hidden=""><label>Nicht ausfüllen: <input name="bot-field"/></label></p><label>Name<input autocomplete="name" name="name" required=""/></label><label>Geschäftliche E-Mail<input autocomplete="email" name="email" required="" type="email"/></label><label>Unternehmen<input autocomplete="organization" name="unternehmen"/></label><label>Schwerpunkt<select name="schwerpunkt"><option>SAP PP / Manufacturing</option><option>SAP MM / Procurement</option><option>S/4HANA Public Cloud</option><option>SAP Signavio / Cloud ALM</option><option>Testing / Cutover</option><option>Sonstiges</option></select></label><label class="full">Kurzbeschreibung<textarea name="nachricht" placeholder="Worum geht es? Welche Projektphase? Welcher Scope?" rows="5"></textarea></label><label class="consent full"><input name="privacy" required="" type="checkbox" value="accepted"/><span>Ich habe die <a href="/datenschutz">Datenschutzhinweise</a> gelesen.</span></label><button class="btn btn-primary full" type="submit">Projektanfrage senden</button></form></div></div></section>
+<main id="main" class="pg">
+<script>(function(){var m={"leistungen": "erfahrung", "skills": "erfahrung", "zertifizierungen": "erfahrung", "mehr": "zusammenarbeit", "vorgehen": "zusammenarbeit", "best-practices": "zusammenarbeit", "einsatzgebiet": "zusammenarbeit", "angebote": "zusammenarbeit", "blog": "zusammenarbeit", "projekte-online": "zusammenarbeit"};var h=location.hash.slice(1);if(m[h])location.replace("/fabio/"+m[h]+"#"+h)})();</script>
+<section class="sec sec--first"><div class="w"><div class="hero"><div>
+<span class="eyebrow">Profil · Zürich</span>
+<h1>Ich verbinde SAP, Prozesse und Sprachen.</h1>
+<p class="lead">Ich bin Fabio Witt, SAP S/4HANA Supply Chain Consultant mit M.Sc. in Wirtschaftsinformatik. Ich begleite Transformationen in Produktion und Beschaffung – und unterrichte nebenbei Sprachen, sieben davon spreche ich selbst.</p>
+<div class="btns"><a class="btn btn--solid" href="#fabio-anfrage" data-contact>Kontakt aufnehmen</a><a class="btn btn--line" href="/downloads/Fabio-Witt-CV.pdf">Lebenslauf (PDF)</a><a class="btn btn--line" href="https://www.linkedin.com/in/fabio-witt-8b889117a/" rel="noopener">LinkedIn</a></div>
+<ul class="facts" style="margin-top:36px"><li><b>Schwerpunkt</b>SAP PP, MM, Inventory, 3PL, MRP/ddMRP</li><li><b>Transformation</b>Signavio, Cloud ALM, LeanIX, SAP Activate, BTP</li><li><b>Zertifikate</b>37 SAP- und Tech-Zertifizierungen</li><li><b>Arbeitsweise</b>projektbasiert, DACH und remote</li></ul>
+</div><figure style="margin:0"><img class="portrait" src="/assets/fabio-witt.jpg" alt="Porträt von Fabio Witt" width="460" height="575"/><figcaption class="cap">Fabio Witt, Zürich</figcaption></figure></div></div></section>
+<section class="sec sec--tint"><div class="w"><div class="head"><div><span class="eyebrow">Was ich mache</span><h2>Drei Bereiche, ein Ansprechpartner.</h2></div><p>Je nach Anliegen landen Sie direkt beim passenden Angebot.</p></div>
+<div class="cards" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+<a class="card linkcard" href="/dachwerk/"><span class="meta">DACHWERK</span><h3>SAP-Beratung</h3><p>S/4HANA in Produktion und Supply Chain – allein oder mit Senior-Team.</p><em>Zu DACHWERK →</em></a>
+<a class="card linkcard" href="/sprachschule/"><span class="meta">SPRACHWERK &amp; Lingora</span><h3>Sprachen</h3><p>Persönliches Coaching und die gratis App Lingora mit 12 Kursen.</p><em>Zu SPRACHWERK →</em></a>
+<a class="card linkcard" href="/digital"><span class="meta">Digital</span><h3>Websites, KI, Foto</h3><p>Für KMU und Selbstständige in Zürich, zu Einführungspreisen.</p><em>Zu Digital →</em></a></div></div></section>
+<section class="sec" id="projekte"><div class="w"><div class="head"><div><span class="eyebrow">Projektpraxis</span><h2>Vier Programme, in denen ich Verantwortung getragen habe.</h2></div><p>Kunden anonymisiert. Rolle und Inhalte entsprechen meiner tatsächlichen Arbeit.</p></div><div class="cards"><article class="card"><span class="meta">Elektrifizierung · Schweiz · S/4HANA Public Cloud</span><h3>Anbindung eines externen Lagers (3PL)</h3><span class="role">SAP Logistics Stream bei PwC</span><p>Inventory Management und Anbindung des Logistikdienstleisters, Functional Specifications, Testskripte, SIT und UAT, Defect Management in SAP Cloud ALM.</p></article><article class="card"><span class="meta">Halbleiter · Schweiz · S/4HANA ddMRP</span><h3>Level-3-Support in der Produktionsplanung</h3><span class="role">Production Planning Stream bei Capgemini</span><p>Ursachenanalyse in einem stark kundenspezifischen System mit IDoc-Schnittstellen zwischen SAP, SAP IBP und MES, Change Requests und Functional Specifications.</p></article><article class="card"><span class="meta">Baustoff und Glas · Frankreich · S/4HANA Implementierung</span><h3>Source-to-Pay mit MM und TM</h3><span class="role">Koordination des SCM-Streams</span><p>Fit-to-Standard-Workshops und Show-&amp;-Tell mit Key Usern, RICEFW-Steuerung, Signavio-L3-Prozesse, Rollen und Berechtigungen mit GRC, UAT-Testfälle.</p></article><article class="card"><span class="meta">Luxusuhren · Schweiz · S/4HANA Transformation</span><h3>Prozessmodellierung mit SAP Signavio</h3><span class="role">Business Process Modeling</span><p>Aufnahme und Modellierung der Geschäftsprozesse als Grundlage für die Transformation.</p></article></div>
+<p class="note"><a href="/fabio/erfahrung">Mehr zu Erfahrung, Skills, Branchen und Zertifikaten →</a></p></div></section>
+<section class="sec sec--tint" id="werdegang"><div class="w"><div class="head"><div><span class="eyebrow">Werdegang</span><h2>Vom Shopfloor zur S/4HANA-Transformation.</h2></div><p>Diese Mischung hilft mir, Systeme so zu bauen, dass sie in der echten Produktion funktionieren.</p></div>
+<div class="cols"><div><h3>Produktion</h3><p>Frühe praktische Erfahrung in der Fertigung. Ich sehe SAP-Prozesse auch aus Sicht der Menschen, die damit arbeiten.</p></div><div><h3>ERP-Entwicklung</h3><p>Drei Jahre Microsoft Dynamics NAV / Business Central im Automotive-Umfeld: Entwicklung, Rollout und Third-Level-Support.</p></div><div><h3>SAP S/4HANA</h3><p>PP, MM, 3PL und MRP in internationalen Programmen – von Fit-to-Standard über Testing bis Cutover.</p></div></div>
+<div class="tags"><span>Electrification</span><span>Semiconductor</span><span>Construction Materials</span><span>Swiss Watch</span><span>Automotive</span></div></div></section>
+<section class="sec" id="sprachen"><div class="w"><div class="head"><div><span class="eyebrow">Sprachen</span><h2>Sieben Sprachen.</h2></div><p>Hilft in internationalen Workshops – und ist der Grund, warum ich auch Sprachen unterrichte.</p></div><div class="langs"><div><b>Deutsch</b><span>C2</span></div><div><b>Englisch</b><span>C1</span></div><div><b>Französisch</b><span>B2 · DELF</span></div><div><b>Spanisch</b><span>B2</span></div><div><b>Italienisch</b><span>B2</span></div><div><b>Russisch</b><span>B2</span></div><div><b>Portugiesisch</b><span>B1</span></div></div></div></section>
+<section class="sec sec--tint"><div class="w"><span class="eyebrow">Aus LinkedIn-Empfehlungen</span><p class="quote">Kolleginnen und Kollegen heben vor allem klare Kommunikation, Struktur und Verlässlichkeit hervor – besonders in mehrsprachigen Projektteams.</p><p>Sinngemäss zusammengefasst. Die Originale stehen auf <a href="https://www.linkedin.com/in/fabio-witt-8b889117a/" rel="noopener">LinkedIn</a>.</p></div></section>
+<section class="sec" id="fabio-anfrage"><div class="w contact"><div><span class="eyebrow">Kontakt</span><h2>Worum geht es bei Ihnen?</h2><p class="lead" style="margin-top:12px">Ein paar Sätze genügen. Ich antworte persönlich, meist innerhalb eines Werktags.</p>
+<ul class="facts" style="margin-top:28px"><li><b>E-Mail</b><a href="mailto:fabiowitt@gmx.de">fabiowitt@gmx.de</a></li><li><b>Ort</b>Zürich, Projekte in DACH und remote</li><li><b>Mehr</b><a href="/fabio/zusammenarbeit">Zusammenarbeit, Vorgehen und Pakete</a></li></ul></div>
+<form class="form" action="https://formsubmit.co/fabiowitt@gmx.de" method="POST" data-email-form="true" data-success-path="/danke.html">
+<div class="row"><label>Name<input name="Name" autocomplete="name" required/></label><label>E-Mail<input name="email" type="email" autocomplete="email" required/></label></div>
+<label>Worum geht es?<select name="Thema"><option>SAP-Projekt</option><option>Sprachunterricht</option><option>Lingora</option><option>Digital: Website, KI, Foto, Video</option><option>Etwas anderes</option></select></label>
+<label>Nachricht<textarea name="Nachricht" required placeholder="Was haben Sie vor? Zwei, drei Sätze reichen."></textarea></label>
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0"/>
+<input type="hidden" name="_captcha" value="false"/><input type="hidden" name="_template" value="table"/><input type="hidden" name="_subject" value="Neue Anfrage über das Profil"/><input type="hidden" name="_next" value=""/>
+<button class="btn btn--solid" type="submit">Anfrage senden</button>
+<p class="note" style="margin:0">Antwort meist innerhalb eines Werktags. Oder direkt: <a href="mailto:fabiowitt@gmx.de">fabiowitt@gmx.de</a></p>
+</form></div></section>
 </main>
-<div class="sticky-cta"><span><strong>SAP-Projekt im Kopf?</strong> Kurz Scope und Bedarf klären.</span><a href="#kontakt">Kundenanfrage</a></div>
-<section id="fabio-anfrage" style="max-width:1180px;margin:36px auto;padding:28px;border:1px solid #dce6ec;border-radius:20px;background:#fff">
-<span style="font-size:10px;font-weight:900;letter-spacing:.1em;color:#207a6f">FABIO WITT · PROJEKTANFRAGE</span>
-<h2 style="color:#14375f">SAP-Unterstützung anfragen</h2>
-<p style="color:#5c7082">Beschreiben Sie kurz Projekt, SAP-Bereich und gewünschten Zeitraum.</p>
-<form action="https://formsubmit.co/fabiowitt@gmx.de" data-email-form="true" data-success-path="/danke.html" method="POST"><input aria-hidden="true" autocomplete="off" name="_honey" style="position:absolute;left:-9999px;opacity:0;pointer-events:none" tabindex="-1" type="text"/><input name="_next" type="hidden" value=""/><input name="_template" type="hidden" value="table"/>
-<input name="_subject" type="hidden" value="Neue Fabio Witt SAP-Projektanfrage"/>
-<input name="_captcha" type="hidden" value="false"/>
-<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
-<label>Name<input name="name" required="" style="width:100%;padding:11px;border:1px solid #bdced8;border-radius:9px"/></label>
-<label>E-Mail<input name="email" required="" style="width:100%;padding:11px;border:1px solid #bdced8;border-radius:9px" type="email"/></label>
-<label>Unternehmen<input name="unternehmen" style="width:100%;padding:11px;border:1px solid #bdced8;border-radius:9px"/></label>
-<label>SAP-Bereich<input name="sap-bereich" placeholder="PP, MM, Public Cloud, Signavio, Cloud ALM …" style="width:100%;padding:11px;border:1px solid #bdced8;border-radius:9px"/></label>
-</div>
-<label style="display:grid;margin-top:12px">Projektbeschreibung<textarea name="projekt" required="" rows="5" style="padding:11px;border:1px solid #bdced8;border-radius:9px"></textarea></label>
-<button style="margin-top:12px;padding:12px 16px;border:0;border-radius:9px;background:#14375f;color:#fff;font-weight:900" type="submit">Projektanfrage senden</button>
-</form>
-</section><section class="page-final-cta">
-<div class="page-final-cta__inner">
-<div><span>FABIO WITT · SAP CONSULTING</span><h2>SAP-Unterstützung anfragen</h2><p>Projektunterstützung für SAP S/4HANA Supply Chain, PP, MM, Public Cloud, Signavio und Cloud ALM.</p></div>
-<a href="#fabio-anfrage">Projektanfrage</a>
-</div>
-</section>
-<section class="webseiten-showcase">
-<div class="webseiten-showcase-inner">
-<span>WEB-ÖKOSYSTEM</span><h2>Vier Angebote. Eine klare digitale Markenwelt.</h2>
-<p>DACHWERK für SAP-Beratung, SPRACHWERK für persönlichen Sprachunterricht, LERNWERK für digitales Lernen und Fabio Witt als persönliche Beratungsmarke.</p>
-<picture><source srcset="/shared-assets/webseiten-visuals.webp" type="image/webp"/><img width="1536" height="1024" alt="Visuelle Übersicht von DACHWERK, SPRACHWERK, LERNWERK und Fabio Witt" src="/shared-assets/webseiten-visuals.png" loading="lazy" decoding="async"/></picture>
-</div>
-</section><footer><div class="container"><div class="footergrid">
-<div><img width="300" height="60" loading="lazy" decoding="async" alt="" src="/assets/logo.svg" style="width:220px;filter:brightness(0) invert(1);opacity:.9"/><p>Persönliche SAP S/4HANA Beratung für Supply Chain, Manufacturing und Transformation.</p></div>
-<div><strong>Schwerpunkte</strong><a href="#leistungen">SAP PP &amp; Manufacturing</a><a href="#leistungen">SAP MM &amp; Procurement</a><a href="#leistungen">Public Cloud</a><a href="#leistungen">Signavio &amp; Cloud ALM</a></div>
-<div><strong>Kontakt</strong><a href="#kontakt">Kundenanfrage</a><a href="https://www.linkedin.com/in/fabio-witt-8b889117a/" rel="noopener" target="_blank">LinkedIn ↗</a><a href="/blog.html">SAP Insights</a><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a></div>
-</div><div class="fine">© 2026 Fabio Witt · Unabhängige SAP-Beratung. SAP und weitere SAP-Produkte sind Marken der SAP SE oder ihrer verbundenen Unternehmen. Keine gesellschaftsrechtliche Verbindung zu SAP SE.</div></div></footer>
+<footer class="pg-foot"><div class="w"><div><a href="/">Übersicht</a><a href="/dachwerk/">DACHWERK</a><a href="/sprachschule/">SPRACHWERK</a><a href="/lingora/">Lingora</a><a href="/digital">Digital</a><a href="/fabio/">Profil</a></div><div><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a>© 2026 Fabio Witt, Zürich</div></div></footer>
 <script src="/shared-assets/site-config.js"></script>
-<script data-paypal-script="v32">
-document.addEventListener("DOMContentLoaded",()=>{
-  document.querySelectorAll("[data-paypal-donate]").forEach(a=>{
-    const url=window.FW_SITE_CONFIG?.paypalDonationUrl||"";
-    if(url && !url.includes("DEIN_PAYPAL_BUTTON_ID")) a.href=url;
-    else { const box=a.closest("section")||a; box.hidden=true; }
-  });
-});
-</script>
-<script data-fw-i18n="v55" src="/shared-assets/i18n-v55.js"></script>
-<script defer="True" src="/shared-assets/forms-v57.js"></script><style id="v70-sticky">.sticky-cta{opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;transform:translate(-50%,16px)}.sticky-cta.is-on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}@media (prefers-reduced-motion:reduce){.sticky-cta{transition:none}}</style><script>(function(){var c=document.querySelector(".sticky-cta");if(!c)return;function u(){var y=window.scrollY,h=window.innerHeight,H=document.documentElement.scrollHeight;c.classList.toggle("is-on",y>h*0.9&&y+h<H-900)}window.addEventListener("scroll",u,{passive:true});u()})();</script><script defer src="/shared-assets/nav-v62.js"></script>
+<script src="/shared-assets/forms-v57.js" defer></script>
+<script src="/shared-assets/i18n-v55.js" defer></script>
+<script defer src="/shared-assets/nav-v63.js"></script>
 </body></html>
