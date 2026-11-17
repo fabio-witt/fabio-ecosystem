@@ -72,6 +72,39 @@ try {
   for (const size of [192, 512]) {
     fs.copyFileSync(path.join(source, `assets/images/pwa-${size}.png`), path.join(output, `pwa-${size}.png`));
   }
+  // Offline mode: the app shell and every loaded lesson bundle stay available without internet.
+  const version = Date.now().toString(36);
+  fs.writeFileSync(path.join(output, "sw.js"), `const CACHE = "lingora-${version}";
+const SCOPE = "${route}/";
+self.addEventListener("install", (event) => {
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll([SCOPE, SCOPE + "manifest.webmanifest"])).then(() => self.skipWaiting()));
+});
+self.addEventListener("activate", (event) => {
+  event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith("lingora-") && key !== CACHE).map((key) => caches.delete(key)))).then(() => self.clients.claim()));
+});
+self.addEventListener("fetch", (event) => {
+  const request = event.request;
+  const url = new URL(request.url);
+  if (request.method !== "GET" || url.origin !== self.location.origin || !url.pathname.startsWith(SCOPE)) return;
+  if (request.mode === "navigate") {
+    // Network first, so updates arrive at once; the cached shell works offline.
+    event.respondWith(fetch(request).then((response) => {
+      const copy = response.clone();
+      caches.open(CACHE).then((cache) => cache.put(SCOPE, copy));
+      return response;
+    }).catch(() => caches.match(SCOPE)));
+    return;
+  }
+  // Bundles and images have content hashes in their names: cache first.
+  event.respondWith(caches.match(request).then((hit) => hit || fetch(request).then((response) => {
+    if (response.ok && (url.pathname.includes("/_expo/") || url.pathname.includes("/assets/"))) {
+      const copy = response.clone();
+      caches.open(CACHE).then((cache) => cache.put(request, copy));
+    }
+    return response;
+  })));
+});
+`);
   // Lets people install Lingora from the browser like an app.
   fs.writeFileSync(path.join(output, "manifest.webmanifest"), JSON.stringify({
     name: "Lingora – Learn languages. Connect cultures.",
