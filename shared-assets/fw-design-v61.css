@@ -43,3 +43,6 @@ main p a:not([class]),main li a:not([class]){text-underline-offset:3px}
 html[data-brand="sprachschule"] .hero{background:radial-gradient(900px 420px at 85% 0%,rgba(232,140,96,.35),transparent 60%),radial-gradient(700px 380px at 0% 100%,rgba(242,183,5,.14),transparent 60%),linear-gradient(160deg,#2a1d18 0%,#3d2a21 55%,#5a3626 100%)!important}
 html[data-brand="sprachschule"] .hero::before,html[data-brand="sprachschule"] .hero::after{display:none!important}
 html[data-brand="sprachschule"] .hero h1 span,html[data-brand="sprachschule"] .hero .accent{color:#f3b38f!important}
+/* DACHWERK compact home: competence cards use the full width once the side panel is gone */
+html[data-brand="dachwerk"] .competence-layout{display:block!important}
+html[data-brand="dachwerk"] .competence-cards{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
