@@ -1,0 +1,45 @@
+/* Fabio Ecosystem v61 design system.
+   Loaded last on every page. One set of tokens, one accent colour per brand,
+   calmer type and consistent buttons. Brand is set on <html data-brand="…">. */
+:root{
+  --fw-ink:#14212e;--fw-ink-2:#3c4a58;--fw-muted:#64748b;--fw-line:#e3e8ee;--fw-soft:#f5f7f9;--fw-surface:#fff;
+  --fw-accent:#0f6f62;--fw-accent-2:#0b5a50;--fw-accent-soft:#e3f3f0;--fw-deep:#0f2f52;
+  --fw-radius:14px;--fw-radius-lg:22px;--fw-shadow:0 14px 40px rgba(16,32,52,.08);
+  --fw-font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+/* Brand accents */
+html[data-brand="dachwerk"]{--fw-accent:#0a8578;--fw-accent-2:#087066;--fw-accent-soft:#e0f4f1;--fw-deep:#071a2b}
+html[data-brand="sprachschule"]{--fw-accent:#b84a2a;--fw-accent-2:#9a3c20;--fw-accent-soft:#fbece5;--fw-deep:#2a1d18;
+  --navy:#2a1d18;--navy2:#3b2820;--teal:#b84a2a;--teal2:#9a3c20;--v51-navy:#2a1d18;--v51-teal:#b84a2a;--v51-soft:#fbf6f2;--bg:#fbf6f2}
+html[data-brand="grammarfirst"]{--fw-accent:#2f7d32;--fw-accent-2:#256528;--fw-accent-soft:#e8f4e5;--fw-deep:#13261a;--green:#2f7d32;--green2:#256528}
+html[data-brand="lingora"]{--fw-accent:#E3342F;--fw-accent-2:#c4231f;--fw-accent-soft:#fdecec;--fw-deep:#111214}
+html[data-brand="digital"]{--fw-accent:#5b4bd6;--fw-accent-2:#4a3bc0;--fw-accent-soft:#efedfd;--fw-deep:#1b1640;--green:#5b4bd6;--green2:#4a3bc0;--v51-teal:#5b4bd6}
+html[data-brand="fabio"],html[data-brand="home"]{--fw-accent:#0f6f62;--fw-accent-2:#0b5a50;--fw-deep:#0f2f52}
+
+/* Calm, consistent typography */
+body{font-family:var(--fw-font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{letter-spacing:-.022em;text-wrap:balance}
+h2{line-height:1.12}
+p{text-wrap:pretty}
+/* Kickers: quieter, brand coloured, no shouting */
+.kicker,.v51-kicker,.section-head .eyebrow,.section-heading .eyebrow{color:var(--fw-accent)!important;letter-spacing:.08em!important;font-weight:800!important;font-size:12px!important}
+/* Buttons: one primary style per brand */
+.btn-primary,.v51-btn.primary,.button--primary,a.primary-btn{background:var(--fw-accent)!important;border-color:var(--fw-accent)!important;color:#fff!important;box-shadow:0 8px 20px color-mix(in srgb,var(--fw-accent) 28%,transparent)!important}
+.btn-primary:hover,.v51-btn.primary:hover,.button--primary:hover{background:var(--fw-accent-2)!important}
+.btn,.v51-btn,.button{border-radius:12px}
+/* Links and focus */
+main p a:not([class]),main li a:not([class]){text-underline-offset:3px}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--fw-accent) 45%,transparent);outline-offset:2px}
+/* Cards: one radius, softer shadow */
+.card,.v51-card,.business-card{border-radius:var(--fw-radius-lg)}
+/* Emoji icons in cards were huge and noisy */
+.card .icon{font-size:26px!important;line-height:1}
+/* Floating CTAs must never cover text on large screens */
+@media(min-width:1021px){.floating-cta-v16{bottom:20px!important;right:20px!important;transform:scale(.92);transform-origin:bottom right}}
+/* Final CTA band uses the brand's deep colour */
+.page-final-cta{background:var(--fw-deep)!important}
+.page-final-cta a{background:var(--fw-accent)!important;color:#fff!important}
+/* SPRACHWERK: warm hero instead of the shared mountain scene */
+html[data-brand="sprachschule"] .hero{background:radial-gradient(900px 420px at 85% 0%,rgba(232,140,96,.35),transparent 60%),radial-gradient(700px 380px at 0% 100%,rgba(242,183,5,.14),transparent 60%),linear-gradient(160deg,#2a1d18 0%,#3d2a21 55%,#5a3626 100%)!important}
+html[data-brand="sprachschule"] .hero::before,html[data-brand="sprachschule"] .hero::after{display:none!important}
+html[data-brand="sprachschule"] .hero h1 span,html[data-brand="sprachschule"] .hero .accent{color:#f3b38f!important}

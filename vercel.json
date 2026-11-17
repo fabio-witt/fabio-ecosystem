@@ -21,6 +21,21 @@
       "source": "/dachwerk/datenschutz.html",
       "destination": "/datenschutz",
       "permanent": false
+    },
+    {
+      "source": "/sprachlernapp",
+      "destination": "/grammarfirst/",
+      "permanent": true
+    },
+    {
+      "source": "/sprachlernapp/",
+      "destination": "/grammarfirst/",
+      "permanent": true
+    },
+    {
+      "source": "/sprachlernapp/:path*",
+      "destination": "/grammarfirst/",
+      "permanent": true
     }
   ],
   "headers": [
