@@ -1,4 +1,4 @@
-const CACHE = "lingora-mwmac2sn";
+const CACHE = "lingora-mwmaqcgf";
 const SCOPE = "/grammarfirst/lingora/";
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll([SCOPE, SCOPE + "manifest.webmanifest"])).then(() => self.skipWaiting()));
