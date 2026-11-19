@@ -50,6 +50,30 @@ footer{border-top:1px solid var(--fw-line);padding:26px 0;color:var(--fw-muted);
 footer .hw{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}footer a{color:var(--fw-ink-2);text-decoration:none;margin-left:18px}
 @media(max-width:900px){.feature{grid-template-columns:1fr}.feature__side{display:none}.small-tiles{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.hero{padding:44px 0 24px}.hero__grid{grid-template-columns:1fr}.hero img{width:96px;height:96px;order:-1}.feature__txt{padding:28px 24px}.tiles,.small-tiles{grid-template-columns:1fr}.feature__btn,.contact a{width:100%;justify-content:center}footer a{margin:0 14px 0 0}}
+
+.hero__cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:13px;font-weight:850;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--fw-shadow)}
+.btn--dark{background:var(--fw-deep);color:#fff}.btn--light{background:#fff;color:var(--fw-deep);box-shadow:inset 0 0 0 1.5px var(--fw-line)}
+.facts-strip{list-style:none;display:flex;flex-wrap:wrap;gap:10px 26px;padding:0;margin:26px 0 0;color:var(--fw-muted);font-size:13px}
+.facts-strip li{display:flex;flex-direction:column}.facts-strip b{font-size:22px;line-height:1.1;color:var(--fw-ink);font-weight:850}
+.tile__icon{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 12%,#fff);color:var(--c);margin-bottom:6px;transition:transform .2s}
+.tile__icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile:hover .tile__icon{transform:rotate(-6deg) scale(1.06)}
+.tile:hover{background:color-mix(in srgb,var(--c) 4%,#fff)}
+.tile span{transition:gap .15s}.tile:hover span{letter-spacing:.01em}
+.site-foot{border-top:1px solid var(--fw-line);padding:40px 0 24px;color:var(--fw-muted);font-size:14px;background:var(--fw-soft)}
+.site-foot .hw{display:block}
+.site-foot__grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px;padding-bottom:28px;border-bottom:1px solid var(--fw-line)}
+.site-foot__grid nav{display:flex;flex-direction:column;gap:8px}
+.site-foot__grid b{color:var(--fw-ink);font-size:14px;margin-bottom:4px}
+.site-foot__grid a{color:var(--fw-ink-2);text-decoration:none;margin:0}.site-foot__grid a:hover{color:var(--fw-ink)}
+.site-foot__brand p{margin:6px 0 12px;max-width:300px}.site-foot__brand b{font-size:17px}
+.site-foot__mail{font-weight:800;color:var(--fw-deep)!important}
+.site-foot__legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:18px}
+.site-foot__legal a{color:var(--fw-ink-2);text-decoration:none;margin-left:18px}
+@media(max-width:760px){.site-foot__grid{grid-template-columns:1fr 1fr}.site-foot__brand{grid-column:1/-1}}
+@media(max-width:640px){.hero__cta .btn{flex:1 1 100%}.site-foot__legal a{margin:0 14px 0 0}}
 </style>
 </head><body><a class="skip" href="#main">Zum Inhalt springen</a><header class="fw50-nav" data-fw50-nav=""><div class="fw50-nav__inner">
 <a class="fw50-brand" href="/" translate="no" aria-label="Fabio Witt – Startseite"><span aria-hidden="true" class="fw50-brand__mark"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><defs><linearGradient id="fwg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16395f"/><stop offset="1" stop-color="#0b2240"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#fwg)"/><path d="M11 31V13h10M11 21.5h7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 13l3.4 18L28 20l3.6 11L35 13" fill="none" stroke="#6fd6c4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="fw50-brand__name"><b>Fabio Witt</b><small>Beratung · Sprachen · Digital</small></span></a>
@@ -62,6 +86,8 @@ footer .hw{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}fo
 <small><i aria-hidden="true"></i> Fabio Witt · Zürich</small>
 <h1>SAP-Berater und Sprachlehrer. <span>Hier findest du beides.</span></h1>
 <p>Unternehmen begleite ich bei SAP S/4HANA. Menschen bringe ich Sprachen bei – persönlich oder mit meiner App Lingora.</p>
+<div class="hero__cta"><a class="btn btn--dark" href="/dachwerk/">SAP-Projekt besprechen</a><a class="btn btn--light" href="/sprachschule/">Sprache lernen</a></div>
+<ul class="facts-strip" aria-label="Kurz über mich"><li><b>37</b>SAP- &amp; Tech-Zertifikate</li><li><b>7</b>Sprachen, die ich spreche</li><li><b>M.Sc.</b>Wirtschaftsinformatik</li><li><b>DACH</b>vor Ort &amp; remote</li></ul>
 </div><img src="/assets/fabio-witt.jpg" alt="Fabio Witt" width="150" height="150"></div></section>
 
 <a class="feature" href="/lingora/"><div class="feature__txt">
@@ -69,7 +95,7 @@ footer .hw{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}fo
 <h2>Sprachen lernen für das echte Leben – gratis.</h2>
 <p>12 Kurse von A1 bis C2, kurze Lektionen, Prüfungen mit Zertifikat und Sprachpartner. Auch Zürichdeutsch für Expats und Indonesisch für Bali.</p>
 <span class="feature__btn">Lingora entdecken →</span>
-<div class="feature__stats"><div><b>611</b>Lektionen</div><div><b>12</b>Kurse</div><div><b>CHF 0</b>zum Lernen</div></div>
+<div class="feature__stats"><div><b>647</b>Lektionen</div><div><b>12</b>Kurse</div><div><b>CHF 0</b>zum Lernen</div></div>
 </div><div class="feature__side" aria-hidden="true"><div class="flags">
 <img src="/shared-assets/flags/de.svg" alt=""><img src="/shared-assets/flags/ch.svg" alt=""><img src="/shared-assets/flags/gb.svg" alt=""><img src="/shared-assets/flags/es.svg" alt="">
 <img src="/shared-assets/flags/fr.svg" alt=""><img src="/shared-assets/flags/it.svg" alt=""><img src="/shared-assets/flags/pt.svg" alt=""><img src="/shared-assets/flags/ru.svg" alt="">
@@ -77,19 +103,28 @@ footer .hw{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}fo
 </div></div></a>
 
 <div class="tiles">
-<a class="tile" href="/dachwerk/" style="--c:#0a8578"><b translate="no">DACHWERK</b><h3>SAP-Beratung für Produktion und Supply Chain</h3><p>S/4HANA, PP, MM, PP/DS und Signavio – vom Fit-to-Standard bis zum stabilen Go-live.</p><span>Für Unternehmen →</span></a>
-<a class="tile" href="/sprachschule/" style="--c:#b84a2a"><b translate="no">SPRACHWERK</b><h3>Persönlicher Sprachunterricht</h3><p>1:1-Coaching und Firmenkurse – online oder in Zürich, mit einem Lernplan für dein Ziel.</p><span>Kurs finden →</span></a>
+<a class="tile" href="/dachwerk/" style="--c:#0a8578"><i class="tile__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.1 2.6 3.3-.6.6 3.3L21 12l-3 3.7-.6 3.3-3.3-.6L12 21l-2.1-2.6-3.3.6-.6-3.3L3 12l3-3.7.6-3.3 3.3.6z"/><circle cx="12" cy="12" r="3"/></svg></i><b translate="no">DACHWERK</b><h3>SAP-Beratung für Produktion und Supply Chain</h3><p>S/4HANA, PP, MM, PP/DS und Signavio – vom Fit-to-Standard bis zum stabilen Go-live.</p><span>Für Unternehmen →</span></a>
+<a class="tile" href="/sprachschule/" style="--c:#b84a2a"><i class="tile__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></i><b translate="no">SPRACHWERK</b><h3>Persönlicher Sprachunterricht</h3><p>1:1-Coaching und Firmenkurse – online oder in Zürich, mit einem Lernplan für dein Ziel.</p><span>Kurs finden →</span></a>
 </div>
 <div class="small-tiles">
-<a class="tile" href="/grammarfirst/" style="--c:#2f7d32"><b translate="no">GrammarFirst</b><h3>Grammatik verständlich erklärt</h3><p>Guides und Übungen, z.&nbsp;B. zu Zürichdeutsch.</p><span>Guides lesen →</span></a>
-<a class="tile" href="/digital" style="--c:#5b4bd6"><b>Digital</b><h3>KI, Websites, Video &amp; Foto</h3><p>Für KMU, Hotels und Selbstständige in Zürich.</p><span>Angebote →</span></a>
-<a class="tile" href="/fabio/" style="--c:#0f2f52"><b>Profil</b><h3>Erfahrung &amp; Lebenslauf</h3><p>SAP-Projekte, Ausbildung und sieben Sprachen.</p><span>Profil ansehen →</span></a>
+<a class="tile" href="/grammarfirst/" style="--c:#2f7d32"><i class="tile__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></svg></i><b translate="no">GrammarFirst</b><h3>Grammatik verständlich erklärt</h3><p>Guides und Übungen, z.&nbsp;B. zu Zürichdeutsch.</p><span>Guides lesen →</span></a>
+<a class="tile" href="/digital" style="--c:#5b4bd6"><i class="tile__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg></i><b>Digital</b><h3>KI, Websites, Video &amp; Foto</h3><p>Für KMU, Hotels und Selbstständige in Zürich.</p><span>Angebote →</span></a>
+<a class="tile" href="/fabio/" style="--c:#0f2f52"><i class="tile__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-7 8-7s7 2.5 8 7"/></svg></i><b>Profil</b><h3>Erfahrung &amp; Lebenslauf</h3><p>SAP-Projekte, Ausbildung und sieben Sprachen.</p><span>Profil ansehen →</span></a>
 </div>
 <section class="contact"><div><h2>Nicht sicher, wo du anfangen sollst?</h2><p>Schreib mir kurz, was du vorhast – ich antworte persönlich.</p></div><a href="/fabio/#fabio-anfrage">Fabio kontaktieren</a></section>
 </div></main>
-<footer><div class="hw"><span>© 2026 Fabio Witt · Zürich</span><nav aria-label="Rechtliches"><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a></nav></div></footer>
+<footer class="site-foot"><div class="hw">
+<div class="site-foot__grid">
+<div class="site-foot__brand"><b>Fabio Witt</b><p>SAP-Beratung, Sprachunterricht und digitale Projekte aus Zürich.</p><a class="site-foot__mail" href="/fabio/#fabio-anfrage">Anfrage senden →</a></div>
+<nav aria-label="Beratung"><b>Beratung</b><a href="/dachwerk/">DACHWERK</a><a href="/dachwerk/vorgehen">Vorgehen</a><a href="/dachwerk/blog.html">SAP-Blog</a><a href="/digital">Digital</a></nav>
+<nav aria-label="Lernen"><b>Lernen</b><a href="/sprachschule/">SPRACHWERK</a><a href="/lingora/">Lingora</a><a href="/grammarfirst/">GrammarFirst</a><a href="/sprachschule/blog.html">Sprachblog</a></nav>
+<nav aria-label="Über mich"><b>Über mich</b><a href="/fabio/">Profil</a><a href="/downloads/Fabio-Witt-CV.pdf">Lebenslauf</a><a href="/fabio/#fabio-anfrage">Kontakt</a></nav>
+</div>
+<div class="site-foot__legal"><span>© 2026 Fabio Witt · Zürich</span><nav aria-label="Rechtliches"><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a></nav></div>
+</div></footer>
 <script>function legacySection(){if(location.hash && !['#main'].includes(location.hash)){location.replace('/fabio/'+location.hash)}}window.addEventListener('hashchange',legacySection);legacySection();</script>
 <script src="/shared-assets/i18n-v55.js" defer></script>
 <script defer src="/shared-assets/nav-v63.js"></script>
 <script defer src="/shared-assets/fold-v64.js"></script>
+<script defer src="/shared-assets/polish-v65.js"></script>
 </body></html>
