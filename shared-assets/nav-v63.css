@@ -16,8 +16,8 @@
 .fw50-dd__toggle{display:inline-grid;place-items:center;width:22px;height:40px;margin-left:-4px;padding:0;border:0;background:transparent;color:var(--nav-text);cursor:pointer;border-radius:8px}
 .fw50-dd__toggle:hover{background:var(--nav-hover)}
 .fw50-top[aria-current="page"],.fw50-dd.is-current>button{color:var(--nav-navy)!important;background:var(--nav-hover)}
-.fw50-dd--lingora>button{color:var(--nav-red)!important}
-.fw50-dd--lingora>button:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--nav-red)}
+.fw50-dd--lingora>button{color:#0F5C8A!important}
+.fw50-dd--lingora>button:before{content:"";width:7px;height:7px;border-radius:50%;background:#E0A800}
 .fw50-dd{position:relative}
 .fw50-dd__toggle svg{display:block;width:11px;height:11px;opacity:.7;transition:transform .15s}
 .fw50-dd__toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
@@ -61,7 +61,7 @@
   .fw50-acc>summary:after{content:"";width:9px;height:9px;border-right:2px solid var(--nav-muted);border-bottom:2px solid var(--nav-muted);transform:rotate(45deg);margin-top:-4px;transition:transform .15s}
   .fw50-acc[open]>summary:after{transform:rotate(-135deg);margin-top:4px}
   .fw50-acc.is-current{border-color:#c9d8e3;background:#fafcfd}
-  .fw50-acc--lingora>summary b{color:var(--nav-red)}
+  .fw50-acc--lingora>summary b{color:#0F5C8A}
   .fw50-acc__links{display:grid;gap:2px;padding:0 8px 8px}
   .fw50-acc__links .fw50-item{padding:11px 12px}
   .fw50-acc__links .fw50-item b{font-size:15px}
@@ -92,7 +92,7 @@
 .fw-qc__send:hover{background:#17456f}
 .fw-qc__note{font-size:12.5px;color:#64748b;margin:0}
 @media(max-width:560px){.fw-qc{width:100%;max-width:100%;margin:auto 0 0;border-radius:20px 20px 0 0}.fw-qc__row{grid-template-columns:1fr}}
-.fw50-nav .fw50-dd--lingora>.fw50-dd__link{color:var(--nav-red)!important}
+.fw50-nav .fw50-dd--lingora>.fw50-dd__link{color:#0F5C8A!important;font-weight:800}
 
 /* v67: quick contact form – fields never overflow or overlap, whatever page styles say. */
 .fw-qc,.fw-qc *,.fw-qc *::before,.fw-qc *::after{box-sizing:border-box}
