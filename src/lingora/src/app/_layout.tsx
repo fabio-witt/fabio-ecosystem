@@ -192,6 +192,7 @@ function RootNavigator() {
         <Stack.Screen name="exam" />
         <Stack.Screen name="certificate" />
         <Stack.Screen name="word-station" />
+        <Stack.Screen name="island-crossing" />
         <Stack.Screen name="feedback" />
         <Stack.Screen name="insights" />
       </Stack.Protected>

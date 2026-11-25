@@ -37,6 +37,8 @@ export type GameState = {
   flags: { early?: boolean; night?: boolean; leagueGold?: boolean };
   /** Word stations on the learning path that were passed ("course:unit"). */
   wordStations: string[];
+  /** Stamped crossings on the learning path ("course:unit"). */
+  islandCrossings: string[];
   /** Hours (0–23) of the last lessons, so reminders can come when you usually learn. */
   lessonHours: number[];
   /** Monthly challenges already completed ("2026-11:days20"). */
@@ -90,6 +92,7 @@ const initial: GameState = {
   totals: { lessons: 0, perfect: 0, words: 0, mistakes: 0, chests: 0, corrections: 0 },
   flags: {},
   wordStations: [],
+  islandCrossings: [],
   lessonHours: [],
   challenges: [],
   dailyChest: { run: 0 },
@@ -223,6 +226,7 @@ export function useGame() {
     flags: { ...initial.flags, ...stored.flags },
     hearts: stored.hearts ?? initial.hearts,
     wordStations: stored.wordStations ?? [],
+    islandCrossings: stored.islandCrossings ?? [],
     dailyChest: stored.dailyChest ?? initial.dailyChest,
     claims: stored.claims ?? [],
     records: { ...initial.records, ...stored.records },
@@ -433,6 +437,13 @@ export function useGame() {
     update((s) => ((s.wordStations ?? []).includes(key) ? s : { ...s, gems: s.gems + 5, wordStations: [...(s.wordStations ?? []), key] }));
   }, [update]);
 
+  const stampIslandCrossing = useCallback((key: string) => {
+    update((s) => {
+      const stamps = s.islandCrossings ?? [];
+      return stamps.includes(key) ? s : { ...s, islandCrossings: [...stamps, key] };
+    });
+  }, [update]);
+
   const openUnitChest = useCallback((key: string) => {
     update((s) => {
       if (s.chests.includes(key)) return s;
@@ -513,7 +524,7 @@ export function useGame() {
     hearts: isPlus ? { count: MAX_HEARTS, nextIn: 0 } : currentHearts(state.hearts),
     isPlus,
     recordLesson, recordWord, recordMistakeFixed, loseHeart, recordSprint,
-    openUnitChest, openQuestChest, buy, unequip, addGems, passWordStation, toggleSaved, completeChallenge, recordCombo, claimDailyChest, claimReward, markLevelSeen, setCorrections, markLeagueGold,
+    openUnitChest, openQuestChest, buy, unequip, addGems, passWordStation, stampIslandCrossing, toggleSaved, completeChallenge, recordCombo, claimDailyChest, claimReward, markLevelSeen, setCorrections, markLeagueGold,
     queueResult, clearPending, startFreeLesson, buyLessonWithGems, refundHeart, recordFast,
     spendGems, setHardMode, recordSecondFixed, claimComeback, markLegendary, recordMemory,
   };

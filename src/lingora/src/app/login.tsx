@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/brand-logo';
 import { FormNotice, type Notice } from '@/components/form-notice';
 import { SocialLogin } from '@/components/social-login';
 import { Button } from '@/components/ui';
@@ -99,11 +100,7 @@ export default function LoginScreen() {
         showsVerticalScrollIndicator={false}
       >
         <LanguageToggle />
-        <View style={styles.logoIcon}>
-          <Text style={styles.logoSymbol}>L</Text>
-        </View>
-
-        <Text style={styles.brand}>lingora</Text>
+        <BrandLogo size={44} />
 
         <View style={styles.guestBox}>
           <Text style={styles.guestTitle}>{t('New here? Start learning right away.')}</Text>
@@ -196,26 +193,6 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     paddingHorizontal: 26,
     paddingTop: 40,
     paddingBottom: 40,
-  },
-  logoIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 15,
-    backgroundColor: colors.action,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoSymbol: {
-    color: colors.onPrimary,
-    fontSize: 30,
-    fontWeight: '800',
-  },
-  brand: {
-    color: colors.text,
-    fontSize: 27,
-    lineHeight: 34,
-    fontWeight: '800',
-    marginTop: 10,
   },
   title: {
     color: colors.text,

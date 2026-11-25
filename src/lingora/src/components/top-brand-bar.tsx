@@ -22,19 +22,14 @@ export function TopBrandBar() {
   const [picking, setPicking] = useState(false);
   return (
     <View style={[styles.bar, { paddingTop: insets.top + 6 }]}>
-      {course ? (
-        // While learning a language its flag replaces the L; tapping it switches the language.
-        <Pressable onPress={() => setPicking(true)} accessibilityRole="button" hitSlop={6} style={styles.flagButton}
-          accessibilityLabel={t('Learning {language}. Change language', { language: t(course.name) })}>
-          <Flag emoji={course.flag} size={32} />
-          <AppText style={styles.name}>GrammarBay</AppText>
+      <Pressable onPress={() => setPicking(true)} accessibilityRole="button" hitSlop={6} style={styles.languageButton}
+        accessibilityLabel={course ? t('Learning {language}. Change language', { language: t(course.name) }) : t('Choose a language')}>
+        <BrandLogo size={32} />
+        <View style={styles.language} aria-hidden>
+          {course && <Flag emoji={course.flag} size={22} />}
           <AppText variant="caption" color="textSecondary" accessible={false}>▾</AppText>
-        </Pressable>
-      ) : (
-        <Pressable onPress={() => setPicking(true)} accessibilityRole="button" accessibilityLabel={t('Choose a language')} hitSlop={6}>
-          <BrandLogo size={32} />
-        </Pressable>
-      )}
+        </View>
+      </Pressable>
       <LanguagePickerModal visible={picking} onClose={() => setPicking(false)} />
       <Pressable onPress={() => router.push('/notifications')} accessibilityRole="button"
         accessibilityLabel={t('Activity inbox')} hitSlop={8} style={styles.bell}>
@@ -50,8 +45,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     paddingHorizontal: spacing.md, paddingBottom: 6,
     backgroundColor: colors.background, borderBottomWidth: 1, borderBottomColor: colors.borderSubtle,
   },
-  flagButton: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  name: { fontSize: 20, lineHeight: 26, fontWeight: '900', letterSpacing: -0.5 },
+  languageButton: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  language: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   bell: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceMuted },
   bellIcon: { fontSize: 17, lineHeight: 21 },
 });

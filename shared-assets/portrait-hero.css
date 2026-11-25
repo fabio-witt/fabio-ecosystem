@@ -1,0 +1,116 @@
+.fw-portrait-hero {
+  --portrait-width: 400px;
+}
+
+.hero__grid.fw-portrait-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--portrait-width));
+}
+
+.hero-v3__grid.fw-portrait-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, var(--portrait-width));
+  align-items: center;
+  padding-bottom: 48px;
+}
+
+.fw-portrait-column {
+  display: grid;
+  width: 100%;
+  max-width: var(--portrait-width);
+  justify-self: end;
+  gap: 16px;
+}
+
+.fw-portrait {
+  position: relative;
+  width: 100%;
+  max-width: var(--portrait-width);
+  margin: 0;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+  background: #133149;
+  box-shadow: 0 12px 34px rgb(11 34 56 / 20%);
+}
+
+.fw-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+.fw-portrait figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  padding: 48px 20px 18px;
+  background: linear-gradient(transparent, rgb(8 23 35 / 92%));
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.fw-portrait figcaption strong {
+  font-size: clamp(20px, 2.5vw, 28px);
+}
+
+.hero-v3__grid .fw-portrait-column .sapc-profile {
+  margin: 0;
+}
+
+.hero-grid .fw-portrait-column .hero-card {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .fw-portrait-hero {
+    --portrait-width: 340px;
+  }
+
+  .hero__grid.fw-portrait-hero,
+  .hero-grid.fw-portrait-hero,
+  .hero-v3__grid.fw-portrait-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .fw-portrait-column {
+    display: contents;
+  }
+
+  .fw-portrait-hero .fw-portrait {
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  .fw-portrait-hero .hero-card,
+  .fw-portrait-hero .sapc-profile {
+    justify-self: center;
+  }
+
+  .fw-portrait-reference > figure {
+    grid-row: 1;
+    justify-self: center;
+    width: min(100%, var(--portrait-width));
+  }
+
+  .fw-portrait-reference .portrait {
+    height: auto;
+  }
+
+  .hero.fw-portrait-section {
+    padding: 0 0 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .fw-portrait-hero {
+    --portrait-width: 290px;
+  }
+
+  .fw-portrait figcaption {
+    padding: 32px 15px 13px;
+  }
+}

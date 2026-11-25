@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { createHash } = require("node:crypto");
 const { parseEnv } = require("node:util");
 
 const source = path.resolve(process.argv[2] || path.join(__dirname, "../lingora"));
@@ -34,6 +35,10 @@ export const key = ${JSON.stringify(key)};
 `);
 
 const route = "/grammarfirst/lingora";
+const iconVersion = createHash("sha256")
+  .update(fs.readFileSync(path.join(source, "assets/images/pwa-512.png")))
+  .digest("hex").slice(0, 12);
+const iconUrl = (name) => `${route}/${name}?v=${iconVersion}`;
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), "grammarfirst-expo-"));
 try {
   for (const name of ["src", "assets", "package.json", "tsconfig.json"]) {
@@ -121,7 +126,7 @@ self.addEventListener("fetch", (event) => {
     display: "standalone",
     background_color: "#0B0B0D",
     theme_color: "#0B0B0D",
-    icons: [192, 512].map((size) => ({ src: `${route}/pwa-${size}.png`, sizes: `${size}x${size}`, type: "image/png", purpose: "any maskable" })),
+    icons: [192, 512].map((size) => ({ src: iconUrl(`pwa-${size}.png`), sizes: `${size}x${size}`, type: "image/png", purpose: "any" })),
   }, null, 2));
   patchMobileShell(path.join(output, "index.html"));
 } finally {
@@ -136,6 +141,7 @@ function patchMobileShell(file) {
   const reset = "</style>";
   let html = read(file);
   if (!html.includes(viewport) || !html.includes(reset)) throw new Error("Expo index.html changed: update the mobile shell patch.");
+  html = html.replace(`href="${route}/favicon.ico"`, `href="${iconUrl("favicon.ico")}"`);
   html = html.replace(viewport, [
     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />',
     '<meta name="theme-color" content="#0B0B0D" />',
@@ -143,13 +149,13 @@ function patchMobileShell(file) {
     '<meta name="mobile-web-app-capable" content="yes" />',
     '<meta name="apple-mobile-web-app-status-bar-style" content="default" />',
     '<meta name="apple-mobile-web-app-title" content="GrammarBay" />',
-    `<link rel="apple-touch-icon" href="${route}/apple-touch-icon.png" />`,
-    `<link rel="manifest" href="${route}/manifest.webmanifest" />`,
+    `<link rel="apple-touch-icon" href="${iconUrl("apple-touch-icon.png")}" />`,
+    `<link rel="manifest" href="${iconUrl("manifest.webmanifest")}" />`,
     '<meta name="description" content="GrammarBay: learn German, English, Spanish, French and more with short lessons, a vocabulary trainer, stories and real language partners. Free to start, no account needed." />',
     '<meta property="og:title" content="GrammarBay – Learn languages. Connect cultures." />',
     '<meta property="og:description" content="Short lessons, vocabulary trainer, stories and real language partners. Free to start." />',
     '<meta property="og:type" content="website" />',
-    `<meta property="og:image" content="${route}/pwa-512.png" />`,
+    `<meta property="og:image" content="${iconUrl("pwa-512.png")}" />`,
     '<meta name="twitter:card" content="summary" />',
   ].join("\n    "));
   html = html.replace(reset, `

@@ -14,6 +14,9 @@ import { AppText, Button, Card } from '@/components/ui';
 import { useScrollPosition } from '@/hooks/use-scroll-position';
 import { radius, screenPadding, spacing, useThemedStyles, type ThemeColors } from '@/constants/theme';
 
+import { EncounterPortrait, IslandArt } from './island-art';
+import { crossingBadge, crossingExercises, encounterAfterUnit, islandForUnit } from './island-route';
+
 import { activityLabel, cefrNames, entriesForUnit, levelForUnit, type CefrLevel, type Course, type CourseEntry } from './catalog';
 import { GrammarLibrary, RuleCard } from './grammar-library';
 import { CourseVocabulary } from '@/features/vocabulary/course-vocabulary';
@@ -53,22 +56,7 @@ const NODE_SIZE = 70;
 const GOLD = '#F2B705';
 const GOLD_EDGE = '#B98A00';
 
-/** Every unit gets its own color, icon and scenery, so the path feels like a journey. */
-type UnitTheme = { main: string; edge: string; icon: string; deco: [string, string] };
-const UNIT_THEMES: UnitTheme[] = [
-  { main: '#16B39B', edge: '#0E8A77', icon: '🌱', deco: ['🌿', '🍃'] },
-  { main: '#7C5CFF', edge: '#5B3FD6', icon: '🗣️', deco: ['💬', '✨'] },
-  { main: '#FF8A00', edge: '#C96A00', icon: '🏠', deco: ['🌻', '🏡'] },
-  { main: '#2D8CFF', edge: '#1C64C2', icon: '🧭', deco: ['🌊', '⛵'] },
-  { main: '#E2457A', edge: '#B12E5C', icon: '⏰', deco: ['🌸', '🎈'] },
-  { main: '#0FA3B1', edge: '#0A7782', icon: '🗺️', deco: ['🏝️', '🐚'] },
-  { main: '#8E5CD9', edge: '#6A3FB0', icon: '⏳', deco: ['🌙', '⭐'] },
-  { main: '#E8590C', edge: '#B04306', icon: '🚀', deco: ['🪐', '☄️'] },
-  { main: '#2F9E44', edge: '#237A34', icon: '🏔️', deco: ['🌲', '🦌'] },
-  { main: '#D6336C', edge: '#A61E4D', icon: '🎭', deco: ['🎶', '🎨'] },
-  { main: '#1971C2', edge: '#124F8A', icon: '🏛️', deco: ['📜', '🏺'] },
-  { main: '#C08A00', edge: '#8F6700', icon: '👑', deco: ['💎', '🏆'] },
-];
+type UnitTheme = { main: string; edge: string };
 
 type PathItem = { key: string; offset: number; done: boolean; node: React.ReactNode };
 
@@ -76,7 +64,7 @@ function openEntry(entry: CourseEntry) {
   router.push({ pathname: '/lesson/[id]', params: { id: entry.id } });
 }
 
-/** Duolingo-style path: one winding column of lesson nodes per unit. */
+/** One winding column of lesson nodes per island, with optional crossings between units. */
 export function CoursePath({ course, onBack, startingLevel, scores, progressUnavailable }: Props) {
   const { styles } = useThemedStyles(createStyles);
   const scroll = useScrollPosition(`course-path:${course.id}`);
@@ -178,7 +166,7 @@ export function CoursePath({ course, onBack, startingLevel, scores, progressUnav
             <View style={styles.flex}>
               <AppText variant="heading" color="onPrimary" accessibilityRole="header">{t(course.name)}</AppText>
               <AppText variant="caption" color="onPrimary" style={styles.courseMeta}>
-                {t('{done} of {total} lessons · {percent}% complete', { done: completed, total: allEntries.length, percent })}
+                {t('Island route')} · {t('{done} of {total} lessons · {percent}% complete', { done: completed, total: allEntries.length, percent })}
               </AppText>
             </View>
           </View>
@@ -228,7 +216,12 @@ export function CoursePath({ course, onBack, startingLevel, scores, progressUnav
         ) : null}
 
         {units.map(({ unit, level, entries }, unitIndex) => {
-          const theme = UNIT_THEMES[unitIndex % UNIT_THEMES.length];
+          const island = islandForUnit(unitIndex);
+          const theme = { main: island.sea, edge: island.edge };
+          const encounter = encounterAfterUnit(unitIndex);
+          const hasNextIsland = unitIndex < units.length - 1;
+          const canCross = hasNextIsland && crossingExercises(entries, scores).length > 0;
+          const crossed = game.state.islandCrossings.includes(crossingBadge(course.id, unitIndex));
           const newLevel = unitIndex === 0 || units[unitIndex - 1].level !== level;
           const station = stations.get(unitIndex);
           const stationDone = game.state.wordStations.includes(wordStationKey(course.id, unitIndex));
@@ -281,13 +274,13 @@ export function CoursePath({ course, onBack, startingLevel, scores, progressUnav
               <View style={[styles.banner, { backgroundColor: theme.main, borderBottomColor: theme.edge }]}>
                 <View style={styles.bannerRow}>
                   <View style={styles.flex}>
-                    <AppText style={styles.bannerLabel}>{t('Unit {n} · {level}', { n: unitIndex + 1, level })}</AppText>
+                    <AppText style={styles.bannerLabel}>
+                      {island.emblem} {t(island.name)} · {t('Unit {n} · {level}', { n: unitIndex + 1, level })}
+                    </AppText>
                     <AppText style={styles.bannerTitle} accessibilityRole="header">{unit.title}</AppText>
                   </View>
-                  <View style={[styles.bannerIconWrap, { backgroundColor: theme.edge }]}>
-                    <AppText style={styles.bannerIcon}>{doneCount === entries.length && entries.length ? '🏅' : theme.icon}</AppText>
-                  </View>
                 </View>
+                <IslandArt island={island} height={106} />
                 <View style={styles.bannerTrack}>
                   <View style={[styles.bannerFill, { width: `${entries.length ? Math.max(4, (doneCount / entries.length) * 100) : 0}%` }]} />
                 </View>
@@ -310,9 +303,7 @@ export function CoursePath({ course, onBack, startingLevel, scores, progressUnav
                   ))}
                 </View>
               ) : null}
-              <View style={styles.path}>
-                <AppText style={[styles.deco, styles.decoLeft]} accessible={false}>{theme.deco[0]}</AppText>
-                <AppText style={[styles.deco, styles.decoRight]} accessible={false}>{theme.deco[1]}</AppText>
+              <View style={[styles.path, { backgroundColor: `${island.sea}16` }]}>
                 {items.map((item, index) => (
                   <Fragment key={item.key}>
                     {index > 0 ? <Trail from={items[index - 1].offset} to={item.offset} done={items[index - 1].done} color={theme.main} /> : null}
@@ -320,6 +311,30 @@ export function CoursePath({ course, onBack, startingLevel, scores, progressUnav
                   </Fragment>
                 ))}
               </View>
+              {hasNextIsland && (
+                <Card style={styles.crossing}>
+                  <View style={styles.bannerRow}>
+                    <EncounterPortrait encounter={encounter} size={52} />
+                    <View style={styles.flex}>
+                      <AppText variant="label" color="textSecondary">
+                        {crossed ? t('Crossing stamped') : t('Optional crossing')}
+                      </AppText>
+                      <AppText variant="subheading">{t(encounter.name)}</AppText>
+                      <AppText variant="caption" color="textSecondary">
+                        {t('Destination: {island}', { island: t(islandForUnit(unitIndex + 1).name) })}
+                      </AppText>
+                    </View>
+                  </View>
+                  {canCross ? (
+                    <Button title={crossed ? t('Sail again') : t('View crossing')} size="sm" variant="secondary"
+                      onPress={() => router.push({ pathname: '/island-crossing', params: { course: course.id, unit: String(unitIndex) } })} />
+                  ) : (
+                    <AppText variant="caption" color="textSecondary">
+                      {t('Complete a lesson with exercises on this island to set sail.')}
+                    </AppText>
+                  )}
+                </Card>
+              )}
               {unitIndex === 0 && <Card style={{ gap: spacing.sm, marginVertical: spacing.md }}>
                 <AppText variant="heading">{t('Bonus practice')}</AppText>
                 <Button title={t('Daily circuit')} variant="secondary"
@@ -674,18 +689,14 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     borderRadius: radius.full,
     backgroundColor: colors.primarySoft,
   },
-  path: { alignItems: 'center', paddingVertical: spacing.md, position: 'relative' },
+  path: { alignItems: 'center', paddingVertical: spacing.md, borderRadius: radius.xl },
+  crossing: { gap: spacing.sm, marginBottom: spacing.md },
   trail: { height: 38, justifyContent: 'space-evenly', alignItems: 'center' },
   trailDot: { width: 9, height: 9, borderRadius: 5, backgroundColor: colors.border, opacity: 0.8 },
-  deco: { position: 'absolute', fontSize: 40, lineHeight: 48, opacity: 0.22 },
-  decoLeft: { left: 4, top: 40 },
-  decoRight: { right: 4, bottom: 70 },
   banner: { gap: spacing.sm, padding: spacing.lg, borderRadius: radius.xl, borderBottomWidth: 6, marginTop: spacing.sm },
   bannerRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   bannerLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12, lineHeight: 16, fontWeight: '800', letterSpacing: 1, textTransform: 'uppercase' },
   bannerTitle: { color: '#FFFFFF', fontSize: 21, lineHeight: 27, fontWeight: '900' },
-  bannerIconWrap: { width: 54, height: 54, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  bannerIcon: { fontSize: 30, lineHeight: 36 },
   bannerTrack: { height: 10, borderRadius: radius.full, backgroundColor: 'rgba(0,0,0,0.18)', overflow: 'hidden' },
   bannerFill: { height: '100%', borderRadius: radius.full, backgroundColor: '#FFFFFF' },
   bannerMeta: { color: 'rgba(255,255,255,0.9)', fontSize: 13, lineHeight: 18, fontWeight: '700' },

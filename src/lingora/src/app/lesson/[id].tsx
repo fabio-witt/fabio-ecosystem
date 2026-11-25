@@ -36,6 +36,8 @@ import { getUiLanguage, t } from '@/lib/i18n';
 import { medvedPhrases } from '@/features/learn/medved-phrases';
 import { letterPair } from '@/features/learn/content/alphabets';
 import { track } from '@/lib/insights';
+import { IslandArt, IslandLabel } from '@/features/learn/island-art';
+import { islandForUnit } from '@/features/learn/island-route';
 
 export default function LessonScreen() {
   const { id, view, exchangeLanguageId } = useLocalSearchParams<{ id: string; view?: string; exchangeLanguageId?: string }>();
@@ -251,9 +253,15 @@ function LessonSession({ entry, course, level, exchangeLanguageId }: {
 
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']}>
-      <ScreenHeader title={t(course.name) + ' · GrammarFirst'} />
+      <ScreenHeader title={t(course.name)} />
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView key={retry ? `retry-${retryStep}` : step} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.content}>
+          {unitIndex >= 0 && step < 0 && (
+            <>
+              <IslandArt island={islandForUnit(unitIndex)} height={84} />
+              <IslandLabel index={unitIndex} />
+            </>
+          )}
           <AppText variant="title" accessibilityRole="header">{entry.title}</AppText>
           {step < 0 ? (
             <>
