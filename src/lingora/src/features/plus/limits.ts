@@ -1,5 +1,5 @@
 /**
- * What is free and what needs Lingora Plus.
+ * What is free and what needs GrammarBay Plus.
  *
  * Free forever: the whole A1 level of every course, word stations, reviews,
  * level tests and the community. From A2 on, free learners can start a few

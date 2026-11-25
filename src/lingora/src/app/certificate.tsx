@@ -21,7 +21,7 @@ export default function CertificateScreen() {
   const profile = useMyProfile().data?.profile;
   const score = course ? progress.data?.[examId(course.id, level)] : undefined;
   const passed = score !== undefined && score >= EXAM_PASS;
-  const name = profile?.full_name || profile?.username || t('Lingora learner');
+  const name = profile?.full_name || profile?.username || t('GrammarBay learner');
   const date = new Date().toLocaleDateString(getUiLanguage() === 'de' ? 'de-CH' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
@@ -40,7 +40,7 @@ export default function CertificateScreen() {
               <View style={[styles.band, { backgroundColor: levelColors[level] }]} />
               <View style={styles.header}>
                 <BrandIcon size={44} />
-                <AppText style={styles.brand}>Lingora</AppText>
+                <AppText style={styles.brand}>GrammarBay</AppText>
               </View>
               <AppText style={styles.kicker}>{t('CERTIFICATE OF ACHIEVEMENT')}</AppText>
               <AppText style={styles.small}>{t('This certifies that')}</AppText>
@@ -54,7 +54,7 @@ export default function CertificateScreen() {
               </View>
               <AppText style={styles.course}>{t(course.name)} · {t(cefrNames[level])}</AppText>
               <AppText style={styles.small}>{t('Result: {n}%', { n: score ?? 0 })} · {date}</AppText>
-              <AppText style={styles.footnote}>{t('Level according to the Common European Framework of Reference (CEFR), as taught in the Lingora course.')}</AppText>
+              <AppText style={styles.footnote}>{t('Level according to the Common European Framework of Reference (CEFR), as taught in the GrammarBay course.')}</AppText>
             </View>
             {Platform.OS === 'web' ? (
               <Button title={t('🖨️ Print or save as PDF')} size="lg" fullWidth onPress={() => window.print()} />

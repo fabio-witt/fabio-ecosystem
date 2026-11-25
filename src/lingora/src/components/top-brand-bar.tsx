@@ -14,7 +14,7 @@ import { LanguagePickerModal } from '@/features/learn/language-picker';
 
 export { TopInsetProvider } from './top-inset';
 
-/** Thin bar above every main tab: Lingora logo top left, inbox top right. */
+/** Thin bar above every main tab: GrammarBay logo top left, inbox top right. */
 export function TopBrandBar() {
   const { styles } = useThemedStyles(createStyles);
   const insets = useSafeAreaInsets();
@@ -27,7 +27,7 @@ export function TopBrandBar() {
         <Pressable onPress={() => setPicking(true)} accessibilityRole="button" hitSlop={6} style={styles.flagButton}
           accessibilityLabel={t('Learning {language}. Change language', { language: t(course.name) })}>
           <Flag emoji={course.flag} size={32} />
-          <AppText style={styles.name}>Lingora</AppText>
+          <AppText style={styles.name}>GrammarBay</AppText>
           <AppText variant="caption" color="textSecondary" accessible={false}>▾</AppText>
         </Pressable>
       ) : (

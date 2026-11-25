@@ -446,7 +446,7 @@ function OutOfHearts({ nextIn }: { nextIn: number }) {
 
 /** Native share sheet, the browser share dialog, or the clipboard as a fallback. */
 async function shareResult(courseName: string, title: string, score: number) {
-  const message = t('I just finished “{title}” in {course} on Lingora with {score}%! 🎉', { title, course: t(courseName), score });
+  const message = t('I just finished “{title}” in {course} on GrammarBay with {score}%! 🎉', { title, course: t(courseName), score });
   try {
     if (Platform.OS === 'web') {
       const nav = typeof navigator !== 'undefined' ? navigator as Navigator & { share?: (data: { text: string }) => Promise<void> } : undefined;

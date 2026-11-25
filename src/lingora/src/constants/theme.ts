@@ -1,5 +1,5 @@
 /**
- * Lingora design tokens.
+ * GrammarBay design tokens.
  *
  * Every color, spacing value, radius and text style in the app should come
  * from here. Change a value once and the whole app follows.

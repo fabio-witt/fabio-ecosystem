@@ -50,7 +50,7 @@ export function friendlyAuthError(error: unknown, action: 'sign-up' | 'login' | 
       };
   }
   if (isNetworkProblem(e)) {
-    return { title: t('No connection'), message: t('Lingora could not reach the server. Check your internet connection and try again.') };
+    return { title: t('No connection'), message: t('GrammarBay could not reach the server. Check your internet connection and try again.') };
   }
   if (code === 'over_email_send_rate_limit' || /email rate limit/i.test(message)) {
     return { tone: 'info', title: t('Too many emails right now'), message: t('Please wait a few minutes and try again.') };

@@ -18,9 +18,9 @@ export function ScreenHeader({ title, right }: ScreenHeaderProps) {
   const { styles } = useThemedStyles(createStyles);
   return (
     <View style={styles.header}>
-      {/* The Lingora logo is always top left; it leads home from anywhere, also from a lesson. */}
+      {/* The GrammarBay logo is always top left; it leads home from anywhere, also from a lesson. */}
       <Pressable onPress={() => router.replace('/')} accessibilityRole="button"
-        accessibilityLabel={t('Lingora home')} hitSlop={6} style={({ pressed }) => pressed && styles.pressed}>
+        accessibilityLabel={t('GrammarBay home')} hitSlop={6} style={({ pressed }) => pressed && styles.pressed}>
         <BrandIcon size={34} />
       </Pressable>
       <Pressable

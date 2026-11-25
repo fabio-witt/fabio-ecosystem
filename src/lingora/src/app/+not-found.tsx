@@ -14,7 +14,7 @@ export default function NotFoundScreen() {
         <Medved mood="sad" size={120} />
         <AppText variant="title" align="center">{t('This page does not exist')}</AppText>
         <AppText align="center" color="textSecondary">{t('The link may be old or mistyped. Let’s get you back to learning.')}</AppText>
-        <Button title={t('Back to Lingora')} size="lg" onPress={() => router.replace('/')} />
+        <Button title={t('Back to GrammarBay')} size="lg" onPress={() => router.replace('/')} />
       </View>
     </Screen>
   );

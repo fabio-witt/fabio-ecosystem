@@ -17,7 +17,7 @@ export function reminderPlan(hour: number, progress: ReminderProgress | undefine
       title: translate('Time to practise', undefined, language),
       body: offset === 0 && (progress?.streak ?? 0) > 0
         ? translate('Keep your {n}-day streak alive with one lesson!', { n: progress!.streak }, language)
-        : translate('Continue a lesson or review a correction in Lingora.', undefined, language),
+        : translate('Continue a lesson or review a correction in GrammarBay.', undefined, language),
     });
   }
   return result;

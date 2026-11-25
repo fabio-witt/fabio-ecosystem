@@ -265,7 +265,7 @@ function Welcome({ onStart }: { onStart: () => void }) {
   const { styles } = useThemedStyles(createStyles);
   const promises: [string, string, string][] = [
     ['📘', 'Short lessons that build on each other', 'From the alphabet to fluent sentences, step by step.'],
-    ['🔁', 'Smart review', 'Lingora brings back exactly what you are about to forget.'],
+    ['🔁', 'Smart review', 'GrammarBay brings back exactly what you are about to forget.'],
     ['🤝', 'Real people', 'Practise with native speakers who learn your language.'],
   ];
   return (
@@ -274,7 +274,7 @@ function Welcome({ onStart }: { onStart: () => void }) {
         <Medved mood="cheer" size={120} />
       </Animated.View>
       <Animated.View entering={FadeInUp.delay(200).duration(450).reduceMotion(ReduceMotion.System)} style={styles.welcomeText}>
-        <AppText variant="display" align="center">{t('Welcome to Lingora')}</AppText>
+        <AppText variant="display" align="center">{t('Welcome to GrammarBay')}</AppText>
         <AppText align="center" color="textSecondary">{t('Learn languages. Connect cultures.')}</AppText>
       </Animated.View>
       <View style={styles.promises}>

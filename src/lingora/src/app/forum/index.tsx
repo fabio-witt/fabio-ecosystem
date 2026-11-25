@@ -18,7 +18,7 @@ const SORTS: { id: ForumSort; label: string }[] = [
   { id: 'unanswered', label: 'Unanswered' },
 ];
 
-/** The Lingora forum: questions and discussions by topic and language. */
+/** The GrammarBay forum: questions and discussions by topic and language. */
 export default function ForumScreen() {
   const { colors, styles } = useThemedStyles(createStyles);
   const guest = useIsGuest();

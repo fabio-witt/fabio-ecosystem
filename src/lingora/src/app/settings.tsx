@@ -53,7 +53,7 @@ export default function SettingsScreen() {
             <Button title={t("📊 Insights")} variant="secondary" onPress={() => router.push('/insights')} />
           </>
         ) : null}
-        <Button title={t("✦ Lingora Plus")} onPress={() => router.push('/plus')} />
+        <Button title={t("✦ GrammarBay Plus")} onPress={() => router.push('/plus')} />
         <Button title={t("Privacy policy")} variant="secondary" onPress={() => router.push('/privacy')} />
         <Button title={t("Terms of use")} variant="secondary" onPress={() => router.push('/terms')} />
         <Button title={t("Imprint")} variant="secondary" onPress={() => router.push('/imprint')} />

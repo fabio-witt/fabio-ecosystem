@@ -15,7 +15,7 @@ import { useSession } from '@/providers/session-provider';
 
 const APP_URL = 'https://fabio-ecosystem-ashy.vercel.app/grammarfirst/lingora/';
 
-/** Invite friends: both get 7 days of Lingora Plus. */
+/** Invite friends: both get 7 days of GrammarBay Plus. */
 export default function InviteScreen() {
   const { colors, styles } = useThemedStyles(createStyles);
   const { user } = useSession();
@@ -41,7 +41,7 @@ export default function InviteScreen() {
     },
     onSuccess: () => { feedback('win'); setInput(''); void client.invalidateQueries(); },
   });
-  const message = t('Learn languages with me on Lingora – free. Use my invite code {code} and we both get a week of Lingora Plus: {url}', { code, url: APP_URL });
+  const message = t('Learn languages with me on GrammarBay – free. Use my invite code {code} and we both get a week of GrammarBay Plus: {url}', { code, url: APP_URL });
 
   async function share() {
     feedback('tap');
@@ -59,7 +59,7 @@ export default function InviteScreen() {
         <Card style={styles.center}>
           <Medved mood="cheer" size={100} />
           <AppText variant="title" align="center">{t('A week of Plus for you and a friend')}</AppText>
-          <AppText align="center" color="textSecondary">{t('Your friend enters your code after creating an account. You both get 7 days of Lingora Plus – up to 10 friends per month.')}</AppText>
+          <AppText align="center" color="textSecondary">{t('Your friend enters your code after creating an account. You both get 7 days of GrammarBay Plus – up to 10 friends per month.')}</AppText>
           {guest || !code ? <AppText align="center">{t('Create an account to get your own invite code.')}</AppText> : (
             <>
               <AppText style={styles.code} selectable>{code}</AppText>
@@ -77,7 +77,7 @@ export default function InviteScreen() {
                 placeholderTextColor={colors.textMuted} style={styles.input} accessibilityLabel={t('Invite code')} />
               <Button title={t('Redeem')} disabled={!input.trim() || redeem.isPending} onPress={() => redeem.mutate()} />
             </View>
-            {redeem.isSuccess ? <AppText color="success">{t('Done! You both have Lingora Plus for 7 days.')}</AppText> : null}
+            {redeem.isSuccess ? <AppText color="success">{t('Done! You both have GrammarBay Plus for 7 days.')}</AppText> : null}
             {redeem.isError ? <AppText color="danger">{redeem.error.message}</AppText> : null}
           </Card>
         ) : null}

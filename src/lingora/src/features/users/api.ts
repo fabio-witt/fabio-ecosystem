@@ -34,7 +34,7 @@ export const userKeys = {
 const SUMMARY_COLUMNS = 'id, full_name, username, avatar_url, country';
 
 export function displayNameOf(user: Pick<UserSummary, 'full_name' | 'username'> | null) {
-  return user?.full_name || user?.username || 'Lingora User';
+  return user?.full_name || user?.username || 'GrammarBay User';
 }
 
 async function fetchPublicProfile(userId: string, viewerId: string): Promise<PublicProfile> {

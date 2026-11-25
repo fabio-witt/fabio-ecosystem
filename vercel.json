@@ -3,6 +3,28 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "grammarbay.com"
+        }
+      ],
+      "destination": "https://grammarbay.com/grammarfirst/lingora/",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.grammarbay.com"
+        }
+      ],
+      "destination": "https://grammarbay.com/grammarfirst/lingora/",
+      "permanent": false
+    },
+    {
       "source": "/sap-blog",
       "destination": "/dachwerk/blog",
       "permanent": true

@@ -105,7 +105,7 @@ export function weeklyDays(days: string[], today: Date) {
 export const adventureTasks: Record<string, { goal: string; starter: string }> = {
   'zurich-coop': {
     goal: 'Use two clues to choose a tram together.',
-    starter: 'Lust auf ein Rätsel? Mein Fahrplanausschnitt sagt: Linie 4 fährt an Kante A, Linie 8 an Kante C. Öffne in Lingora «Ein Tag in Zürich» und lies unter «Hinweis für die zweite Person» den zweiten Teil. Frag mich dann, welche Linie an deiner Kante fährt.',
+    starter: 'Lust auf ein Rätsel? Mein Fahrplanausschnitt sagt: Linie 4 fährt an Kante A, Linie 8 an Kante C. Öffne in GrammarBay «Ein Tag in Zürich» und lies unter «Hinweis für die zweite Person» den zweiten Teil. Frag mich dann, welche Linie an deiner Kante fährt.',
   },
   'zurich-story': {
     goal: 'Write a short alternating story.',

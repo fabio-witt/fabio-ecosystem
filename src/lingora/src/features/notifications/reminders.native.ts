@@ -46,7 +46,7 @@ export async function scheduleLearningReminder(userId: string, hour: number, pro
   }
   let permission = await getPermissionsAsync();
   if (!permitted(permission) && permission.canAskAgain) permission = await requestPermissionsAsync();
-  if (!permitted(permission)) throw new Error(t('Allow Lingora notifications in your device settings to use reminders.'));
+  if (!permitted(permission)) throw new Error(t('Allow GrammarBay notifications in your device settings to use reminders.'));
   await replaceReminders(userId, hour, progress);
 }
 

@@ -1,7 +1,7 @@
 /**
- * Lingora Plus prices and checkout.
+ * GrammarBay Plus prices and checkout.
  *
- * Checkout uses Stripe Payment Links (no card data ever touches Lingora):
+ * Checkout uses Stripe Payment Links (no card data ever touches GrammarBay):
  * 1. Create two subscription Payment Links in the Stripe dashboard.
  * 2. Paste their URLs below.
  * 3. Deploy supabase/functions/stripe-webhook and set its two secrets
@@ -39,7 +39,7 @@ export const PLUS_BENEFITS: [icon: string, title: string, text: string][] = [
   ['🤖', '150 AI conversations a day', 'Role-play cafés, job interviews and more with gentle corrections (free: 10).'],
   ['💎', 'Double gems and season rewards', 'Every lesson, chest and season tier gives twice as much.'],
   ['👒', 'Exclusive Fabio outfits', 'Hats and glasses only Plus members can wear.'],
-  ['✦', 'Plus badge on your profile', 'Show partners that you support Lingora.'],
+  ['✦', 'Plus badge on your profile', 'Show partners that you support GrammarBay.'],
 ];
 
 /** Free vs Plus, for the comparison table. */

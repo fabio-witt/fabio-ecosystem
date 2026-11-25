@@ -8,7 +8,7 @@ export type AppTextProps = TextProps & {
   align?: 'left' | 'center' | 'right';
 };
 
-/** Text with Lingora typography. Use instead of <Text> from react-native. */
+/** Text with GrammarBay typography. Use instead of <Text> from react-native. */
 export function AppText({
   variant = 'body',
   color = 'text',

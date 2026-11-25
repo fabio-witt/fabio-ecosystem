@@ -1,5 +1,5 @@
 /**
- * Lingora's game layer: gems, daily quests, chests, achievements, hearts,
+ * GrammarBay's game layer: gems, daily quests, chests, achievements, hearts,
  * Fabio's wardrobe, a small activity diary, saved words and the offline
  * queue for lesson results. Stored on the device per account. Everything
  * that must stay fair between people (XP, leagues, streaks, duels) lives on

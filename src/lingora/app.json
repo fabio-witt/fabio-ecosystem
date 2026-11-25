@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Lingora",
-    "slug": "Lingora",
+    "name": "GrammarBay",
+    "slug": "GrammarBay",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -78,7 +78,7 @@
       [
         "expo-audio",
         {
-          "microphonePermission": "Lingora uses the microphone for voice messages and pronunciation practice."
+          "microphonePermission": "GrammarBay uses the microphone for voice messages and pronunciation practice."
         }
       ]
     ],

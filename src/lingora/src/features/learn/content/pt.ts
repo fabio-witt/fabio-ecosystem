@@ -6,7 +6,7 @@ import { build, choice, lesson, match, reading } from './helpers';
 // Topic order, grammar rules, example sentences and reading texts come from
 // the LERNWERK Portuguese material (sprachlernapp/grammar-v23.js and
 // stories-data.js on the Fabio Witt website). Explanations, tips and
-// exercises were rewritten for the Lingora lesson format: rule → pattern →
+// exercises were rewritten for the GrammarBay lesson format: rule → pattern →
 // examples → tip → practice. Every id here must also exist in
 // private.learn_entries (see supabase/migrations/*_portuguese_course.sql).
 

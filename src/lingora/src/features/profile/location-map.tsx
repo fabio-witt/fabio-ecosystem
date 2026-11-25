@@ -28,7 +28,7 @@ function useGeocode(place: string) {
       const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(place)}`;
       const headers: Record<string, string> = { Accept: 'application/json' };
       // Browsers send their own User-Agent; the apps identify themselves.
-      if (Platform.OS !== 'web') headers['User-Agent'] = 'Lingora/1.0 (language exchange app)';
+      if (Platform.OS !== 'web') headers['User-Agent'] = 'GrammarBay/1.0 (language exchange app)';
       const response = await fetch(url, { headers });
       if (!response.ok) return null;
       const [first] = await response.json() as { lat: string; lon: string }[];

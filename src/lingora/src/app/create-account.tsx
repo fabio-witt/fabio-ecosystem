@@ -72,7 +72,7 @@ export default function CreateAccountScreen() {
         <ScreenHeader title={t('Create a free account')} />
         <ScrollView contentContainerStyle={styles.content}>
           <MedvedSays mood="cheer" message={t('You already have an account. Everything is saved.')} />
-          <Button title={t('Back to Lingora')} onPress={() => router.replace('/')} />
+          <Button title={t('Back to GrammarBay')} onPress={() => router.replace('/')} />
         </ScrollView>
       </Screen>
     );

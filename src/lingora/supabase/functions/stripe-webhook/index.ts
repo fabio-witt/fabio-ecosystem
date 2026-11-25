@@ -1,4 +1,4 @@
-// Stripe → Lingora Plus.
+// Stripe → GrammarBay Plus.
 //
 // Stripe calls this function after a checkout and whenever a subscription
 // changes. It verifies Stripe's signature and then switches Plus on or off
@@ -63,7 +63,7 @@ Deno.serve(async (request) => {
       const userId = object.client_reference_id;
       const subscriptionId = object.subscription;
       if (!/^[0-9a-f-]{36}$/i.test(userId ?? '') || !subscriptionId) {
-        return Response.json({ ignored: 'checkout without a Lingora user' });
+        return Response.json({ ignored: 'checkout without a GrammarBay user' });
       }
       const { error } = await admin.from('plus_members').upsert({
         user_id: userId, tier: 'plus', source: 'stripe', external_id: subscriptionId,
@@ -74,7 +74,7 @@ Deno.serve(async (request) => {
       && object.payment_status === 'paid' && lifetimeLink && object.payment_link === lifetimeLink) {
       // Lifetime Plus: a one-time payment through the lifetime Payment Link.
       const userId = object.client_reference_id;
-      if (!/^[0-9a-f-]{36}$/i.test(userId ?? '')) return Response.json({ ignored: 'payment without a Lingora user' });
+      if (!/^[0-9a-f-]{36}$/i.test(userId ?? '')) return Response.json({ ignored: 'payment without a GrammarBay user' });
       const { error } = await admin.from('plus_members').upsert({
         user_id: userId, tier: 'plus', source: 'stripe', external_id: object.id,
         started_at: new Date().toISOString(), expires_at: null,

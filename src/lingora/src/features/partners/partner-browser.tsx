@@ -104,8 +104,8 @@ export function PartnerBrowser() {
         : <EmptyState title={t('No saved partners to show')} />}
       renderItem={({ item }) => <Card style={styles.card}>
         <View style={styles.cardTop}>
-          <Avatar name={item.full_name || item.username || 'Lingora'} uri={item.avatar_url} size={44} />
-          <AppText variant="bodyStrong" style={styles.flex}>{item.full_name || item.username || 'Lingora'}</AppText>
+          <Avatar name={item.full_name || item.username || 'GrammarBay'} uri={item.avatar_url} size={44} />
+          <AppText variant="bodyStrong" style={styles.flex}>{item.full_name || item.username || 'GrammarBay'}</AppText>
         </View>
         <View style={styles.actions}>
           <Button title={t('View profile')} variant="secondary" size="sm"
@@ -258,7 +258,7 @@ function PartnerCard({ partner, tier, ownLanguages, ownProfile, task, saved, onS
     own.type === 'native' && own.languageId === language.id));
   const { styles } = useThemedStyles(createStyles);
   const startConversation = useStartConversation();
-  const name = partner.full_name || partner.username || 'Lingora user';
+  const name = partner.full_name || partner.username || 'GrammarBay user';
   const location = formatLocation(partner.city, partner.country);
   const shared = commonPartnerTopics(ownProfile, partner);
   const interests = shared.length ? shared : partnerTopics(partner);

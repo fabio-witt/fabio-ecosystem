@@ -32,7 +32,7 @@ export async function pickImage(options?: {
 
   if (!permission.granted) {
     throw new ImageUploadError(
-      'Please allow Lingora to access your photo library in your device settings.'
+      'Please allow GrammarBay to access your photo library in your device settings.'
     );
   }
 

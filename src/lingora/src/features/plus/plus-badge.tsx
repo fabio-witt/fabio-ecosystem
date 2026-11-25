@@ -6,12 +6,12 @@ import { radius, spacing } from '@/constants/theme';
 import type { PlusTier } from './api';
 import { t } from '@/lib/i18n';
 
-/** Small badge next to a name for Lingora Plus or VIP members. */
+/** Small badge next to a name for GrammarBay Plus or VIP members. */
 export function PlusBadge({ tier }: { tier?: PlusTier | null }) {
   if (!tier) return null;
   const vip = tier === 'vip';
   return (
-    <View style={[styles.badge, vip ? styles.vip : styles.plus]} accessibilityLabel={vip ? t("VIP member") : t("Lingora Plus member")}>
+    <View style={[styles.badge, vip ? styles.vip : styles.plus]} accessibilityLabel={vip ? t("VIP member") : t("GrammarBay Plus member")}>
       <AppText variant="label" style={styles.text}>{vip ? '👑 VIP' : '✦ PLUS'}</AppText>
     </View>
   );

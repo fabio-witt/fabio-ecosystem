@@ -54,7 +54,7 @@ export default function NotificationsScreen() {
           </View>
           <AppText variant="bodyStrong">{t("Daily learning reminder")}</AppText>
           <AppText color="textSecondary">{remindersAvailable
-            ? t("Choose a time on this device. Lingora asks for permission when you turn it on.")
+            ? t("Choose a time on this device. GrammarBay asks for permission when you turn it on.")
             : t("Available in the mobile app.")}</AppText>
           {remindersAvailable && (
             <View style={styles.row}>

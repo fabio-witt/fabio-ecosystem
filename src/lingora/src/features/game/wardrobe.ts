@@ -18,7 +18,7 @@ export const wardrobe: WardrobeItem[] = [
   { id: 'scarf-rainbow', slot: 'scarf', icon: '🧣', name: 'Rainbow scarf', price: 0, color: '#8E44AD', level: 15 },
   { id: 'glasses-goggles', slot: 'glasses', icon: '🥽', name: 'Explorer goggles', price: 0, level: 20 },
   { id: 'hat-star', slot: 'hat', icon: '⭐', name: 'Star', price: 0, level: 30 },
-  // Free for Lingora Plus members.
+  // Free for GrammarBay Plus members.
   { id: 'hat-sun', slot: 'hat', icon: '👒', name: 'Sun hat', price: 0, plus: true },
   { id: 'hat-helmet', slot: 'hat', icon: '⛑️', name: 'Rescue helmet', price: 0, plus: true },
   { id: 'glasses-read', slot: 'glasses', icon: '👓', name: 'Reading glasses', price: 0, plus: true },

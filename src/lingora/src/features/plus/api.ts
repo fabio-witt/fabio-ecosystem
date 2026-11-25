@@ -5,7 +5,7 @@ import { useSession } from '@/providers/session-provider';
 
 export type PlusTier = 'plus' | 'vip';
 
-/** Active Lingora Plus / VIP memberships for the given users (for badges). */
+/** Active GrammarBay Plus / VIP memberships for the given users (for badges). */
 export function usePlusTiers(userIds: string[]) {
   const { user } = useSession();
   const ids = [...new Set(userIds)].sort();
@@ -26,7 +26,7 @@ export function usePlusTiers(userIds: string[]) {
   });
 }
 
-/** Whether the signed-in person has an active Lingora Plus (or VIP) membership. */
+/** Whether the signed-in person has an active GrammarBay Plus (or VIP) membership. */
 export function useMyPlus() {
   const { user } = useSession();
   const query = useQuery({

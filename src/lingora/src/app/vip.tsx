@@ -11,12 +11,12 @@ import { track } from '@/lib/insights';
 import { useEffect } from 'react';
 
 const reasons: [string, string, string][] = [
-  ['🆓', 'Lingora stays free', 'Lessons, partners and chats are free for everyone. No ads, no paywall.'],
+  ['🆓', 'GrammarBay stays free', 'Lessons, partners and chats are free for everyone. No ads, no paywall.'],
   ['📚', 'More languages and lessons', 'Your support pays for new courses, stories and audio.'],
   ['🖥️', 'Servers and email', 'Every chat, lesson and login runs on servers that cost money each month.'],
 ];
 
-/** VIP page: a thank-you page where people can support Lingora with a donation. */
+/** VIP page: a thank-you page where people can support GrammarBay with a donation. */
 export default function VipScreen() {
   const { styles } = useThemedStyles(createStyles);
   const link = paypalLink();
@@ -24,13 +24,13 @@ export default function VipScreen() {
 
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']}>
-      <ScreenHeader title={t('⭐ VIP · Support Lingora')} />
+      <ScreenHeader title={t('⭐ VIP · Support GrammarBay')} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
           <AppText style={styles.heroIcon} accessible={false}>⭐</AppText>
           <AppText variant="title" align="center" style={styles.onGold}>{t('Become a VIP supporter')}</AppText>
           <AppText align="center" style={styles.onGoldSoft}>
-            {t('Lingora is made by one person with a lot of love. A small donation helps keep it free for everyone.')}
+            {t('GrammarBay is made by one person with a lot of love. A small donation helps keep it free for everyone.')}
           </AppText>
         </View>
 
@@ -50,7 +50,7 @@ export default function VipScreen() {
             </View>
             <Button title={t('Choose your own amount')} variant="secondary" fullWidth onPress={() => void Linking.openURL(link)} />
             <AppText variant="caption" color="textSecondary" align="center">
-              {t('You are taken to PayPal. Lingora never sees your payment details.')}
+              {t('You are taken to PayPal. GrammarBay never sees your payment details.')}
             </AppText>
           </>
         ) : (
@@ -67,7 +67,7 @@ export default function VipScreen() {
             </View>
           </Card>
         ))}
-        <Button title={t('See what Lingora Plus will offer')} variant="ghost" onPress={() => router.push('/plus')} />
+        <Button title={t('See what GrammarBay Plus will offer')} variant="ghost" onPress={() => router.push('/plus')} />
       </ScrollView>
     </Screen>
   );

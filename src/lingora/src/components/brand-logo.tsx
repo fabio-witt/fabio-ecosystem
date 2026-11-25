@@ -7,13 +7,13 @@ import { BrandIcon } from './brand-icon';
 export { BrandIcon };
 
 
-/** Icon plus the "Lingora" wordmark, used in the top left corner. */
+/** Icon plus the "GrammarBay" wordmark, used in the top left corner. */
 export function BrandLogo({ size = 34, showName = true }: { size?: number; showName?: boolean }) {
   return (
-    <View style={styles.row} accessible accessibilityRole="header" accessibilityLabel="Lingora">
+    <View style={styles.row} accessible accessibilityRole="header" accessibilityLabel="GrammarBay">
       <BrandIcon size={size} />
       {showName ? (
-        <AppText style={[styles.name, { fontSize: size * 0.62, lineHeight: size * 0.8 }]}>Lingora</AppText>
+        <AppText style={[styles.name, { fontSize: size * 0.62, lineHeight: size * 0.8 }]}>GrammarBay</AppText>
       ) : null}
     </View>
   );

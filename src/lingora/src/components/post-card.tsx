@@ -69,7 +69,7 @@ export function PostCard({ post, showCommentButton = true, onDeleted }: PostCard
   async function share() {
     try {
       await Share.share({
-        message: `${name} on Lingora:\n\n${post.content}`,
+        message: `${name} on GrammarBay:\n\n${post.content}`,
       });
     } catch {
       // User closed the share sheet – nothing to do.

@@ -212,7 +212,7 @@ export default function ProfileScreen() {
     );
   }
 
-  const displayName = profile?.full_name || 'Lingora User';
+  const displayName = profile?.full_name || 'GrammarBay User';
   const username = profile?.username || 'username';
   const location = [profile?.city, profile?.country]
     .filter(Boolean)

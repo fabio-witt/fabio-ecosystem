@@ -132,7 +132,7 @@ export function useChatPartner(conversationId: string | undefined) {
       if (!data?.profiles) return null;
       return {
         id: data.user_id,
-        name: data.profiles.full_name || data.profiles.username || 'Lingora user',
+        name: data.profiles.full_name || data.profiles.username || 'GrammarBay user',
         avatar_url: data.profiles.avatar_url,
       };
     },

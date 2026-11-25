@@ -3,7 +3,7 @@ import { t } from '@/lib/i18n';
 import { useSession } from '@/providers/session-provider';
 import { track } from '@/lib/insights';
 
-/** True while someone uses Lingora without an account (anonymous sign-in). */
+/** True while someone uses GrammarBay without an account (anonymous sign-in). */
 export function useIsGuest() {
   return useSession().user?.is_anonymous === true;
 }

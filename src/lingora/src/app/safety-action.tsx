@@ -43,14 +43,14 @@ export default function SafetyActionScreen() {
           <>
             <AppText>{block
               ? t("User blocked. You can manage blocked users under Settings.")
-              : t("Report received. Lingora will review it. Your report is private.")}</AppText>
+              : t("Report received. GrammarBay will review it. Your report is private.")}</AppText>
             <Button title={t("Done")} onPress={() => block ? router.dismissTo({ pathname: '/community', params: { section: 'partners' } }) : router.back()} />
           </>
         ) : (
           <>
             <AppText color="textSecondary">{block
               ? t("Blocking hides your profiles and content from each other and prevents messages between you.")
-              : t("Choose a reason for reporting this content to Lingora.")}</AppText>
+              : t("Choose a reason for reporting this content to GrammarBay.")}</AppText>
             {!block && reportReasons.map(([key, label]) => (
               <Button key={key} title={t(label)} variant={reason === key ? 'primary' : 'secondary'}
                 accessibilityState={{ selected: reason === key }} disabled={mutation.isPending}

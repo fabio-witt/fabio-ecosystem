@@ -40,13 +40,13 @@ export default function FeedbackScreen() {
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           {state === 'sent' ? (
             <>
-              <MedvedSays mood="cheer" message={t('Thank you! Every message is read and helps make Lingora better.')} />
+              <MedvedSays mood="cheer" message={t('Thank you! Every message is read and helps make GrammarBay better.')} />
               <Button title={t('Back')} onPress={() => router.back()} />
             </>
           ) : (
             <>
               <MedvedSays message={t('What do you like, what is missing, what is broken? Tell me!')} />
-              <AppText variant="heading">{t('How do you like Lingora?')}</AppText>
+              <AppText variant="heading">{t('How do you like GrammarBay?')}</AppText>
               <View style={styles.stars} accessibilityRole="radiogroup">
                 {[1, 2, 3, 4, 5].map((value) => (
                   <Pressable key={value} onPress={() => setRating(value)} accessibilityRole="radio"

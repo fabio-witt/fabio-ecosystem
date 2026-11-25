@@ -6,7 +6,7 @@ import { AppText, Button } from '@/components/ui';
 import { t } from '@/lib/i18n';
 import { supabase } from '@/lib/supabase';
 
-/** "Download my data": everything Lingora stores about you as a JSON file. */
+/** "Download my data": everything GrammarBay stores about you as a JSON file. */
 export function ExportDataButton() {
   const [state, setState] = useState<'idle' | 'busy' | 'done' | 'error'>('idle');
 

@@ -1,4 +1,4 @@
-// Lingora AI conversation partner: short role-play replies in the course language,
+// GrammarBay AI conversation partner: short role-play replies in the course language,
 // with one gentle correction of the learner's last message.
 // Needs the secret ANTHROPIC_API_KEY (set it in Supabase → Edge Functions → Secrets).
 import Anthropic from 'npm:@anthropic-ai/sdk';

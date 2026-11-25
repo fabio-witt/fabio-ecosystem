@@ -49,7 +49,7 @@ export default function ClassScreen() {
           <Card style={styles.group}>
             <AppText variant="heading">{t('Class code')}</AppText>
             <AppText style={styles.code} selectable>{klass.join_code}</AppText>
-            <AppText color="textSecondary">{t('Students open Lingora → Classes → Join a class and enter this code.')}</AppText>
+            <AppText color="textSecondary">{t('Students open GrammarBay → Classes → Join a class and enter this code.')}</AppText>
             <Button title={copied ? t('Copied') : t('Copy code')} variant="secondary" onPress={() => { void Clipboard.setStringAsync(klass.join_code); setCopied(true); feedback('tap'); }} />
           </Card>
         ) : null}

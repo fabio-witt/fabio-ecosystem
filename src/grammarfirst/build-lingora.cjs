@@ -18,7 +18,7 @@ const role = () => {
   catch { return null; }
 };
 if (url.protocol !== "https:" || !url.hostname.endsWith(".supabase.co") || !(key?.startsWith("sb_publishable_") || role() === "anon")) {
-  throw new Error("Use the Lingora project URL and a public Supabase key.");
+  throw new Error("Use the GrammarBay project URL and a public Supabase key.");
 }
 
 const ts = require(path.join(source, "node_modules/typescript"));
@@ -28,7 +28,7 @@ require.extensions[".ts"] = (module, file) => module._compile(ts.transpileModule
 }).outputText, file);
 const { courses } = require(path.join(source, "src/features/learn/catalog.ts"));
 fs.writeFileSync(path.join(__dirname, "lingora-courses.json"), JSON.stringify(courses));
-fs.writeFileSync(path.join(__dirname, "lingora-config.js"), `// Generated from Lingora's public web configuration.
+fs.writeFileSync(path.join(__dirname, "lingora-config.js"), `// Generated from GrammarBay's public web configuration.
 export const url = ${JSON.stringify(url.origin)};
 export const key = ${JSON.stringify(key)};
 `);
@@ -68,7 +68,7 @@ try {
     cwd: temp, stdio: "inherit",
     env: { ...process.env, CI: "1", EXPO_PUBLIC_SUPABASE_URL: url.origin, EXPO_PUBLIC_SUPABASE_ANON_KEY: key },
   });
-  if (result.error || result.status !== 0) throw result.error || new Error("Lingora web export failed.");
+  if (result.error || result.status !== 0) throw result.error || new Error("GrammarBay web export failed.");
   const output = path.resolve(__dirname, "../../grammarfirst/lingora");
   fs.rmSync(output, { recursive: true, force: true });
   fs.cpSync(dist, output, { recursive: true });
@@ -111,10 +111,10 @@ self.addEventListener("fetch", (event) => {
   })));
 });
 `);
-  // Lets people install Lingora from the browser like an app.
+  // Lets people install GrammarBay from the browser like an app.
   fs.writeFileSync(path.join(output, "manifest.webmanifest"), JSON.stringify({
-    name: "Lingora – Learn languages. Connect cultures.",
-    short_name: "Lingora",
+    name: "GrammarBay – Learn languages. Connect cultures.",
+    short_name: "GrammarBay",
     description: "Learn languages with short lessons, a vocabulary trainer and real language partners.",
     start_url: `${route}/`,
     scope: `${route}/`,
@@ -142,11 +142,11 @@ function patchMobileShell(file) {
     '<meta name="apple-mobile-web-app-capable" content="yes" />',
     '<meta name="mobile-web-app-capable" content="yes" />',
     '<meta name="apple-mobile-web-app-status-bar-style" content="default" />',
-    '<meta name="apple-mobile-web-app-title" content="Lingora" />',
+    '<meta name="apple-mobile-web-app-title" content="GrammarBay" />',
     `<link rel="apple-touch-icon" href="${route}/apple-touch-icon.png" />`,
     `<link rel="manifest" href="${route}/manifest.webmanifest" />`,
-    '<meta name="description" content="Lingora: learn German, English, Spanish, French and more with short lessons, a vocabulary trainer, stories and real language partners. Free to start, no account needed." />',
-    '<meta property="og:title" content="Lingora – Learn languages. Connect cultures." />',
+    '<meta name="description" content="GrammarBay: learn German, English, Spanish, French and more with short lessons, a vocabulary trainer, stories and real language partners. Free to start, no account needed." />',
+    '<meta property="og:title" content="GrammarBay – Learn languages. Connect cultures." />',
     '<meta property="og:description" content="Short lessons, vocabulary trainer, stories and real language partners. Free to start." />',
     '<meta property="og:type" content="website" />',
     `<meta property="og:image" content="${route}/pwa-512.png" />`,
@@ -158,8 +158,8 @@ function patchMobileShell(file) {
       * { -webkit-tap-highlight-color: transparent; }
       @media (max-width: 680px) { input, textarea, select { font-size: 16px !important; } }
     </style>`);
-  const title = "<title>Lingora</title>";
+  const title = "<title>GrammarBay</title>";
   if (!html.includes(title)) throw new Error("Expo index.html changed: update the title patch.");
-  html = html.replace(title, "<title>Lingora – Learn languages. Connect cultures.</title>");
+  html = html.replace(title, "<title>GrammarBay – Learn languages. Connect cultures.</title>");
   fs.writeFileSync(file, html);
 }

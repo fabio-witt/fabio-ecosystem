@@ -27,7 +27,7 @@ const FAQ: [string, string][] = [
   ['What happens to my progress if I stop Plus?', 'Nothing is lost. Your XP, streak, crowns and words stay. Only the daily lesson limit comes back.'],
 ];
 
-/** Lingora Plus: Free vs Plus, the plans and the way to subscribe. */
+/** GrammarBay Plus: Free vs Plus, the plans and the way to subscribe. */
 export default function PlusScreen() {
   const { styles } = useThemedStyles(createStyles);
   const { user } = useSession();
@@ -50,7 +50,7 @@ export default function PlusScreen() {
 
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']}>
-      <ScreenHeader title={t('Lingora Plus')} />
+      <ScreenHeader title={t('GrammarBay Plus')} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
           <Medved mood="cheer" size={96} />
@@ -91,7 +91,7 @@ export default function PlusScreen() {
             ) : guest ? (
               <Button title={t('Create a free account first')} size="lg" fullWidth onPress={() => router.push('/create-account')} />
             ) : (
-              <Button title={plan === 'yearly' ? t('Start 7 days free') : plan === 'lifetime' ? t('Get Plus forever') : t('Get Lingora Plus')}
+              <Button title={plan === 'yearly' ? t('Start 7 days free') : plan === 'lifetime' ? t('Get Plus forever') : t('Get GrammarBay Plus')}
                 size="lg" fullWidth onPress={subscribe} />
             )}
             <AppText variant="small" color="textMuted" align="center">
@@ -135,9 +135,9 @@ export default function PlusScreen() {
           <Card style={styles.soon}>
             <AppText variant="bodyStrong" align="center">{t('Plus subscriptions open soon')}</AppText>
             <AppText variant="caption" color="textSecondary" align="center">
-              {t('Until then everything is free. You can support Lingora with a small donation.')}
+              {t('Until then everything is free. You can support GrammarBay with a small donation.')}
             </AppText>
-            <Button title={t('⭐ Support Lingora')} fullWidth onPress={() => router.push('/vip')} />
+            <Button title={t('⭐ Support GrammarBay')} fullWidth onPress={() => router.push('/vip')} />
           </Card>
         ) : null}
 

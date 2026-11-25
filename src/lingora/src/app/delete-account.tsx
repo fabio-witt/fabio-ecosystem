@@ -45,7 +45,7 @@ export default function DeleteAccountScreen() {
       <ScreenHeader title={t("Delete account")} />
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <AppText variant="title">{t("Permanently delete your account")}</AppText>
-        <AppText>{t("Lingora will delete your profile, posts, comments, messages you sent, uploaded files and saved learning progress on this device. This cannot be undone.")}</AppText>
+        <AppText>{t("GrammarBay will delete your profile, posts, comments, messages you sent, uploaded files and saved learning progress on this device. This cannot be undone.")}</AppText>
         {!deleted && (
           <>
             <AppText variant="bodyStrong">{t("Type DELETE to confirm.")}</AppText>

@@ -25,7 +25,7 @@ export function FirstExchange({ languageId, languageName, taskId }: {
   const partners = usePartnerSearch({ languageId, country: null, query: '' });
   const partner = partners.data?.pages[0]?.[0];
   const task = conversationTask(taskId);
-  const name = partner?.full_name || partner?.username || 'Lingora member';
+  const name = partner?.full_name || partner?.username || 'GrammarBay member';
 
   return (
     <View style={styles.group}>

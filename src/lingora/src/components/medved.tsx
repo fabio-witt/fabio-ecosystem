@@ -25,7 +25,7 @@ const scarfDefault = '#6554C4';
 const scarfDarkDefault = '#4B3D9E';
 
 /**
- * Fabio, Lingora's bear mascot. Drawn in SVG so it scales without image
+ * Fabio, GrammarBay's bear mascot. Drawn in SVG so it scales without image
  * assets. He breathes, waves now and then, and jumps when cheering.
  */
 export function Medved({ mood = 'happy', size = 96 }: { mood?: MedvedMood; size?: number }) {

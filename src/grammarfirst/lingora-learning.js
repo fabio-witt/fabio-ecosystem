@@ -12,7 +12,7 @@ for (const course of courses) {
   }
 }
 
-export function appendLingoraUnits(course) {
+export function appendGrammarBayUnits(course) {
   if (course.id === "ga") return;
   course.units.forEach((unit, originalIndex) => { unit.originalIndex = originalIndex; });
   const ids = new Set(course.units.flatMap(unit => [

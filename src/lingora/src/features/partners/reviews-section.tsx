@@ -165,7 +165,7 @@ function ReviewPrompt({ userId, name, status }: {
 
 function ReviewCard({ review }: { review: ProfileReview }) {
   const { styles } = useThemedStyles(createStyles);
-  const name = review.reviewer_name || review.reviewer_username || 'Lingora user';
+  const name = review.reviewer_name || review.reviewer_username || 'GrammarBay user';
   return (
     <Card style={styles.review}>
       <View style={styles.reviewHeader}>

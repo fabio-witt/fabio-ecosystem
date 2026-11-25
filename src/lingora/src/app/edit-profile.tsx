@@ -411,7 +411,7 @@ export default function EditProfileScreen() {
   const availableLanguages = languageCatalog.filter(
     (language) =>
       !userLanguages.some((item) => item.language_id === language.id)
-      // Only languages with a Lingora course can be added as learning languages.
+      // Only languages with a GrammarBay course can be added as learning languages.
       && (selectedType === 'native' || !!recommendStarter({ name: language.name }, 'A1'))
   );
 
@@ -529,7 +529,7 @@ export default function EditProfileScreen() {
           {exchangeDetails && (
             <View style={styles.languageSection}>
               <Text style={styles.sectionTitle}>{t("Language exchange")}</Text>
-              <Text style={styles.hint}>{t("Optional details visible to signed-in Lingora users.")}</Text>
+              <Text style={styles.hint}>{t("Optional details visible to signed-in GrammarBay users.")}</Text>
               {exchangeFields.map(({ key, label, options, multiple, max }) => (
                 <View key={key}>
                   <Text style={styles.label}>{t(label)}</Text>

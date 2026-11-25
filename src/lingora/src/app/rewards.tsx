@@ -70,7 +70,7 @@ export default function RewardsScreen() {
   });
 
   async function shareRecap() {
-    const text = t('My week on Lingora: {xp} XP, {days} active days, {streak}-day streak 🔥 – {division} division. Learn with me!', {
+    const text = t('My week on GrammarBay: {xp} XP, {days} active days, {streak}-day streak 🔥 – {division} division. Learn with me!', {
       xp: week.xp, days: week.active, streak: summary?.streak ?? 0, division: t(division.name),
     });
     feedback('tap');
