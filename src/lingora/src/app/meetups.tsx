@@ -1,3 +1,6 @@
+import { exchangeScenarioId, exchangeScenarios, type ExchangeScenarioId } from '@/features/chats/exchange-table';
+import { useLocalSearchParams } from 'expo-router';
+import { courseLanguage } from '@/features/learn/course-language';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
@@ -31,8 +34,13 @@ export default function MeetupsScreen() {
   const guest = useIsGuest();
   const client = useQueryClient();
   const languages = useLanguages();
-  const [languageId, setLanguageId] = useState<number>();
-  const [creating, setCreating] = useState(false);
+  const { course, topic } = useLocalSearchParams<{ course?: string; topic?: string }>();
+  const scenarioId = exchangeScenarioId(topic);
+  const scenario = scenarioId ? exchangeScenarios[scenarioId] : undefined;
+  const [language, setLanguage] = useState<number | null>();
+  const languageId = language === undefined ? courseLanguage(languages.data, course) : language ?? undefined;
+  const [onlyOpen, setOnlyOpen] = useState(false);
+  const [creating, setCreating] = useState(!!scenario);
   const meetups = useQuery({
     queryKey: ['meetups', languageId],
     queryFn: async () => {
@@ -69,34 +77,43 @@ export default function MeetupsScreen() {
       if (error) throw error;
       return data as string;
     },
-    onSuccess: (name) => openCall(name),
+
   });
   const remove = useMutation({
     mutationFn: async (id: string) => { const { error } = await supabase.from('meetups').delete().eq('id', id); if (error) throw error; },
     onSuccess: () => client.invalidateQueries({ queryKey: ['meetups'] }),
   });
 
+  const rooms = (meetups.data ?? []).filter(item =>
+    now <= roomClosesAt(item) && (!onlyOpen || roomIsOpen(item, now)));
+
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']}>
       <ScreenHeader title={t('Live rooms')} right={!guest ? <Button title={t('+ New')} size="sm" onPress={() => setCreating(!creating)} /> : undefined} />
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <AppText color="textSecondary">{t('Small video rooms with learners of your level. The room opens 15 minutes before the start – in your browser, no app needed.')}</AppText>
-        {creating ? <CreateMeetup languageId={languageId} onDone={() => setCreating(false)} /> : null}
+        {creating && !guest ? <CreateMeetup languageId={languageId} scenario={scenarioId} onDone={() => setCreating(false)} /> : null}
         <UpcomingExchanges />
+        <View style={styles.actions}>
+          <Chip label={t('All sessions')} active={!onlyOpen} onPress={() => setOnlyOpen(false)} />
+          <Chip label={t('Open now')} active={onlyOpen} onPress={() => setOnlyOpen(true)} />
+        </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
-          <Chip label={t('All languages')} active={!languageId} onPress={() => setLanguageId(undefined)} />
+          <Chip label={t('All languages')} active={!languageId} onPress={() => setLanguage(null)} />
           {(languages.data ?? []).filter((language) => language.flag_emoji).map((language) => (
             <Chip key={language.id} label={`${language.flag_emoji} ${t(language.name)}`} active={languageId === language.id}
-              onPress={() => setLanguageId(languageId === language.id ? undefined : language.id)} />
+              onPress={() => setLanguage(languageId === language.id ? null : language.id)} />
           ))}
         </ScrollView>
         {meetups.isPending ? <LoadingState /> : meetups.isError ? <ErrorState message={t('Could not load live rooms.')} onRetry={() => meetups.refetch()} />
-          : !meetups.data.length ? <EmptyState title={t('No live rooms planned')} message={guest ? t('Create an account to host the first one.') : t('Host the first one – 30 minutes of small talk is enough.')} />
-            : meetups.data.map((meetup) => {
+          : !rooms.length && onlyOpen ? <EmptyState title={t('No rooms open right now')} actionLabel={t('All sessions')} onAction={() => setOnlyOpen(false)} />
+          : !rooms.length ? <EmptyState title={t('No live rooms planned')} message={guest ? t('Create an account to host the first one.') : t('Host the first one – 30 minutes of small talk is enough.')} />
+            : rooms.map((meetup) => {
               const start = Date.parse(meetup.starts_at);
               const host = meetup.host_id === user?.id;
               const going = host || !!mine.data?.has(meetup.id);
-              const open = going && now > start - 15 * 60_000 && now < start + (meetup.duration_minutes + 30) * 60_000;
+              const open = roomIsOpen(meetup, now);
+              const link = room.variables === meetup.id ? room.data : undefined;
               const full = meetup.attendee_count >= meetup.capacity;
               return (
                 <Card key={meetup.id} style={styles.card}>
@@ -104,15 +121,19 @@ export default function MeetupsScreen() {
                     {meetup.language ? `${meetup.language.flag_emoji ?? ''} ${t(meetup.language.name)}` : t('Any language')}{meetup.level ? ` · ${meetup.level}` : ''} · {new Date(start).toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                   </AppText>
                   <AppText variant="bodyStrong">{meetup.title}</AppText>
+                  {open && <AppText variant="label" color="success">{t('Open now')}</AppText>}
                   {meetup.content ? <AppText color="textSecondary">{meetup.content}</AppText> : null}
                   <AppText variant="caption" color="textSecondary">
                     {t('Host: {name}', { name: meetup.host?.full_name || meetup.host?.username || t('Member') })} · {t('{n} of {max} places', { n: meetup.attendee_count, max: meetup.capacity })} · {t('{n} min', { n: meetup.duration_minutes })}
                   </AppText>
                   <View style={styles.actions}>
-                    {open ? <Button title={t('Open room')} size="sm" onPress={() => room.mutate(meetup.id)} /> : null}
+                    {open && going && !guest && (link
+                      ? <Button title={t('Open room')} size="sm" onPress={() => openCall(link)} />
+                      : <Button title={t('Prepare room link')} size="sm" loading={room.isPending && room.variables === meetup.id}
+                        disabled={room.isPending} onPress={() => room.mutate(meetup.id)} />)}
                     {host ? <Button title={t('Delete')} size="sm" variant="ghost" onPress={() => remove.mutate(meetup.id)} />
                       : guest ? null
-                        : going ? <Button title={t('Leave')} size="sm" variant="ghost" onPress={() => toggle.mutate({ id: meetup.id, join: false })} />
+                        : going ? <Button title={t('Leave')} size="sm" variant="ghost" onPress={() => { room.reset(); toggle.mutate({ id: meetup.id, join: false }); }} />
                           : <Button title={full ? t('Full') : t('Join')} size="sm" disabled={full} onPress={() => toggle.mutate({ id: meetup.id, join: true })} />}
                   </View>
                 </Card>
@@ -127,21 +148,39 @@ export default function MeetupsScreen() {
 
 }
 
-function CreateMeetup({ onDone, languageId }: { onDone: () => void; languageId?: number }) {
+function roomIsOpen(meetup: Meetup, now: number) {
+  const start = Date.parse(meetup.starts_at);
+  return now >= start - 15 * 60_000 && now <= roomClosesAt(meetup);
+}
+
+function roomClosesAt(meetup: Meetup) {
+  return Date.parse(meetup.starts_at) + (meetup.duration_minutes + 30) * 60_000;
+}
+
+function CreateMeetup({ onDone, languageId, scenario }: { onDone: () => void; languageId?: number; scenario?: ExchangeScenarioId }) {
   const { colors, styles } = useThemedStyles(createStyles);
   const client = useQueryClient();
   const languages = useLanguages();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [lang, setLang] = useState<number | null>(languageId ?? null);
+  const preset = scenario ? exchangeScenarios[scenario] : undefined;
+  const [title, setTitle] = useState(preset ? t(preset.title) : '');
+  const [content, setContent] = useState(preset ? t(preset.goal) : '');
+  const [languageChoice, setLang] = useState<number | null>();
+  const lang = languageChoice === undefined ? languageId ?? null : languageChoice;
   const [level, setLevel] = useState<string | null>(null);
+  const [instant, setInstant] = useState(!!preset);
   const [dayOffset, setDayOffset] = useState(1);
   const [hour, setHour] = useState(19);
   const [capacity, setCapacity] = useState(6);
   const create = useMutation({
     mutationFn: async () => {
-      const start = new Date(); start.setDate(start.getDate() + dayOffset); start.setHours(hour, 0, 0, 0);
-      const { error } = await supabase.from('meetups').insert({ title: title.trim(), content: content.trim(), language_id: lang, level, starts_at: start.toISOString(), capacity, duration_minutes: 45 });
+      // The room opens immediately, while the insert policy requires a future start.
+      const start = new Date(Date.now() + (instant ? 60_000 : 0));
+      if (!instant) {
+        start.setDate(start.getDate() + dayOffset);
+        start.setHours(hour, 0, 0, 0);
+        if (start.getTime() <= Date.now()) throw new Error(t('Choose a future start time.'));
+      }
+      const { error } = await supabase.from('meetups').insert({ title: title.trim(), content: content.trim(), language_id: lang, level, starts_at: start.toISOString(), capacity, duration_minutes: instant ? 30 : 45 });
       if (error) throw error;
     },
     onSuccess: () => { feedback('ok'); void client.invalidateQueries({ queryKey: ['meetups'] }); onDone(); },
@@ -162,6 +201,11 @@ function CreateMeetup({ onDone, languageId }: { onDone: () => void; languageId?:
         <Chip label={t('Any level')} active={level === null} onPress={() => setLevel(null)} />
         {LEVELS.map((item) => <Chip key={item} label={item} active={level === item} onPress={() => setLevel(item)} />)}
       </View>
+      <View style={styles.actions}>
+        <Chip label={t('Start now')} active={instant} onPress={() => setInstant(true)} />
+        <Chip label={t('Schedule a room')} active={!instant} onPress={() => setInstant(false)} />
+      </View>
+      {!instant && <>
       <View style={styles.actions}>{[0, 1, 2, 3, 4, 5, 6].map((offset) => {
         const date = new Date(); date.setDate(date.getDate() + offset);
         return <Chip key={offset} label={offset === 0 ? t('Today') : offset === 1 ? t('Tomorrow') : date.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' })} active={dayOffset === offset} onPress={() => setDayOffset(offset)} />;
@@ -169,9 +213,10 @@ function CreateMeetup({ onDone, languageId }: { onDone: () => void; languageId?:
       <View style={styles.actions}>{[9, 12, 17, 18, 19, 20, 21].filter((h) => dayOffset > 0 || h > nowHour).map((h) => (
         <Chip key={h} label={`${String(h).padStart(2, '0')}:00`} active={hour === h} onPress={() => setHour(h)} />
       ))}</View>
+      </>}
       <View style={styles.actions}>{[4, 6, 8, 12].map((n) => <Chip key={n} label={t('{n} people', { n })} active={capacity === n} onPress={() => setCapacity(n)} />)}</View>
       {create.isError ? <AppText color="danger">{create.error.message}</AppText> : null}
-      <Button title={t('Publish live room')} disabled={title.trim().length < 5 || create.isPending || (dayOffset === 0 && hour <= nowHour)} onPress={() => create.mutate()} />
+      <Button title={t('Publish live room')} disabled={title.trim().length < 5 || create.isPending || (!instant && dayOffset === 0 && hour <= nowHour)} onPress={() => create.mutate()} />
     </Card>
   );
 }

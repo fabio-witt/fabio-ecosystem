@@ -1,3 +1,4 @@
+import { courseLanguage } from '@/features/learn/course-language';
 import { useLanguages } from '@/features/community/api';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useDeferredValue, useRef, useState, type ComponentRef } from 'react';
@@ -25,10 +26,10 @@ import { track } from '@/lib/insights';
 function DiscoverScreenContent() {
   const { colors, styles } = useThemedStyles(createStyles);
   const [query, setQuery] = useState('');
-  const { languageId: languageParam, task } = useLocalSearchParams<{ languageId?: string; task?: string }>();
-  const german = useLanguages().data?.find(language => language.language_code === 'de')?.id;
+  const { languageId: languageParam, task, course } = useLocalSearchParams<{ languageId?: string; task?: string; course?: string }>();
+  const suggested = courseLanguage(useLanguages().data, course ?? (task?.startsWith('swiss-') || task?.startsWith('zurich-') ? 'de' : undefined));
   const requestedLanguage = Number(languageParam);
-  const languageId = Number.isSafeInteger(requestedLanguage) && requestedLanguage > 0 ? requestedLanguage : languageParam === undefined && (task?.startsWith('swiss-') || task?.startsWith('zurich-')) ? german ?? null : null;
+  const languageId = Number.isSafeInteger(requestedLanguage) && requestedLanguage > 0 ? requestedLanguage : languageParam === undefined ? suggested ?? null : null;
   const setLanguageId = (id: number | null) => router.setParams({ languageId: id === null ? '' : String(id) });
   const [nearMe, setNearMe] = useState(false);
   const [showFilters, setShowFilters] = useState(false);

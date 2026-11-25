@@ -118,6 +118,8 @@ export default function LoginScreen() {
             }} />
         </View>
 
+        <Button title={t('Try the Zurich adventure')} variant="secondary" onPress={() => router.push('/zurich-adventure')} />
+
         <Text style={styles.title}>{t("Log in")}</Text>
 
         <View style={styles.form}>

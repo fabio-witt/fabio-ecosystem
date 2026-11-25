@@ -1,3 +1,5 @@
+import { recallRound } from '@/features/learn/recall-round';
+import { SocialShortcuts } from '@/features/learn/social-shortcuts';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Share, StyleSheet, View } from 'react-native';
@@ -319,6 +321,11 @@ function LessonSession({ entry, course, level, exchangeLanguageId }: {
               {!save.isSuccess && !save.isPending && (
                 <Button title={t("Save results")} variant="secondary" onPress={() => saveResult(score)} />
               )}
+              {'examples' in entry && recallRound(entry.examples).length > 0 && (
+                <Button title={t('Recall round')} variant="secondary"
+                  onPress={() => router.push({ pathname: '/lesson-recall', params: { lesson: entry.id } })} />
+              )}
+              <SocialShortcuts course={course.id} />
               <View style={styles.resultActions}>
                 <Button title={t('📣 Share')} size="sm" variant="secondary" onPress={() => void shareResult(course.name, entry.title, score)} />
                 {missed.length > 0 ? <Button title={t('🔁 Practise my mistakes')} size="sm" variant="secondary" onPress={() => router.push('/practice-review')} /> : null}

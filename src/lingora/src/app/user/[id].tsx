@@ -161,6 +161,8 @@ export default function UserProfileScreen() {
                 onPress={onMessagePress}
                 loading={startConversation.isPending}
               />
+              <Button title={t('Exchange table')} variant="secondary"
+                onPress={() => router.push({ pathname: '/exchange-table', params: { partner: id } })} />
             </>
           )}
         </View>

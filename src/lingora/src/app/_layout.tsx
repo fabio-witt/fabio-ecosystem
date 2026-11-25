@@ -139,11 +139,12 @@ function RootNavigator() {
 
   return (
     <Stack key={session?.user.id ?? 'guest'} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
       {/* Only reachable when signed in */}
       <Stack.Protected guard={isSignedIn}>
-        <Stack.Screen name="(tabs)" />
         <Stack.Screen name="chat/[id]" />
         <Stack.Screen name="lesson/[id]" />
+        <Stack.Screen name="lesson-recall" />
         <Stack.Screen name="correction-review" />
         <Stack.Screen name="practice-review" />
         <Stack.Screen name="course-search" />
@@ -205,6 +206,8 @@ function RootNavigator() {
       <Stack.Screen name="auth/callback" />
       <Stack.Screen name="start-course" />
       <Stack.Screen name="zurich-adventure" />
+      <Stack.Screen name="exchange-table" />
+      <Stack.Screen name="daily-circuit" />
       <Stack.Screen name="language-studio" />
       <Stack.Screen name="speaking-journal" />
       <Stack.Screen name="plus" />

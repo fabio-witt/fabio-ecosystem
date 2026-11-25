@@ -1,3 +1,4 @@
+import { exchangeInvitation, exchangeConfirmations, exchangeScenarios, readExchangeInvitation, readExchangeProgress } from '@/features/chats/exchange-table';
 import * as Clipboard from 'expo-clipboard';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -53,8 +54,12 @@ export default function ChatDetailScreen() {
   const jumpedOnOpen = useRef(false);
   const focused = useRef(false);
   const boundary = useChatReadBoundary(id);
-  const input = correcting ? correctionText : draft;
-  const setInput = correcting ? setCorrectionText : writeDraft;
+  const exchangeDraft = !correcting ? readExchangeInvitation(draft) : undefined;
+  const input = correcting ? correctionText : exchangeDraft?.text ?? draft;
+  function setInput(value: string) {
+    if (correcting) setCorrectionText(value);
+    else writeDraft(exchangeDraft && value ? exchangeInvitation(exchangeDraft.id, value) : value);
+  }
 
   const markReadNow = markRead.mutate;
   const onIncoming = useCallback(() => {
@@ -74,6 +79,7 @@ export default function ChatDetailScreen() {
   }, [boundary.isSuccess, markReadNow]));
 
   const items = useMemo(() => messages.data?.pages.flat() ?? [], [messages.data]);
+  const confirmations = useMemo(() => exchangeConfirmations(items), [items]);
   const byId = useMemo(() => new Map(items.map((item) => [item.id, item])), [items]);
 
   const oldestUnread = items.findLastIndex((item) =>
@@ -108,7 +114,8 @@ export default function ChatDetailScreen() {
       Alert.alert(t("Nothing changed"), t("Edit the text to show the correction."));
       return;
     }
-    send.mutate({ content, correctsId: correcting?.id }, {
+    const message = exchangeDraft ? exchangeInvitation(exchangeDraft.id, content) : content;
+    send.mutate({ content: message, correctsId: correcting?.id }, {
       onSuccess: () => {
         if (correcting) setCorrectionText('');
         else writeDraft(null);
@@ -191,6 +198,7 @@ export default function ChatDetailScreen() {
         }} />)}
         {!!draft && <AppText variant="caption">{t('Send or clear your draft before choosing a mission.')}</AppText>}
         {missionSteps.map((step, index) => <AppText key={step} variant="caption">{index + 1}. {t(step)}</AppText>)}
+        <Button title={t('Exchange table')} variant="ghost" onPress={() => router.push({ pathname: '/exchange-table', params: { partner: partnerData.id } })} />
         <Button title={t('Team quests')} variant="ghost" onPress={() => router.push('/team-quests')} />
         <Button title={t('Saved corrections')} variant="ghost" onPress={() => router.push('/correction-review')} />
         <Button title={t('Practice circles')} variant="ghost" onPress={() => router.push('/clubs')} />
@@ -240,17 +248,29 @@ export default function ChatDetailScreen() {
               </AppText>
             </View>
           }
-          renderItem={({ item, index }) => (
+          renderItem={({ item, index }) => {
+            const invite = (item.message_type ?? 'text') === 'text' ? readExchangeInvitation(item.content) : undefined;
+            const mine = item.sender_id === user?.id;
+            const progress = (item.message_type ?? 'text') === 'text' ? readExchangeProgress(item.content) : undefined;
+            const rounds = invite ? confirmations.get(item.id) : undefined;
+            return (
             <View>
               <MessageBubble
-                message={item}
+                message={invite || progress ? { ...item, content: (invite ?? progress)!.text } : item}
                 mine={item.sender_id === user?.id}
                 original={item.corrects_id ? byId.get(item.corrects_id) : undefined}
                 onLongPress={() => { setActionsFor(item); setCopyStatus(''); }}
               />
+              {invite && <View style={styles.messageActions}>
+                {rounds && <AppText variant="caption">{t('Round 1: {first}/2 · Round 2: {second}/2 confirmed', {
+                  first: Math.min(2, rounds.get(1)?.size ?? 0), second: Math.min(2, rounds.get(2)?.size ?? 0),
+                })}</AppText>}
+                <Button title={t('Open exchange: {title}', { title: t(exchangeScenarios[invite.id].title) })} size="sm" variant="secondary"
+                  onPress={() => router.push({ pathname: '/exchange-table', params: { scenario: invite.id, role: mine ? 'A' : 'B', chat: id, invite: item.id, round: user && rounds?.get(1)?.has(user.id) ? '2' : '1' } })} />
+              </View>}
               {actionsFor?.id === item.id && (
                 <View style={styles.messageActions}>
-                  {item.sender_id !== user?.id && (item.message_type ?? 'text') === 'text' && (
+                  {!invite && !progress && item.sender_id !== user?.id && (item.message_type ?? 'text') === 'text' && (
                     <Button title={t("Correct")} size="sm" variant="secondary" onPress={() => startCorrection(item)} />
                   )}
                   <Button title={t("Copy")} size="sm" variant="secondary" onPress={async () => {
@@ -270,7 +290,7 @@ export default function ChatDetailScreen() {
                 <AppText align="center" variant="label" color="primary">{t("New messages")}</AppText>
               )}
             </View>
-          )}
+          ); }}
         />
 
         {correcting ? (
@@ -285,7 +305,10 @@ export default function ChatDetailScreen() {
 
         {starter && !correcting && !input && (
           <Button title={t("Use conversation starter")} variant="secondary" size="sm" onPress={() => {
-            setInput(starter.starter);
+            const invitation = readExchangeInvitation(starter.starter);
+            writeDraft(invitation ? exchangeInvitation(invitation.id, t('Would you like to practise with me? Situation: {title}. I’ll take role A if you take role B. Then we swap roles and languages.', {
+              title: t(exchangeScenarios[invitation.id].title),
+            })) : starter.starter);
             setUsedStarter(task);
           }} />
         )}
@@ -295,6 +318,10 @@ export default function ChatDetailScreen() {
             <Button title={t("Retry")} variant="secondary" size="sm" onPress={submit} disabled={!input.trim()} />
           </View>
         )}
+        {exchangeDraft && <View style={styles.messageActions}>
+          <AppText variant="caption">{t('Open exchange: {title}', { title: t(exchangeScenarios[exchangeDraft.id].title) })}</AppText>
+          <Button title={t('Remove exercise link')} variant="ghost" size="sm" onPress={() => writeDraft(exchangeDraft.text)} />
+        </View>}
         <ExchangeSessions conversationId={id} />
         <View style={styles.composer}>
           {!correcting ? (
@@ -309,7 +336,7 @@ export default function ChatDetailScreen() {
             placeholder={correcting ? t("Write the corrected sentence…") : t("Write a message…")}
             placeholderTextColor={colors.textMuted}
             multiline
-            maxLength={MAX_LENGTH}
+            maxLength={MAX_LENGTH - (exchangeDraft ? exchangeInvitation(exchangeDraft.id, '').length : 0)}
             accessibilityLabel={correcting ? t("Corrected message") : t("Message")}
           />
           <Button

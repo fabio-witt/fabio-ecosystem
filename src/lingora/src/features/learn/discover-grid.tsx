@@ -6,6 +6,8 @@ import { spacing, useThemedStyles, type ThemeColors } from '@/constants/theme';
 import { t } from '@/lib/i18n';
 
 const ITEMS: [string, string, string, Href][] = [
+  ['🏅', 'Daily circuit', 'Earn medals with a new vocabulary round', '/daily-circuit'],
+  ['🤝', 'Exchange table', 'Swap roles and languages with a partner', '/exchange-table'],
   ['🚋', 'A day in Zurich', 'Play a branching adventure', '/zurich-adventure'],
   ['✍️', 'Language studio', 'Practise for tomorrow', '/language-studio'],
   ['🇨🇭', 'Swiss everyday missions', 'Practise real-life situations', '/swiss-missions'],

@@ -1,4 +1,6 @@
-import { router } from 'expo-router';
+import { exchangeScenarioId, exchangeScenarios } from '@/features/chats/exchange-table';
+import { courseLanguage } from '@/features/learn/course-language';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
@@ -23,14 +25,21 @@ function Composer() {
   const { colors, styles } = useThemedStyles(createStyles);
   const languages = useLanguages();
   const { course } = useActiveCourse();
+  const { languageId: requestedLanguage, practice, course: requestedCourse, scenario } = useLocalSearchParams<{ languageId?: string; practice?: string; course?: string; scenario?: string }>();
   const create = useCreateThread();
-  const [category, setCategory] = useState<ForumCategory>('grammar');
+  const exchangeId = practice === 'exchange-table' ? exchangeScenarioId(scenario) : undefined;
+  const exchange = exchangeId ? exchangeScenarios[exchangeId] : undefined;
+  const [category, setCategory] = useState<ForumCategory>(exchange ? 'exchange' : practice === 'daily-circuit' ? 'vocabulary' : 'grammar');
   // Preselect the language of the course the learner is on.
   const suggested = languages.data?.find((language) => course && language.language_code?.toLowerCase().startsWith(course.id === 'sh' ? 'hr' : course.id));
   const [languageId, setLanguageId] = useState<number | null | undefined>(undefined);
-  const chosenLanguage = languageId === undefined ? suggested?.id ?? null : languageId;
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const requested = languages.data?.find(language => language.id === Number(requestedLanguage));
+  const chosenLanguage = languageId === undefined ? requested?.id ?? courseLanguage(languages.data, requestedCourse) ?? suggested?.id ?? null : languageId;
+  const [title, setTitle] = useState(exchange
+    ? t('Looking for a practice partner: {title}', { title: t(exchange.title) })
+    : practice === 'daily-circuit' ? t('A word from today’s circuit') : '');
+  const [content, setContent] = useState(exchange
+    ? t('Would anyone like to try this role-play with me? We can switch roles and languages halfway through.') : '');
   const ready = title.trim().length >= 5 && content.trim().length > 0;
 
   function submit() {

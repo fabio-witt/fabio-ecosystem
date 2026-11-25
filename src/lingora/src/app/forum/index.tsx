@@ -1,4 +1,5 @@
-import { router } from 'expo-router';
+import { courseLanguage } from '@/features/learn/course-language';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
@@ -22,11 +23,13 @@ export default function ForumScreen() {
   const { colors, styles } = useThemedStyles(createStyles);
   const guest = useIsGuest();
   const [category, setCategory] = useState<ForumCategory>();
-  const [languageId, setLanguageId] = useState<number>();
+  const { course } = useLocalSearchParams<{ course?: string }>();
+  const [languageChoice, setLanguageId] = useState<number | null>();
   const [sort, setSort] = useState<ForumSort>('active');
   const [mine, setMine] = useState(false);
   const [search, setSearch] = useState('');
   const languages = useLanguages();
+  const languageId = languageChoice === undefined ? courseLanguage(languages.data, course) : languageChoice ?? undefined;
   const threads = useThreads({ category, languageId, sort, mine, search });
   const items = threads.data?.pages.flat() ?? [];
   // Languages that matter most to learners come first.
@@ -35,7 +38,7 @@ export default function ForumScreen() {
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']}>
       <ScreenHeader title={t('Forum')} right={!guest ? (
-        <Button title={t('+ New')} size="sm" onPress={() => router.push('/forum/new')} />
+        <Button title={t('+ New')} size="sm" onPress={() => router.push({ pathname: '/forum/new', params: { ...(languageId !== undefined ? { languageId: String(languageId) } : {}) } })} />
       ) : undefined} />
       <FlatList
         data={items}
@@ -60,7 +63,7 @@ export default function ForumScreen() {
               ))}
             </ScrollView>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
-              <Chip label={t('All languages')} active={!languageId} onPress={() => setLanguageId(undefined)} />
+              <Chip label={t('All languages')} active={!languageId} onPress={() => setLanguageId(null)} />
               {languageChips.map((language) => (
                 <Chip key={language.id} label={`${language.flag_emoji} ${t(language.name)}`} active={languageId === language.id}
                   onPress={() => setLanguageId(languageId === language.id ? undefined : language.id)} />

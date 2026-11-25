@@ -1,3 +1,4 @@
+import { SocialShortcuts } from '@/features/learn/social-shortcuts';
 import { useTabReselect } from '@/hooks/use-tab-reselect';
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
@@ -58,6 +59,8 @@ function CommunityScreenContent() {
         </AppText>
       </View>
 
+      <View style={styles.social}><SocialShortcuts /></View>
+
       <PressableCard
         style={styles.composeTrigger}
         onPress={() => router.push('/post/compose')}
@@ -74,19 +77,10 @@ function CommunityScreenContent() {
         </View>
       </PressableCard>
 
-      <PressableCard style={styles.forum} onPress={() => router.push('/forum')} accessibilityLabel={t('Open the forum')}>
-        <AppText style={styles.forumIcon} accessible={false}>🗣</AppText>
-        <View style={styles.flex}>
-          <AppText variant="bodyStrong">{t('Forum')}</AppText>
-          <AppText variant="small" color="textSecondary">{t('Grammar, words, pronunciation and culture – sorted by topic and language')}</AppText>
-        </View>
-        <AppText variant="heading" color="primary" accessible={false}>›</AppText>
-      </PressableCard>
-
       <View style={styles.shortcuts}>
         <PressableCard
           style={styles.shortcut}
-          onPress={() => router.push({ pathname: '/post/compose', params: { kind: 'question' } })}
+          onPress={() => router.push('/forum/new')}
           accessibilityLabel={t("Ask a question")}
         >
           <AppText variant="bodyStrong">{t("❓ Ask")}</AppText>
@@ -182,8 +176,7 @@ function CommunityScreenContent() {
 }
 
 const createStyles = (colors: ThemeColors) => StyleSheet.create({
-  forum: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginBottom: spacing.md, borderWidth: 2, borderColor: colors.primary },
-  forumIcon: { fontSize: 28, lineHeight: 34 },
+  social: { marginBottom: spacing.md },
   shortcuts: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md },
   shortcut: { flex: 1, gap: spacing.xxs },
   list: {

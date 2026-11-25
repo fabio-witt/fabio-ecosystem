@@ -1,3 +1,4 @@
+import { exchangeInvitation, exchangeTask } from '@/features/chats/exchange-table';
 import { adventureTasks } from './zurich-adventure';
 import { swissMissions } from './swiss-missions';
 
@@ -35,6 +36,11 @@ const workshops: Record<string, ConversationTask> = {
 
 export function conversationTask(id: string | undefined): ConversationTask | undefined {
   if (!id) return;
+  const exchange = exchangeTask(id);
+  if (exchange) return {
+    goal: exchange.goal,
+    starter: exchangeInvitation(exchange.id, `Would you like to practise with the Exchange table? Situation: ${exchange.title}. I’ll take role A if you take role B. Then we swap roles and languages.`),
+  };
   if (Object.hasOwn(adventureTasks, id)) return adventureTasks[id];
   const mission = swissMissions.find(item => id === `swiss-${item.id}`);
   if (mission) return { goal: mission.goal, starter: `Hast du Lust auf ein Rollenspiel? ${mission.roleplay}` };
