@@ -1,3 +1,4 @@
+import { useNow } from '@/hooks/use-now';
 import { router } from 'expo-router';
 import { ScrollView } from 'react-native';
 import { AppText, Button, Card, Screen, ScreenHeader } from '@/components/ui';
@@ -7,7 +8,8 @@ import { useCorrectionCards } from '@/features/learn/correction-review';
 import { t } from '@/lib/i18n';
 export default function MistakeWorkshopScreen() {
  const review = usePracticeReview(); const corrections = useCorrectionCards();
- const due = review.mistakes.filter(m=>m.dueAt<=Date.now()).length;
+ const now = useNow();
+ const due = review.mistakes.filter(m=>m.dueAt<=now).length;
  return <Screen><ScreenHeader title={t('My mistake workshop')} /><ScrollView contentContainerStyle={{padding:screenPadding,gap:spacing.md}}>
  <AppText>{t('Turn lesson mistakes and saved chat corrections into useful practice.')}</AppText>
  <Card><AppText variant="heading">{t('Lesson mistakes')}</AppText><AppText>{t('{n} questions due',{n:due})}</AppText><Button title={t('Review mistakes')} onPress={()=>router.push('/practice-review')} /></Card>
