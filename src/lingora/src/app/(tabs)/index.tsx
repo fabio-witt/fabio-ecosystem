@@ -97,6 +97,7 @@ export default function HomeScreen() {
     return course && entry ? [{ course, entry }] : [];
   })[0];
   const next = recent ? findLesson(recent.id) : selected;
+  const reviewNext = !recent && daily.due > 0 && (!next || summary?.goal_done_today);
 
   const missingProfileSteps = [
     !profile?.conversation_topics && t('a conversation topic'),
@@ -139,8 +140,10 @@ export default function HomeScreen() {
 
         {/* The one thing to do next comes first */}
         <View style={styles.hero}>
-          <AppText style={styles.heroLabel}>{next ? `${next.course.flag}  ${t('Continue learning')} · ${t(next.course.name)}` : t('Continue learning')}</AppText>
-          {next ? (
+          <AppText style={styles.heroLabel}>{reviewNext ? t('Daily review') : next ? `${next.course.flag}  ${t('Continue learning')} · ${t(next.course.name)}` : t('Continue learning')}</AppText>
+          {reviewNext ? (
+            <AppText style={styles.heroTitle}>{t('{n} questions due', { n: daily.due })}</AppText>
+          ) : next ? (
             <>
               <AppText style={styles.heroTitle} numberOfLines={2}>{next.entry.title}</AppText>
               <AppText style={styles.heroMeta}>{t(activityLabel(next.entry))} · {t('about {n} min', { n: activityDuration(next.entry.ex) })}</AppText>
@@ -154,15 +157,15 @@ export default function HomeScreen() {
               <AppText style={styles.heroMeta}>🎯 {Math.min(summary.daily_xp, summary.daily_goal_xp)}/{summary.daily_goal_xp} XP</AppText>
             </View>
           ) : null}
-          <Pressable onPress={() => next ? router.push({ pathname: '/lesson/[id]', params: { id: next.entry.id } }) : router.push('/learn')}
+          <Pressable onPress={() => reviewNext ? router.push('/daily-review') : next ? router.push({ pathname: '/lesson/[id]', params: { id: next.entry.id } }) : router.push('/learn')}
             accessibilityRole="button" style={({ pressed }) => [styles.heroButton, pressed && styles.heroPressed]}>
-            <AppText style={styles.heroButtonText}>{next ? (recent ? t('▶ Resume lesson') : t('▶ Start next lesson')) : t('Open Learn')}</AppText>
+            <AppText style={styles.heroButtonText}>{reviewNext ? t('Daily review') : next ? (recent ? t('▶ Resume lesson') : t('▶ Start next lesson')) : t('Open Learn')}</AppText>
           </Pressable>
         </View>
 
-        {daily.items.length > 0 || due > 0 ? (
+        {(!reviewNext && daily.items.length > 0) || due > 0 ? (
         <Card style={styles.card}>
-          {daily.items.length > 0 ? (
+          {!reviewNext && daily.items.length > 0 ? (
             <Pressable onPress={() => router.push('/daily-review')} accessibilityRole="button" style={styles.dailyReview}>
               <AppText style={styles.dailyIcon} accessible={false}>🔁</AppText>
               <View style={styles.flex}>

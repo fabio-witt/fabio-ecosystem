@@ -1,3 +1,4 @@
+import { useLanguages } from '@/features/community/api';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useDeferredValue, useRef, useState, type ComponentRef } from 'react';
 import { Alert, FlatList, Pressable, RefreshControl, ScrollView, StyleSheet, TextInput, View } from 'react-native';
@@ -24,9 +25,10 @@ import { track } from '@/lib/insights';
 function DiscoverScreenContent() {
   const { colors, styles } = useThemedStyles(createStyles);
   const [query, setQuery] = useState('');
-  const { languageId: languageParam } = useLocalSearchParams<{ languageId?: string }>();
+  const { languageId: languageParam, task } = useLocalSearchParams<{ languageId?: string; task?: string }>();
+  const german = useLanguages().data?.find(language => language.language_code === 'de')?.id;
   const requestedLanguage = Number(languageParam);
-  const languageId = Number.isSafeInteger(requestedLanguage) && requestedLanguage > 0 ? requestedLanguage : null;
+  const languageId = Number.isSafeInteger(requestedLanguage) && requestedLanguage > 0 ? requestedLanguage : languageParam === undefined && task?.startsWith('swiss-') ? german ?? null : null;
   const setLanguageId = (id: number | null) => router.setParams({ languageId: id === null ? '' : String(id) });
   const [nearMe, setNearMe] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -129,7 +131,7 @@ function DiscoverScreenContent() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.content}
         ListHeaderComponent={header}
-        renderItem={({ item }) => <PartnerCard partner={item} tier={plus.data?.get(item.id)} ownLanguages={myProfile?.languages ?? []} />}
+        renderItem={({ item }) => <PartnerCard partner={item} task={task} tier={plus.data?.get(item.id)} ownLanguages={myProfile?.languages ?? []} />}
         onEndReachedThreshold={0.4}
         onEndReached={() => {
           if (search.hasNextPage && !search.isFetchingNextPage) void search.fetchNextPage();
@@ -182,7 +184,7 @@ function languageLine(languages: PartnerLanguage[]) {
   return languages.map((language) => `${language.flag ?? '🌐'} ${t(language.name)}`).join('  ');
 }
 
-function PartnerCard({ partner, tier, ownLanguages }: { partner: Partner; tier?: PlusTier; ownLanguages: ProfileLanguage[] }) {
+function PartnerCard({ partner, tier, ownLanguages, task }: { partner: Partner; task?: string; tier?: PlusTier; ownLanguages: ProfileLanguage[] }) {
   const speaks = partner.native_languages.find((language) => ownLanguages.some((own) =>
     own.type === 'learning' && own.languageId === language.id));
   const learns = partner.learning_languages.find((language) => ownLanguages.some((own) =>
@@ -198,7 +200,7 @@ function PartnerCard({ partner, tier, ownLanguages }: { partner: Partner; tier?:
 
   function message() {
     startConversation.mutate(partner.id, {
-      onSuccess: (conversationId) => { track('partner_message_started'); router.push({ pathname: '/chat/[id]', params: { id: conversationId } }); },
+      onSuccess: (conversationId) => { track('partner_message_started'); router.push({ pathname: '/chat/[id]', params: { id: conversationId, ...(task ? { task } : {}) } }); },
       onError: (error) => Alert.alert(t("Could not start the chat"), error.message),
     });
   }

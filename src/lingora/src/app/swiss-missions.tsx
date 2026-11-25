@@ -1,22 +1,35 @@
 import { useState } from 'react';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { AppText, Button, Card, Screen, ScreenHeader } from '@/components/ui';
 import { screenPadding, spacing } from '@/constants/theme';
 import { ExerciseView } from '@/features/learn/exercise';
-import { swissMissions, updateMissionMistakes, missionMistakeKey } from '@/features/learn/swiss-missions';
+import { swissMissions, updateMissionMistakes, missionMistakeKey, missionOutcomes } from '@/features/learn/swiss-missions';
+import { rememberExchange } from '@/features/learn/course-entry';
 import { useDeviceState } from '@/lib/device-state';
 import { useSession } from '@/providers/session-provider';
 import { t } from '@/lib/i18n';
 
 export default function SwissMissionsScreen() {
  const { user } = useSession();
- const [mistakes, saveMistakes] = useDeviceState<Record<string, boolean>>(user?.id, 'swiss-mission-mistakes', {});
- const [selected, select] = useState<string>();
+ const [savedMistakes, saveMistakes] = useDeviceState<Record<string, boolean>>(user?.id, 'swiss-mission-mistakes', {});
+ const { mission: requestedMission } = useLocalSearchParams<{ mission?: string }>();
+ const [selected, select] = useState<string | undefined>(requestedMission);
+ const [previewMistakes, setPreviewMistakes] = useState<Record<string, boolean>>({});
+ const mistakes = user ? savedMistakes : previewMistakes;
+ const [attempt, setAttempt] = useState(0);
  const [round, setRound] = useState<number[]>([]);
  const [position, setPosition] = useState(0);
  const [started, setStarted] = useState(false);
  const mission = swissMissions.find(m => m.id === selected);
+ const indices = mission?.exercises.map((_, index) => index) ?? [];
+ const missed = indices.filter(index => mistakes[missionMistakeKey(mission!.id, index)]);
+ function start(indices: number[]) {
+  setRound(indices);
+  setPosition(0);
+  setAttempt(value => value + 1);
+  setStarted(true);
+ }
  function open(id: string) { select(id); setStarted(false); setPosition(0); }
  return <Screen><ScreenHeader title={t('Swiss everyday missions')} />
  <ScrollView contentContainerStyle={{padding:screenPadding,gap:spacing.md}}>
@@ -29,15 +42,30 @@ export default function SwissMissionsScreen() {
  <AppText variant="title">{mission.title}</AppText>
  {!started ? <>
  {mission.phrases.map(([phrase,meaning]) => <Card key={phrase}><AppText variant="bodyStrong">{phrase}</AppText><AppText color="textSecondary">{meaning}</AppText></Card>)}
- <Button title={t('Start practice')} onPress={() => {setRound(mission.exercises.map((_,i)=>i));setPosition(0);setStarted(true);}} />
- {mission.exercises.some((_,i)=>mistakes[missionMistakeKey(mission.id,i)]) && <Button title={t('Practise my mission mistakes')} variant="secondary" onPress={() => {setRound(mission.exercises.map((_,i)=>i).filter(i=>mistakes[missionMistakeKey(mission.id,i)]));setPosition(0);setStarted(true);}} />}
+ <Button title={t('Start practice')} onPress={() => start(indices)} />
+ {missed.length > 0 && <Button title={t('Practise my mission mistakes')} variant="secondary" onPress={() => start(missed)} />}
  </> : position < round.length ? <Card>
  <AppText>{t('Question {n} of {total}', {n:position+1,total:round.length})}</AppText>
- <ExerciseView key={`${mission.id}:${position}`} exercise={mission.exercises[round[position]]} isLast={position===round.length-1} onContinue={correct=>{
- saveMistakes(current=>updateMissionMistakes(current??{},mission.id,round[position],correct));setPosition(p=>p+1);
+ <ExerciseView key={`${mission.id}:${attempt}:${position}`} courseId="de" exercise={mission.exercises[round[position]]} isLast={position===round.length-1} onContinue={correct=>{
+ const update = (current: Record<string, boolean> | null) => updateMissionMistakes(current ?? {}, mission.id, round[position], correct);
+ if (user) saveMistakes(update);
+ else setPreviewMistakes(update);
+ setPosition(value => value + 1);
  }} />
- </Card> : <Card><AppText variant="heading">{t('Practice complete')}</AppText><AppText>{t('Try the role-play with a partner. Use fictional personal details.')}</AppText>
- <AppText>{mission.roleplay}</AppText><Button title={t('Find a practice partner')} onPress={()=>router.push('/explore')} />
+ </Card> : <Card><AppText variant="heading">{t('Practice complete')}</AppText>{missed.length === 0 && <><AppText variant="bodyStrong">{t('What you can do now')}</AppText><AppText>{missionOutcomes[mission.id]}</AppText></>}
+ {missed.length > 0 && <><AppText>{t('{n} questions to retry', { n: missed.length })}</AppText>
+ <Button title={t('Practise my mission mistakes')} variant="secondary" onPress={() => start(missed)} /></>}
+ {mission.id === 'viewing' && <AppText>Züridütsch · «Wänn chönnti d Wohnig aluege?»</AppText>}
+ <AppText>{t('Try the role-play with a partner. Use fictional personal details.')}</AppText>
+ <AppText>{mission.roleplay}</AppText><Button title={t('Find a practice partner')} onPress={() => {
+  const task = `swiss-${mission.id}`;
+  if (user && !user.is_anonymous) {
+    router.push({ pathname: '/explore', params: { task } });
+  } else {
+    rememberExchange(task);
+    router.push(user ? '/create-account' : '/login');
+  }
+ }} />
  <Button title={t('Practise again')} variant="secondary" onPress={()=>setStarted(false)} /></Card>}
  </>}
  <View><Button title={t('My mistake workshop')} variant="secondary" onPress={()=>router.push('/mistake-workshop')} /></View>

@@ -1,3 +1,7 @@
+import { useActiveCourse } from '@/features/learn/active-course';
+import { courses, findLesson } from '@/features/learn/catalog';
+import { conversationTask } from '@/features/learn/conversation-tasks';
+import { takeCourse, takeExchange } from '@/features/learn/course-entry';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider, router, type ErrorBoundaryProps } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -103,13 +107,32 @@ function SplashScreenController() {
 function RootNavigator() {
   const { session, isLoading } = useSession();
   const isSignedIn = !!session;
+  const { choose } = useActiveCourse();
 
   // A password reset link signs the person in; then ask for the new password.
   useEffect(() => {
-    if (!isSignedIn || !takePasswordRecovery()) return;
-    const timer = setTimeout(() => router.replace('/reset-password'), 0);
+    if (!isSignedIn || isLoading) return;
+    const timer = setTimeout(() => {
+      if (takePasswordRecovery()) {
+        router.replace('/reset-password');
+        return;
+      }
+      const task = session?.user.is_anonymous ? null : takeExchange();
+      if (task && conversationTask(task)) {
+        router.replace({ pathname: '/explore', params: { task } });
+        return;
+      }
+      const entry = takeCourse();
+      if (entry && courses.some(course => course.id === entry.id)) {
+        choose(entry.id);
+        const lesson = entry.lesson && findLesson(entry.lesson);
+        router.replace(lesson && lesson.course.id === entry.id
+          ? { pathname: '/lesson/[id]', params: { id: lesson.entry.id } }
+          : '/learn');
+      }
+    }, 0);
     return () => clearTimeout(timer);
-  }, [isSignedIn, session?.user.id]);
+  }, [isSignedIn, isLoading, choose, session?.user.is_anonymous]);
 
   // Splash screen is still visible while loading.
   if (isLoading) return null;
@@ -150,7 +173,6 @@ function RootNavigator() {
         <Stack.Screen name="ai-partner" />
         <Stack.Screen name="rewards" />
         <Stack.Screen name="memory" />
-        <Stack.Screen name="plus" />
         <Stack.Screen name="admin" />
         <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
         <Stack.Screen name="connections/[id]" />
@@ -181,6 +203,8 @@ function RootNavigator() {
 
       {/* Email confirmation deep link – must work in both states */}
       <Stack.Screen name="auth/callback" />
+      <Stack.Screen name="start-course" />
+      <Stack.Screen name="plus" />
       <Stack.Screen name="privacy" />
       <Stack.Screen name="terms" />
       <Stack.Screen name="imprint" />

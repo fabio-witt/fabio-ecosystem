@@ -38,7 +38,7 @@ export default function PlusScreen() {
   const [open, setOpen] = useState<number | null>(null);
 
   // Coming back from the checkout: look for the new membership.
-  useFocusEffect(useCallback(() => { void refetch(); track('plus_viewed'); }, [refetch]));
+  useFocusEffect(useCallback(() => { if (user) void refetch(); track('plus_viewed'); }, [refetch, user]));
 
   const chosen = PLUS_CHECKOUT[plan];
   function subscribe() {
@@ -86,7 +86,9 @@ export default function PlusScreen() {
               })}
             </View>
             {plan === 'yearly' ? <TrialTimeline /> : null}
-            {guest ? (
+            {!user ? (
+              <Button title={t('Log in')} size="lg" fullWidth onPress={() => router.push('/login')} />
+            ) : guest ? (
               <Button title={t('Create a free account first')} size="lg" fullWidth onPress={() => router.push('/create-account')} />
             ) : (
               <Button title={plan === 'yearly' ? t('Start 7 days free') : plan === 'lifetime' ? t('Get Plus forever') : t('Get Lingora Plus')}

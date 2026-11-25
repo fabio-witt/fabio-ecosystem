@@ -1,5 +1,9 @@
 /** German interface translations. Course content keeps its teaching language. */
 export const de: Record<string, string> = {
+"What you can do now": "Das kannst du jetzt",
+"{n} questions to retry": "{n} Fragen zum Wiederholen",
+"Sign in to review saved lesson mistakes.": "Melde dich an, um gespeicherte Lektionsfehler zu wiederholen.",
+
 "Swiss everyday missions": "Schweizer Alltagsmissionen",
 "Practise real-life situations": "Übe Situationen aus dem Alltag",
 "My mistake workshop": "Meine Fehlerwerkstatt",
