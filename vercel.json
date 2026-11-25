@@ -24,18 +24,43 @@
     },
     {
       "source": "/sprachlernapp",
-      "destination": "/grammarfirst/",
+      "destination": "/lingora/",
       "permanent": true
     },
     {
       "source": "/sprachlernapp/",
-      "destination": "/grammarfirst/",
+      "destination": "/lingora/",
       "permanent": true
     },
     {
       "source": "/sprachlernapp/:path*",
-      "destination": "/grammarfirst/",
+      "destination": "/lingora/",
       "permanent": true
+    },
+    {
+      "source": "/grammarfirst",
+      "destination": "/lingora/",
+      "permanent": false
+    },
+    {
+      "source": "/grammarfirst/",
+      "destination": "/lingora/",
+      "permanent": false
+    },
+    {
+      "source": "/grammarfirst/index.html",
+      "destination": "/lingora/",
+      "permanent": false
+    },
+    {
+      "source": "/grammarfirst/premium",
+      "destination": "/lingora/",
+      "permanent": false
+    },
+    {
+      "source": "/grammarfirst/premium.html",
+      "destination": "/lingora/",
+      "permanent": false
     }
   ],
   "headers": [

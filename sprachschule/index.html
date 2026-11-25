@@ -206,7 +206,7 @@ transform:translateY(120%);transition:transform .25s}.sw65-sticky.is-on{transfor
 <p>Persönliches Sprachcoaching mit Fabio Witt, praxisnah, strukturiert und auf dein Ziel zugeschnitten. Für Alltag, Beruf, Reisen und internationale Teams.</p>
 <div class="hero-actions">
 <a class="btn btn-primary" href="#kursanfrage">Kurs buchen</a>
-<a class="btn btn-secondary" href="#preise">Preise ansehen</a><p class="sw65-price-hint">Probelektion und Einzelstunden <b>ab CHF 75 / 60 Min.</b> · Monatspakete ab CHF 199</p>
+<a class="btn btn-secondary" href="#preise">Preise ansehen</a><a class="btn btn-secondary" href="#kursanfrage" data-fw-booking="sprachkurse" style="display:none">📅 Probelektion im Kalender buchen</a><p class="sw65-price-hint">Probelektion und Einzelstunden <b>ab CHF 75 / 60 Min.</b> · Monatspakete ab CHF 199</p>
 </div>
 <div class="hero-proof">
 <span> Persönlicher Lernplan</span>
@@ -302,6 +302,8 @@ transform:translateY(120%);transition:transform .25s}.sw65-sticky.is-on{transfor
 <div class="sw52-terms"><strong>Fair &amp; transparent:</strong><span>Keine automatische Abbuchung über diese Website. Nach deiner Buchungsanfrage erhältst du eine Terminbestätigung und einen separaten Zahlungslink bzw. eine Rechnung. Monatsmodelle sind für den jeweils gebuchten Monat gültig. Umbuchungs- und Stornierungsbedingungen werden vor Zahlung bestätigt.</span></div>
 </div>
 </section>
+<section class="" data-fw-references="sprachkurse" style="display:none"><div class="container"><div class="section-head"><span class="kicker">Stimmen</span><h2>Das sagen Lernende</h2></div><div class="fw-refs"></div></div></section>
+
 <section aria-label="So startest du" class="sw56-start">
 <div class="container">
 <div class="section-head sw56-start-head"><span class="kicker">Einfach starten</span><h2>Von deinem Ziel zum passenden Kurs</h2><p>Keine komplizierten Pakete: erst Ziel klären, dann Format wählen und mit einem konkreten Lernplan starten.</p></div>
@@ -389,7 +391,7 @@ transform:translateY(120%);transition:transform .25s}.sw65-sticky.is-on{transfor
 </div>
 </div>
 </section>
-<section class="section"><div class="container"><h2>Zwischen den Stunden üben</h2><p>Eine kurze Hausaufgabe für den Deutschunterricht mit Redemitteln und einem Rollenspiel.</p><a class="btn btn-secondary" href="/grammarfirst/lingora/swiss-missions?mission=viewing">Hausaufgabe öffnen: Wohnungsbesichtigung</a></div></section>
+<section class="section"><div class="container"><h2>Zwischen den Stunden üben</h2><p>Eine kurze Hausaufgabe für den Deutschunterricht mit Redemitteln und einem Rollenspiel.</p><a class="btn btn-secondary" href="/grammarfirst/lingora/ai-partner">Hausaufgabe öffnen: Wohnungsbesichtigung</a></div></section>
 <a class="sw65-sticky" href="#kursanfrage" aria-label="Sprachkurs buchen">Kurs buchen <span>ab CHF 75</span></a>
 <script>(function(){var b=document.querySelector('.sw65-sticky'),h=document.querySelector('.hero'),f=document.getElementById('kursanfrage');if(!b||!h)return;function u(){var y=window.scrollY,show=y>h.offsetHeight*0.8;if(f){var r=f.getBoundingClientRect();if(r.top<window.innerHeight&&r.bottom>0)show=false;}b.classList.toggle('is-on',show);}window.addEventListener('scroll',u,{passive:true});u();})();</script>
 </main>
@@ -494,5 +496,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 <script defer="True" src="/shared-assets/forms-v57.js"></script><script defer src="/shared-assets/nav-v63.js"></script>
 <script defer src="/shared-assets/fold-v64.js"></script>
 <script defer src="/shared-assets/polish-v65.js"></script>
+<script defer src="/shared-assets/extras-v66.js"></script>
 </body>
 </html>

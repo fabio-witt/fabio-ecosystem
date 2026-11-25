@@ -381,10 +381,7 @@ document.getElementById('course-finder')?.addEventListener('submit', (e) => {
 
   const course = { Deutsch: 'de', Englisch: 'en', Französisch: 'fr', Spanisch: 'es', Italienisch: 'it' }[language];
   const practiceUrl = language === 'Deutsch'
-    ? '/grammarfirst/lingora/swiss-missions?mission=' + (goal === 'beruf' ? 'interview' : 'viewing')
-    : '/grammarfirst/lingora/start-course?course=' + encodeURIComponent(course);
-  const result = document.getElementById('finder-result');
-  result.innerHTML = `<span class="kicker">Ihre Empfehlung</span><h3>${title}</h3><p>${recommendation}</p><p><strong>Format:</strong> ${format === 'online' ? 'Online' : format === 'praesenz' ? 'Präsenz' : 'Flexibel / Hybrid'}</p><a class="btn btn-primary" href="#kontakt">Unverbindlich anfragen</a> <a class="btn btn-secondary" href="${practiceUrl}">Passend dazu mit Lingora üben</a>`;
+    ? '/grammarfirst/lingora/ai-partner"kicker">Ihre Empfehlung</span><h3>${title}</h3><p>${recommendation}</p><p><strong>Format:</strong> ${format === 'online' ? 'Online' : format === 'praesenz' ? 'Präsenz' : 'Flexibel / Hybrid'}</p><a class="btn btn-primary" href="#kontakt">Unverbindlich anfragen</a> <a class="btn btn-secondary" href="${practiceUrl}">Passend dazu mit Lingora üben</a>`;
 });
 
 document.getElementById('level-test')?.addEventListener('submit', (e) => {
