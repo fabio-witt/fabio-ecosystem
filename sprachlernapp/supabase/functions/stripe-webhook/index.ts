@@ -11,12 +11,18 @@ Deno.serve(async(req)=>{
  const sync=async(sub:Stripe.Subscription)=>{
   const uid=String(sub.metadata?.supabase_user_id||"");if(!uid)return;
   const active=["active","trialing"].includes(sub.status);
-  await admin.from("subscriptions").upsert({
+  const { error } = await admin.from("subscriptions").upsert({
    user_id:uid,plan:active?"pro":"free",status:sub.status,
    stripe_customer_id:String(sub.customer),stripe_subscription_id:sub.id,
    current_period_end:new Date(sub.current_period_end*1000).toISOString(),updated_at:new Date().toISOString()
   });
+  if (error) throw error;
  };
+ try {
  if(event.type==="customer.subscription.created"||event.type==="customer.subscription.updated"||event.type==="customer.subscription.deleted")await sync(event.data.object as Stripe.Subscription);
+ } catch {
+  console.error("Subscription sync failed", event.id);
+  return new Response("Subscription sync failed", {status:500});
+ }
  return Response.json({received:true});
 });

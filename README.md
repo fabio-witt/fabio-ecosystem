@@ -1,3 +1,11 @@
+# Fabio ecosystem
+
+Current architecture, deployment and release gates: [docs/OPERATIONS.md](docs/OPERATIONS.md).
+
+Checks: `python3 scripts/check-site.py` and `node --test tests/reliability.test.cjs`.
+
+The sections below are historical release notes; hosting instructions there may no longer apply. Vercel is the supported deployment configuration.
+
 # Fabio Witt SAP Consulting v4
 
 Statische Website ohne Build-Schritt. Bereiche: Fabio Witt (/), DACHWERK (/dachwerk/), SPRACHWERK (/sprachschule/), LERNWERK (/sprachlernapp/), GrammarFirst (/grammarfirst/). Release Notes und Audits liegen in docs/ und werden nicht veröffentlicht.

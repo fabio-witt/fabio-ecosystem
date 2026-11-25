@@ -89,8 +89,10 @@ self.addEventListener("fetch", (event) => {
   if (request.mode === "navigate") {
     // Network first, so updates arrive at once; the cached shell works offline.
     event.respondWith(fetch(request).then((response) => {
-      const copy = response.clone();
-      caches.open(CACHE).then((cache) => cache.put(SCOPE, copy));
+      if (response.ok && response.headers.get("content-type")?.includes("text/html")) {
+        const copy = response.clone();
+        event.waitUntil(caches.open(CACHE).then((cache) => cache.put(SCOPE, copy)));
+      }
       return response;
     }).catch(() => caches.match(SCOPE)));
     return;
