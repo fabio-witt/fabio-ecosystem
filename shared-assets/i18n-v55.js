@@ -16,9 +16,17 @@
     var m=document.cookie.match(/(?:^|;\s*)googtrans=\/de\/([^;]+)/);
     return m && SUPPORTED.indexOf(m[1])>=0?m[1]:null;
   }
-  var active=getParam()||getStored()||getCookieLang()||'de';
+  // The DE / EN / RU flags are switched off for now. Set to true to bring them back.
+  var SHOW_SWITCHER=false;
+  var active=SHOW_SWITCHER ? (getParam()||getStored()||getCookieLang()||'de') : 'de';
+  if(!SHOW_SWITCHER){
+    // Visitors who picked English or Russian before see the German original again.
+    try{localStorage.removeItem('fabio-lang');}catch(e){}
+    document.cookie='googtrans=;path=/;max-age=0';
+    if(location.hostname.indexOf('.')>0)document.cookie='googtrans=;path=/;domain=.'+location.hostname.replace(/^www\./,'')+';max-age=0';
+  }
   document.documentElement.setAttribute('lang',active);
-  try{localStorage.setItem('fabio-lang',active);}catch(e){}
+  if(SHOW_SWITCHER){try{localStorage.setItem('fabio-lang',active);}catch(e){}}
   function setCookie(name,value,days){
     var max=days?'max-age='+(days*86400):'max-age=0';
     document.cookie=name+'='+value+';path=/;'+max+';SameSite=Lax';
@@ -99,6 +107,6 @@
     var s=document.createElement('script');s.async=true;s.defer=true;s.dataset.fwGoogleTranslate='1';
     s.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';document.head.appendChild(s);
   }
-  function init(){insertSwitchers();if(active!=='de')loadTranslator();}
+  function init(){if(!SHOW_SWITCHER)return;insertSwitchers();if(active!=='de')loadTranslator();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

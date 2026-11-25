@@ -1,8 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 82">
-<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#14375f"/><stop offset="1" stop-color="#2a9d8f"/></linearGradient></defs>
-<rect x="7" y="10" width="66" height="62" rx="18" fill="url(#g)"/>
-<path d="M23 31h34v20H42l-10 10V51h-9z" fill="#fff"/>
-<circle cx="33" cy="41" r="2.5" fill="#14375f"/><circle cx="41" cy="41" r="2.5" fill="#14375f"/><circle cx="49" cy="41" r="2.5" fill="#14375f"/>
-<text x="92" y="43" font-family="Arial,Helvetica,sans-serif" font-size="31" font-weight="700" fill="#14375f">SPRACHWERK</text>
-<text x="94" y="64" font-family="Arial,Helvetica,sans-serif" font-size="13" letter-spacing="2.6" fill="#6b8297">MIT FABIO WITT</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="82" viewBox="0 0 460 82" role="img" aria-label="Fabio Witt Private Sprachkurse">
+<title>Fabio Witt Private Sprachkurse</title>
+<svg x="6.0" y="6.0" width="70" height="70" viewBox="0 0 64 64"><defs>
+    <linearGradient id="fb-bg-s" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16395f"/>
+      <stop offset="1" stop-color="#0b2240"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="url(#fb-bg-s)"/>
+  <!-- ears -->
+  <circle cx="18.5" cy="19" r="7.5" fill="#9A6A43"/>
+  <circle cx="45.5" cy="19" r="7.5" fill="#9A6A43"/>
+  <circle cx="18.5" cy="19" r="3.6" fill="#E9C9A3"/>
+  <circle cx="45.5" cy="19" r="3.6" fill="#E9C9A3"/>
+  <!-- head -->
+  <ellipse cx="32" cy="33" rx="18" ry="16.5" fill="#9A6A43"/>
+  <!-- scarf -->
+  <path d="M15 45.5c10.5 6 23.5 6 34 0l1.6 5.6c-11.6 6.6-25.6 6.6-37.2 0z" fill="#6fd6c4"/>
+  <path d="M39.5 49.5l3.2 8.5 5-2.2-3.4-7.8z" fill="#45b9a6"/>
+  <!-- muzzle -->
+  <ellipse cx="32" cy="38.5" rx="9" ry="7" fill="#E9C9A3"/>
+  <!-- cheeks -->
+  <circle cx="21" cy="37" r="2.6" fill="#F2A0A8" opacity=".8"/>
+  <circle cx="43" cy="37" r="2.6" fill="#F2A0A8" opacity=".8"/>
+  <!-- eyes -->
+  <circle cx="25" cy="30" r="2.5" fill="#3B2A22"/>
+  <circle cx="39" cy="30" r="2.5" fill="#3B2A22"/>
+  <circle cx="25.8" cy="29.2" r=".8" fill="#fff"/>
+  <circle cx="39.8" cy="29.2" r=".8" fill="#fff"/>
+  <!-- nose and smile -->
+  <ellipse cx="32" cy="35.6" rx="3.2" ry="2.3" fill="#3B2A22"/>
+  <path d="M28.6 40.2c2 2 4.8 2 6.8 0" fill="none" stroke="#3B2A22" stroke-width="1.6" stroke-linecap="round"/>
+</svg>
+<text x="88.0" y="39.0" font-family="Inter,Segoe UI,Helvetica,Arial,sans-serif" font-size="30" font-weight="800" fill="#14375f">Fabio Witt</text>
+<text x="88.0" y="60.0" font-family="Inter,Segoe UI,Helvetica,Arial,sans-serif" font-size="16" font-weight="700" letter-spacing=".5" fill="#b84a2a">PRIVATE SPRACHKURSE</text>
 </svg>

@@ -1,7 +1,7 @@
 /* Fabio Ecosystem v63 navbar: overview links with dropdowns, mobile sheet, quick contact */
 (function(){
   'use strict';
-  var TOPICS={dachwerk:'SAP-Beratung (DACHWERK)',sprachschule:'Sprachunterricht (SPRACHWERK)',lingora:'Lingora App',grammarfirst:'GrammarFirst',digital:'Digital: Website, KI, Foto, Video',fabio:'Allgemeine Anfrage'};
+  var TOPICS={dachwerk:'SAP Services',sprachschule:'Private Sprachkurse',lingora:'Lingora App',grammarfirst:'GrammarFirst',digital:'Weitere Services: Drohne, Video, Social Media, Website',fabio:'Allgemeine Anfrage'};
   var THANKS={dachwerk:'/dachwerk/danke.html',sprachschule:'/sprachschule/danke.html'};
   function section(){var m=location.pathname.match(/^\/(dachwerk|sprachschule|lingora|grammarfirst|fabio)\b/);if(m)return m[1];if(/^\/digital/.test(location.pathname))return 'digital';return 'fabio';}
   function buildDialog(){

@@ -10068,3 +10068,7 @@ summary:focus-visible {
 .contact-form input,.contact-form select,.contact-form textarea{width:100%;padding:11px 12px;border:1px solid #bdced8;border-radius:10px;background:#fff;font:inherit;color:#17324d}
 .contact-form textarea{resize:vertical}
 @media(max-width:700px){.form-grid{grid-template-columns:1fr}}
+
+/* v65: one project lead (Fabio Witt) – center the single person card. */
+.hero-v3__people{grid-template-columns:minmax(0,380px)!important;justify-content:center}
+.lead-team{grid-template-columns:minmax(0,520px)!important;justify-content:center}

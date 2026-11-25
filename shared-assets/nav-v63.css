@@ -4,7 +4,7 @@
 .fw50-nav *{box-sizing:border-box}
 .fw50-nav__inner{width:min(1280px,calc(100% - 32px));height:var(--nav-h);margin:auto;display:flex;align-items:center;gap:14px}
 .fw50-brand{display:inline-flex;align-items:center;gap:10px;color:var(--nav-navy)!important;text-decoration:none!important;flex:0 0 auto}
-.fw50-brand__mark{width:40px;height:40px;display:block;flex:0 0 auto}.fw50-brand__mark svg{width:40px;height:40px;display:block;border-radius:12px;box-shadow:0 6px 14px rgba(11,34,64,.18)}
+.fw50-brand__mark{width:40px;height:40px;display:block;flex:0 0 auto}.fw50-brand__mark svg,.fw50-brand__mark img{width:40px;height:40px;display:block;border-radius:12px;box-shadow:0 6px 14px rgba(11,34,64,.18)}.fw50-brand:hover .fw50-brand__mark img{transform:rotate(-6deg) scale(1.04);transition:transform .2s}
 .fw50-brand__name{display:flex;flex-direction:column;line-height:1}
 .fw50-brand__name b{font-size:16px;font-weight:850}
 .fw50-brand__name small{font-size:11.5px;color:var(--nav-muted);font-weight:600;margin-top:4px;letter-spacing:0}
