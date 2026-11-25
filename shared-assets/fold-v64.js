@@ -153,6 +153,13 @@
     var sections = fold();
     toc(sections || topSections());
     reveal(location.hash);
+    // Folding changed the layout after the browser jumped to #anchor: jump again.
+    if (location.hash.length > 1) {
+      try {
+        var target = document.querySelector(decodeURIComponent(location.hash));
+        if (target) setTimeout(function () { target.scrollIntoView({ block: 'start' }); }, 80);
+      } catch (e) { /* not a valid selector */ }
+    }
     window.addEventListener('hashchange', function () { reveal(location.hash); });
     document.addEventListener('click', function (event) {
       var a = event.target && event.target.closest && event.target.closest('a[href^="#"]');

@@ -93,3 +93,15 @@
 .fw-qc__note{font-size:12.5px;color:#64748b;margin:0}
 @media(max-width:560px){.fw-qc{width:100%;max-width:100%;margin:auto 0 0;border-radius:20px 20px 0 0}.fw-qc__row{grid-template-columns:1fr}}
 .fw50-nav .fw50-dd--lingora>.fw50-dd__link{color:var(--nav-red)!important}
+
+/* v67: quick contact form – fields never overflow or overlap, whatever page styles say. */
+.fw-qc,.fw-qc *,.fw-qc *::before,.fw-qc *::after{box-sizing:border-box}
+.fw-qc form{gap:14px;padding:26px}
+.fw-qc label{min-width:0;margin:0}
+.fw-qc__row>label{min-width:0}
+.fw-qc input,.fw-qc select,.fw-qc textarea{display:block;width:100%;max-width:100%;margin:0;min-height:48px;height:auto;padding:12px 14px;box-shadow:none;line-height:1.4;-webkit-appearance:none;appearance:none}
+.fw-qc select{padding-right:38px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%233c4a58' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center/12px}
+.fw-qc textarea{min-height:120px}
+.fw-qc input:hover,.fw-qc select:hover,.fw-qc textarea:hover{border-color:#b8c4d0}
+.fw-qc__top h2{font-size:24px}
+@media(max-width:520px){.fw-qc form{padding:20px}}

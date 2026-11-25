@@ -10072,3 +10072,28 @@ summary:focus-visible {
 /* v65: one project lead (Fabio Witt) – center the single person card. */
 .hero-v3__people{grid-template-columns:minmax(0,380px)!important;justify-content:center}
 .lead-team{grid-template-columns:minmax(0,520px)!important;justify-content:center}
+
+/* v67: freelancer profile instead of a two-person hero, consulting roles */
+.sapc-profile{align-self:center;background:#fff;color:#0f2f52;border-radius:26px;padding:26px;box-shadow:0 30px 70px rgba(4,16,32,.35);display:grid;gap:18px;max-width:420px;justify-self:end;width:100%}
+.sapc-profile__top{display:flex;gap:16px;align-items:center}
+.sapc-profile__top img{width:104px;height:104px;border-radius:22px;object-fit:cover;flex:0 0 auto}
+.sapc-profile__top strong{display:block;font-size:24px;line-height:1.15}
+.sapc-profile__top span{display:block;color:#526273;font-weight:600;margin-top:2px}
+.sapc-avail{display:inline-flex;align-items:center;gap:7px;margin-top:8px;font-style:normal;font-size:13px;font-weight:800;color:#0a8578;background:#e7f6f3;padding:5px 10px;border-radius:999px}
+.sapc-avail i{width:8px;height:8px;border-radius:50%;background:#16b39b;box-shadow:0 0 0 4px rgba(22,179,155,.2)}
+.sapc-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.sapc-chips li{font-size:13px;font-weight:700;padding:6px 11px;border-radius:999px;background:#f1f5f9;color:#14375f}
+.sapc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:14px;border-top:1px solid #e5ebf1}
+.sapc-stats b{display:block;font-size:20px}.sapc-stats span{font-size:12px;color:#526273}
+.sapc-profile__cta{justify-content:center;width:100%}
+.sapc-roles .sapc-lead{max-width:760px;font-size:18px;color:#526273}
+.sapc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;margin-top:26px}
+.sapc-role{background:#fff;border:1px solid #e1e8ef;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:10px;transition:transform .15s,box-shadow .15s,border-color .15s}
+.sapc-role:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(15,47,82,.1);border-color:#0a8578}
+.sapc-role h3{margin:0;font-size:20px;color:#0f2f52}.sapc-role p{margin:0;color:#526273}
+.sapc-cert{margin-top:auto;font-size:12px;font-weight:800;letter-spacing:.02em;color:#0a8578}
+.sapc-freelance{margin-top:26px;display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;padding:26px;border-radius:22px;background:#0f2f52;color:#fff}
+.sapc-freelance h3{margin:0 0 8px;color:#fff}.sapc-freelance ul{margin:0;padding-left:18px;color:#d7e3ee}
+.sapc-freelance__cta{display:flex;flex-wrap:wrap;gap:10px}
+@media(max-width:1180px){.sapc-profile{justify-self:center;max-width:560px;margin-top:28px}}
+@media(max-width:600px){.sapc-profile{max-width:none;justify-self:stretch;padding:20px}.sapc-profile__top img{width:84px;height:84px}}
