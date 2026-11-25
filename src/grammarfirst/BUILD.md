@@ -20,7 +20,7 @@ Dateien:
 Bauen (im Ordner src/grammarfirst, mit Node.js 22 oder neuer):
 
     npm ci
-    npm run build:lingora -- /absoluter/pfad/zu/Lingora
+    npm run build:lingora -- ../lingora
     npm run build
 
 Der Lingora-Ordner muss seine Expo-Abhängigkeiten installiert haben. Der Build liest

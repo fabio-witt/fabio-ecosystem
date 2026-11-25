@@ -1,0 +1,16 @@
+import { SvgXml } from 'react-native-svg';
+
+/** The Lingora app icon: a red L with a dot on a black rounded square. */
+const logo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E1E23"/><stop offset="1" stop-color="#050506"/></linearGradient>
+<linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4040"/><stop offset="1" stop-color="#D3121F"/></linearGradient>
+</defs>
+<rect width="1024" height="1024" rx="232" fill="url(#bg)"/>
+<path d="M362 290 V735 H670" fill="none" stroke="url(#red)" stroke-width="150" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="674" cy="327" r="62" fill="#FF4040"/>
+</svg>`;
+
+export function BrandIcon({ size = 36 }: { size?: number }) {
+  return <SvgXml xml={logo} width={size} height={size} accessible={false} />;
+}

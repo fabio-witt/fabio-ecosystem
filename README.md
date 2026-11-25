@@ -67,3 +67,17 @@ Der Navbar ist responsive und auf Desktop/Mobile identisch.
 - gemeinsame Mobile Navigation weiter gehärtet
 - iPhone Safe Areas, 48px Touch Targets, mobile Typografie und Reduced Motion verbessert
 - temporäre Testdateien entfernt
+
+## Lingora source and release
+
+The editable Lingora application is now in `src/lingora/`. Do not edit generated
+bundles in `grammarfirst/lingora/` or the older external checkout.
+
+1. `npm ci --prefix src/lingora`
+2. Copy `src/lingora/.env.example` to `.env` in that directory and configure only public Supabase values.
+3. Run `scripts/check-release.sh`.
+4. `npm ci --prefix src/grammarfirst`
+5. `cd src/grammarfirst && npm run build:lingora`
+
+The generated export remains at `/grammarfirst/lingora/`. Server secrets belong
+only in the Supabase function environment. The GitHub checks do not require secrets.

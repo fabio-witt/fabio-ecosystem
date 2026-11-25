@@ -16,3 +16,4 @@ sprachlernapp/supabase
 *.md
 *.txt
 !robots.txt
+.github

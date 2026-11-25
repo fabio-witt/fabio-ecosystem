@@ -4,9 +4,13 @@ const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { parseEnv } = require("node:util");
 
-const source = path.resolve(process.argv[2] || "../../../Lingora");
+const source = path.resolve(process.argv[2] || path.join(__dirname, "../lingora"));
 const read = (file) => fs.readFileSync(file, "utf8");
-const settings = parseEnv(read(path.join(source, ".env")));
+const envFile = path.join(source, ".env");
+const settings = { ...(fs.existsSync(envFile) ? parseEnv(read(envFile)) : {}), ...process.env };
+if (!settings.EXPO_PUBLIC_SUPABASE_URL || !settings.EXPO_PUBLIC_SUPABASE_ANON_KEY) {
+  throw new Error("Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY, or create src/lingora/.env using .env.example.");
+}
 const url = new URL(settings.EXPO_PUBLIC_SUPABASE_URL);
 const key = settings.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 const role = () => {

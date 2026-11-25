@@ -7,7 +7,7 @@
 - `/sprachschule/`: language teaching.
 - `/lingora/`: language-app marketing.
 - `/grammarfirst/`: React learning application; source in `src/grammarfirst`.
-- `/grammarfirst/lingora/`: committed Expo web export from a separate Lingora repository.
+- `/grammarfirst/lingora/`: committed Expo web export from the editable source in `src/lingora`.
 - `/sprachlernapp/*`: legacy implementation, redirected to GrammarFirst on Vercel. Its payment functions are not evidence of the current Lingora payment implementation.
 - Forms use FormSubmit. Delivery must be tested with the recipient account.
 - GrammarFirst learning uses Lingora's public Supabase configuration; analytics/waitlist use a separate project (see cloud.js). Public keys are intentional; authorization must be enforced by RLS.
@@ -16,7 +16,7 @@
 
 Use Vercel with the repository root and existing committed static exports. No root build command is required to deploy these exports. Routing depends on vercel.json; other hosts require equivalent configuration. .vercelignore excludes development files and generated personal documents.
 
-To rebuild GrammarFirst: follow src/grammarfirst/BUILD.md. To rebuild Lingora you need the separate source checkout and its dependencies. Do not overwrite the committed export unless that build succeeds. Pin and record the source commit when releasing; this repository alone cannot reproduce Lingora.
+To rebuild GrammarFirst: follow src/grammarfirst/BUILD.md. To rebuild Lingora use `src/lingora` with its dependencies installed. Do not overwrite the committed export unless that build succeeds. Pin and record the source commit when releasing; the source is now included in this repository; public environment configuration is still required.
 
 ## Local release checks
 
@@ -47,3 +47,7 @@ Choose an error-monitoring account and configure alerts without logging password
 ## Product priorities
 
 Keep consulting, teaching and learning funnels distinct. Measure enquiry delivery, first lesson completion, next-day and weekly returns, and paid conversion before expanding courses or paid acquisition. Do not invent credentials, testimonials, language levels or learning outcomes. Archive legacy implementation only after verifying redirects, historical links and production backend dependencies.
+
+## Current development source
+
+Use `src/lingora`, not the external historical checkout. Run `scripts/check-release.sh` from the repository root. Full improvement status is tracked in `docs/IMPROVEMENT-TRACKER.md`.
