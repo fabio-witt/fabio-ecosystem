@@ -43,6 +43,17 @@ window.FW_SITE_CONFIG = {
   // url: YouTube-, Vimeo- oder .mp4-Link. Leer = kein Portfolio-Bereich.
   // Beispiel: { title: "Hotel am See – Drohnenfilm", url: "https://youtu.be/…" }
   portfolio: [],
+  // Showreel oben auf "Weitere Services": ein YouTube-, Vimeo- oder .mp4-Link (60 Sekunden reichen).
+  showreel: "",
+  // Deine Profile. Leer = nicht angezeigt. Erscheinen auf SAP Consulting und im Profil.
+  profiles: {
+    linkedin: "",       // z. B. "https://www.linkedin.com/in/…"
+    malt: "",           // z. B. "https://www.malt.ch/profile/…"
+    freelancermap: "",  // z. B. "https://www.freelancermap.de/profil/…"
+    gulp: ""
+  },
+  // Besucherstatistik ohne Cookies (plausible.io). Domain eintragen, sobald sie live ist, z. B. "fabio-witt.com".
+  analytics: { plausibleDomain: "" },
   paypalDonationUrl: "https://www.paypal.com/donate/?hosted_button_id=DEIN_PAYPAL_BUTTON_ID"
 };
 // Replace DEIN_PAYPAL_BUTTON_ID with your real PayPal hosted donation button ID.

@@ -18,7 +18,10 @@
     '.fw-portfolio{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin:18px 0 26px}' +
     '.fw-portfolio figure{margin:0}.fw-portfolio .fw-frame{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#0b2240}' +
     '.fw-portfolio iframe,.fw-portfolio video{position:absolute;inset:0;width:100%;height:100%;border:0}' +
-    '.fw-portfolio figcaption{margin-top:8px;font-weight:700}';
+    '.fw-portfolio figcaption{margin-top:8px;font-weight:700}' +
+    '.fw-showreel .fw-frame{position:relative;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#0b2240;margin-top:22px}' +
+    '.fw-showreel iframe,.fw-showreel video{position:absolute;inset:0;width:100%;height:100%;border:0}' +
+    '.fw-profile-links{display:flex;flex-wrap:wrap;gap:10px}.fw-profile-link{display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border-radius:12px;font-weight:800;text-decoration:none;background:#fff;color:#0f2f52;border:1.5px solid rgba(15,47,82,.2)}';
   var style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
@@ -65,6 +68,31 @@
       box.style.display = '';
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
-  else start();
+  function extras() {
+    var reel = safeUrl(config.showreel);
+    document.querySelectorAll('[data-fw-showreel]').forEach(function (box) {
+      var html = reel && embed(reel);
+      if (!html) return;
+      var target = box.querySelector('.fw-frame') || box;
+      target.innerHTML = html;
+      box.hidden = false;
+      box.style.display = '';
+    });
+    var profiles = config.profiles || {};
+    var names = { linkedin: 'LinkedIn', malt: 'Malt', freelancermap: 'freelancermap', gulp: 'GULP' };
+    document.querySelectorAll('[data-fw-profiles]').forEach(function (box) {
+      var links = Object.keys(names).map(function (key) {
+        var url = safeUrl(profiles[key]);
+        return url ? '<a class="fw-profile-link" href="' + esc(url) + '" target="_blank" rel="noopener">' + names[key] + ' ↗</a>' : '';
+      }).join('');
+      if (!links) return;
+      var target = box.querySelector('.fw-profile-links') || box;
+      target.innerHTML = links;
+      box.hidden = false;
+      box.style.display = '';
+    });
+  }
+  var startAll = function () { start(); extras(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startAll);
+  else startAll();
 })();

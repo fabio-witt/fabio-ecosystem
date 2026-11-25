@@ -47,6 +47,15 @@
     window.addEventListener('resize', update);
     update();
   }
+  // Cookie-free visitor statistics, only when a domain is set in site-config.js.
+  var analytics = (window.FW_SITE_CONFIG || {}).analytics || {};
+  if (analytics.plausibleDomain && !document.querySelector('script[data-domain]')) {
+    var plausible = document.createElement('script');
+    plausible.defer = true;
+    plausible.setAttribute('data-domain', analytics.plausibleDomain);
+    plausible.src = 'https://plausible.io/js/script.js';
+    document.head.appendChild(plausible);
+  }
   if (document.readyState === 'complete') start();
   else window.addEventListener('load', start);
 })();
