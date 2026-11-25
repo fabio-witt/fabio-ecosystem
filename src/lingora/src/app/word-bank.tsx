@@ -1,3 +1,7 @@
+import { useSession } from '@/providers/session-provider';
+import { useDeviceState } from '@/lib/device-state';
+import { ExerciseView } from '@/features/learn/exercise';
+import { phraseStars, ratePhrase, type Mastery } from '@/features/learn/phrase-mastery';
 import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
@@ -17,6 +21,14 @@ export default function WordBankScreen() {
   const { colors, styles } = useThemedStyles(createStyles);
   useVoicesReady();
   const game = useGame();
+  const { user } = useSession();
+  const [mastery, setMastery] = useDeviceState<Record<string, Mastery>>(user?.id, 'phrase-mastery', {});
+  const [recall, setRecall] = useState<{ card: SavedWord; mode: 'translate' | 'cloze' | 'listen' }>();
+  function mark(card: SavedWord, mode: 'recognise' | 'recall') {
+    const key = wordReviewKey(card.courseId, card.word);
+    const now = new Date();
+    setMastery(before => ({ ...before, [key]: ratePhrase(before?.[key] ?? {}, mode, now) }));
+  }
   const review = usePracticeReview();
   const { course } = useActiveCourse();
   const [filter, setFilter] = useState<string | undefined>(course?.id);
@@ -41,9 +53,37 @@ export default function WordBankScreen() {
     const card = drill![index];
     review.rateWord(wordReviewKey(card.courseId, card.word), remembered);
     game.recordWord(remembered);
+    if (remembered && card.meaning) mark(card, 'recognise');
     feedback(remembered ? 'ok' : 'bad');
     setFlipped(false);
     if (index + 1 >= drill!.length) { feedback('win'); setDrill(null); setIndex(0); } else setIndex(index + 1);
+  }
+
+  if (recall) {
+    const { card, mode } = recall;
+    const parts = card.word.trim().split(/\s+/);
+    const removed = parts.at(-1) ?? card.word;
+    const exercise = mode === 'cloze'
+      ? { prompt: parts.slice(0, -1).join(' ') + ' ___', accept: [removed] }
+      : mode === 'listen'
+        ? { prompt: t('Listen and type the phrase'), audio: card.word, accept: [card.word] }
+        : { prompt: card.meaning ?? '', accept: [card.word] };
+    return <Screen>
+      <ScreenHeader title={t('Recall the phrase')} />
+      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+        <Card>
+          <ExerciseView exercise={{ type: 'type', ...exercise }} courseId={card.courseId}
+            isLast onContinue={correct => {
+              if (mode === 'translate') {
+                if (correct) mark(card, 'recall');
+                review.rateWord(wordReviewKey(card.courseId, card.word), correct);
+              }
+              setRecall(undefined);
+            }} />
+        </Card>
+        <Button title={t('Stop')} variant="ghost" onPress={() => setRecall(undefined)} />
+      </ScrollView>
+    </Screen>;
   }
 
   if (drill) {
@@ -91,7 +131,8 @@ export default function WordBankScreen() {
           <TextInput value={meaning} onChangeText={setMeaning} placeholder={t('Meaning (optional)')} placeholderTextColor={colors.textMuted} style={styles.input} accessibilityLabel={t('Meaning (optional)')} />
           <Button title={t('Save')} disabled={!word.trim() || !(filter ?? course?.id)} onPress={add} />
         </Card>
-        {shown.length >= 3 ? (
+        {shown.some(item => item.meaning) && <AppText color="textSecondary">{t('Earn stars by recognising a phrase, recalling it from its meaning, and recalling it on another day.')}</AppText>}
+        {shown.length > 0 ? (
           <Button title={t('🃏 Practise {n} cards', { n: Math.min(shown.length, 20) })} size="lg"
             onPress={() => { setDrill([...shown].sort(() => Math.random() - 0.5).slice(0, 20)); setIndex(0); setFlipped(false); }} />
         ) : null}
@@ -103,7 +144,15 @@ export default function WordBankScreen() {
                 {itemCourse ? <Flag emoji={itemCourse.flag} size={22} /> : null}
                 <View style={styles.flex}>
                   <AppText variant="bodyStrong" selectable>{item.word}</AppText>
-                  {item.meaning ? <AppText variant="caption" color="textSecondary" numberOfLines={2}>{item.meaning}</AppText> : null}
+                  {item.meaning && <>
+                    <AppText variant="caption" color="textSecondary" numberOfLines={2}>{item.meaning}</AppText>
+                    <AppText variant="caption">{t('{n} of 3 practice stars', { n: phraseStars(mastery[wordReviewKey(item.courseId, item.word)]) })}</AppText>
+                    <Button title={t('Recall the phrase')} size="sm" variant="secondary" onPress={() => setRecall({ card: item, mode: 'translate' })} />
+                  </>}
+                  {item.word.trim().split(/\s+/).length > 1 && <Button title={t('Fill in the missing word')} size="sm" variant="ghost"
+                    onPress={() => setRecall({ card: item, mode: 'cloze' })} />}
+                  {canSpeak(item.courseId) && <Button title={t('Listen and type the phrase')} size="sm" variant="ghost"
+                    onPress={() => setRecall({ card: item, mode: 'listen' })} />}
                 </View>
                 {canSpeak(item.courseId) ? <Button title="🔊" size="sm" variant="ghost" accessibilityLabel={t('Listen')} onPress={() => speak(item.word, item.courseId)} /> : null}
                 <Button title="✕" size="sm" variant="ghost" accessibilityLabel={t('Remove')} onPress={() => game.toggleSaved(item)} />

@@ -32,11 +32,30 @@ const activities = [
   },
 ] as const;
 
+const zurichActivities = [
+  {
+    id: 'zurich-viewing', title: 'Wohnungsbesichtigung',
+    task: 'Spiele «Ein Tag in Zürich». In der Besichtigung musst du einen Termin verschieben. Schreibe deinen eigenen Vorschlag und vergleiche ihn mit anderen Antworten.',
+    english: 'Would Friday at six work for you?',
+    german: 'Würde Ihnen Freitag um sechs Uhr passen?',
+    phrases: ['Would … work for you?'], germanPhrases: ['Würde Ihnen … passen?'],
+  },
+  {
+    id: 'zurich-tram', title: 'Eine Durchsage erklären',
+    task: 'Spiele im Zürich-Abenteuer die Durchsage. Erkläre einem anderen Mitglied, wo das Tram tatsächlich abfährt.',
+    english: 'It leaves from stop C instead of stop A.',
+    german: 'Es fährt an Kante C statt an Kante A ab.',
+    phrases: ['instead of …'], germanPhrases: ['statt …'],
+  },
+] as const;
+
 export function clubPractice(date = new Date(), language?: string) {
   const week = Math.floor((date.getTime() - MONDAY) / (7 * DAY));
-  const index = ((week % activities.length) + activities.length) % activities.length;
-  const activity = activities[index];
   const german = language === 'German';
+  const available = german ? [...activities, ...zurichActivities] : activities;
+  // Add Zurich scenarios after the original four each cycle for German clubs.
+  const index = ((week % available.length) + available.length) % available.length;
+  const activity = available[index];
   return {
     week: new Date(MONDAY + week * 7 * DAY).toISOString().slice(0, 10),
     id: activity.id,
@@ -49,5 +68,5 @@ export function clubPractice(date = new Date(), language?: string) {
 }
 
 export function clubPracticeContext(id?: string) {
-  return activities.find((activity) => activity.id === id);
+  return [...activities, ...zurichActivities].find((activity) => activity.id === id);
 }

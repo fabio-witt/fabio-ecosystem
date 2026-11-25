@@ -204,6 +204,9 @@ function RootNavigator() {
       {/* Email confirmation deep link – must work in both states */}
       <Stack.Screen name="auth/callback" />
       <Stack.Screen name="start-course" />
+      <Stack.Screen name="zurich-adventure" />
+      <Stack.Screen name="language-studio" />
+      <Stack.Screen name="speaking-journal" />
       <Stack.Screen name="plus" />
       <Stack.Screen name="privacy" />
       <Stack.Screen name="terms" />

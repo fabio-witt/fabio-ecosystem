@@ -6,6 +6,8 @@ import { spacing, useThemedStyles, type ThemeColors } from '@/constants/theme';
 import { t } from '@/lib/i18n';
 
 const ITEMS: [string, string, string, Href][] = [
+  ['🚋', 'A day in Zurich', 'Play a branching adventure', '/zurich-adventure'],
+  ['✍️', 'Language studio', 'Practise for tomorrow', '/language-studio'],
   ['🇨🇭', 'Swiss everyday missions', 'Practise real-life situations', '/swiss-missions'],
   ['🛠️', 'My mistake workshop', 'Learn from lessons and chat corrections', '/mistake-workshop'],
   ['🎁', 'Rewards', 'Chests, season pass, records', '/rewards'],

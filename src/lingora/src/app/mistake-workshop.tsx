@@ -20,5 +20,6 @@ export default function MistakeWorkshopScreen() {
  {!user ? <Button title={t('Log in')} onPress={() => router.push('/login')} /> : corrections.isError ? <Button title={t('Try again')} onPress={()=>{void corrections.refetch();}} /> : <AppText>{corrections.isPending?t('Loading…'):t('{n} corrections due',{n:corrections.data.filter(c=>c.due).length})}</AppText>}
  {user && <Button title={t('Correction review')} onPress={()=>router.push('/correction-review')} />}</Card>
  <Card><AppText variant="heading">{t('Swiss everyday missions')}</AppText><AppText>{t('Revisit your mistakes inside each mission.')}</AppText><Button title={t('Open mission')} onPress={()=>router.push('/swiss-missions')} /></Card>
+ <Card><AppText variant="heading">{t('Mistake rematch')}</AppText><Button title={t('A day in Zurich')} onPress={() => router.push('/zurich-adventure')} /></Card>
  </ScrollView></Screen>;
 }

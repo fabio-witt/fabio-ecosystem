@@ -1,3 +1,4 @@
+import { adventureTasks } from './zurich-adventure';
 import { swissMissions } from './swiss-missions';
 
 type ConversationTask = { goal: string; starter: string };
@@ -34,6 +35,7 @@ const workshops: Record<string, ConversationTask> = {
 
 export function conversationTask(id: string | undefined): ConversationTask | undefined {
   if (!id) return;
+  if (Object.hasOwn(adventureTasks, id)) return adventureTasks[id];
   const mission = swissMissions.find(item => id === `swiss-${item.id}`);
   if (mission) return { goal: mission.goal, starter: `Hast du Lust auf ein Rollenspiel? ${mission.roleplay}` };
   if (Object.hasOwn(workshops, id)) return workshops[id];

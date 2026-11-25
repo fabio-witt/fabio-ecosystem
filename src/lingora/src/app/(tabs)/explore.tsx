@@ -28,7 +28,7 @@ function DiscoverScreenContent() {
   const { languageId: languageParam, task } = useLocalSearchParams<{ languageId?: string; task?: string }>();
   const german = useLanguages().data?.find(language => language.language_code === 'de')?.id;
   const requestedLanguage = Number(languageParam);
-  const languageId = Number.isSafeInteger(requestedLanguage) && requestedLanguage > 0 ? requestedLanguage : languageParam === undefined && task?.startsWith('swiss-') ? german ?? null : null;
+  const languageId = Number.isSafeInteger(requestedLanguage) && requestedLanguage > 0 ? requestedLanguage : languageParam === undefined && (task?.startsWith('swiss-') || task?.startsWith('zurich-')) ? german ?? null : null;
   const setLanguageId = (id: number | null) => router.setParams({ languageId: id === null ? '' : String(id) });
   const [nearMe, setNearMe] = useState(false);
   const [showFilters, setShowFilters] = useState(false);

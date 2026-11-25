@@ -125,6 +125,9 @@ export default function ClubScreen() {
               <AppText>{practice.example}</AppText>
               <AppText variant="caption" color="textSecondary">{t('Useful phrases: {phrases}', { phrases: practice.phrases.join(' · ') })}</AppText>
               {data.isMember && <Button title={t("Write your response")} variant="secondary" onPress={writePractice} />}
+              {data.language?.name === 'German' && (
+                <Button title={t('Play the Zurich adventure and compare your answers')} variant="secondary" onPress={() => router.push('/zurich-adventure')} />
+              )}
             </Card>
             <View style={styles.actions}>
               <Button title={t("All posts")} variant={weekly ? 'secondary' : 'primary'} onPress={() => setWeekly(false)} />
