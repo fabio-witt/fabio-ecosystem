@@ -10,7 +10,7 @@ import { crownsFor } from '@/features/game/progression';
 import { Medved, MedvedSays } from '@/components/medved';
 import { useBob, useWiggle } from '@/components/motion';
 import { dayKey, useGame } from '@/features/game/store';
-import { AppText } from '@/components/ui';
+import { AppText, Button, Card } from '@/components/ui';
 import { useScrollPosition } from '@/hooks/use-scroll-position';
 import { radius, screenPadding, spacing, useThemedStyles, type ThemeColors } from '@/constants/theme';
 
@@ -320,6 +320,13 @@ export function CoursePath({ course, onBack, startingLevel, scores, progressUnav
                   </Fragment>
                 ))}
               </View>
+              {unitIndex === 0 && <Card style={{ gap: spacing.sm, marginVertical: spacing.md }}>
+                <AppText variant="heading">{t('Bonus practice')}</AppText>
+                <Button title={t('Daily circuit')} variant="secondary"
+                  onPress={() => router.push({ pathname: '/daily-circuit', params: { course: course.id } })} />
+                {(course.id === 'de' || course.id === 'gsw') &&
+                  <Button title={t('A day in Zurich')} variant="secondary" onPress={() => router.push('/zurich-adventure')} />}
+              </Card>}
             </Fragment>
           );
         })}

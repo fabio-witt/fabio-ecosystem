@@ -119,7 +119,7 @@ function RootNavigator() {
       }
       const task = session?.user.is_anonymous ? null : takeExchange();
       if (task && conversationTask(task)) {
-        router.replace({ pathname: '/explore', params: { task } });
+        router.replace({ pathname: '/community', params: { section: 'partners', task } });
         return;
       }
       const entry = takeCourse();
@@ -140,6 +140,7 @@ function RootNavigator() {
   return (
     <Stack key={session?.user.id ?? 'guest'} screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="explore" />
       {/* Only reachable when signed in */}
       <Stack.Protected guard={isSignedIn}>
         <Stack.Screen name="chat/[id]" />

@@ -56,7 +56,7 @@ export function FirstExchange({ languageId, languageName, taskId }: {
                 : `No ${languageName} partners are available right now.`}
           </AppText>
           <Button title={t("Find a partner in Discover")} variant="secondary" onPress={() => router.push({
-            pathname: '/explore', params: { languageId: String(languageId) },
+            pathname: '/community', params: { section: 'partners', languageId: String(languageId) },
           })} />
         </Card>
       )}

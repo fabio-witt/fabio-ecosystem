@@ -1,5 +1,25 @@
 /** German interface translations. Course content keeps its teaching language. */
 export const de: Record<string, string> = {
+"Saved partners": "Gemerkte Partner",
+"Keep a private shortlist on this device.": "Deine Merkliste bleibt privat auf diesem Gerät.",
+"Back to partner search": "Zurück zur Partnersuche",
+"Could not load saved partners": "Gemerkte Partner konnten nicht geladen werden",
+"No saved partners to show": "Keine gemerkten Partner verfügbar",
+"Remove bookmark": "Von der Merkliste entfernen",
+"Save partner": "Partner merken",
+
+"Bonus practice": "Bonusübungen",
+"Use my preferences": "Meine Vorlieben verwenden",
+"Filters": "Filter",
+"Filters ({n})": "Filter ({n})",
+"Shared topics": "Gemeinsame Themen",
+"Likes talking about": "Spricht gerne über",
+"Practises via {formats}": "Übt per {formats}",
+"Usually available: {times}": "Meist verfügbar: {times}",
+"Find a first topic together": "Ein erstes Gesprächsthema finden",
+"Hi! Would you like to try a short language exchange? What would you like to practise first?": "Hallo! Hast du Lust auf einen kurzen Sprachaustausch? Was möchtest du zuerst üben?",
+"Hi! I saw that you like talking about {topic}. Want to use that as our first topic for a language exchange?": "Hallo! Ich habe gesehen, dass du gerne über {topic} sprichst. Wollen wir damit unseren Sprachaustausch starten?",
+
   "Weekly medal goal reached!": "Wochenziel für Medaillen erreicht!",
   "Weekly goal: {n} of 3 medal days": "Wochenziel: {n} von 3 Tagen mit Medaille",
   "Find a partner in the forum": "Im Forum einen Übungspartner suchen",

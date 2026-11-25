@@ -6,9 +6,6 @@ import { spacing, useThemedStyles, type ThemeColors } from '@/constants/theme';
 import { t } from '@/lib/i18n';
 
 const ITEMS: [string, string, string, Href][] = [
-  ['🏅', 'Daily circuit', 'Earn medals with a new vocabulary round', '/daily-circuit'],
-  ['🤝', 'Exchange table', 'Swap roles and languages with a partner', '/exchange-table'],
-  ['🚋', 'A day in Zurich', 'Play a branching adventure', '/zurich-adventure'],
   ['✍️', 'Language studio', 'Practise for tomorrow', '/language-studio'],
   ['🇨🇭', 'Swiss everyday missions', 'Practise real-life situations', '/swiss-missions'],
   ['🛠️', 'My mistake workshop', 'Learn from lessons and chat corrections', '/mistake-workshop'],
@@ -19,11 +16,7 @@ const ITEMS: [string, string, string, Href][] = [
   ['📄', 'Cheat sheets', 'All rules of a level on one page', '/cheatsheet'],
   ['📊', 'Weekly report', 'Progress and weak spots', '/report'],
   ['🤖', 'AI conversation', 'Role-play real situations', '/ai-partner'],
-  ['🗣', 'Forum', 'Ask native speakers', '/forum'],
-  ['🎥', 'Live rooms', 'Small video groups by level', '/meetups'],
-  ['🤝', 'Team quests', 'Reach your goal with a partner', '/team-quests'],
   ['🏫', 'Classes', 'For teachers, schools, families', '/classes'],
-  ['🎁', 'Invite friends', 'A week of Plus for both', '/invite'],
 ];
 
 /** Quick access to the learning and community tools. */

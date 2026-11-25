@@ -114,7 +114,7 @@ function ChatsScreenContent() {
               styles.iconButton,
               pressed && styles.iconButtonPressed,
             ]}
-            onPress={() => router.push('/explore')}
+            onPress={() => router.push({ pathname: '/community', params: { section: 'partners' } })}
             accessibilityRole="button"
             accessibilityLabel={t("Find a new language partner")}
           >
@@ -224,7 +224,7 @@ function ChatsScreenContent() {
               title={t("No conversations yet")}
               message={t("Discover language partners and start your first conversation!")}
               actionLabel={t("Discover people →")}
-              onAction={() => router.push('/explore')}
+              onAction={() => router.push({ pathname: '/community', params: { section: 'partners' } })}
             />
           ))}
       </ScrollView>

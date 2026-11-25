@@ -5,7 +5,7 @@ import { AppText, PressableCard } from '@/components/ui';
 import { spacing } from '@/constants/theme';
 import { t } from '@/lib/i18n';
 
-export function SocialShortcuts({ course }: { course?: string }) {
+export function SocialShortcuts({ course, showPartners = true }: { course?: string; showPartners?: boolean }) {
   const params = course ? { course } : {};
   return (
     <View style={styles.section}>
@@ -15,10 +15,10 @@ export function SocialShortcuts({ course }: { course?: string }) {
           <AppText variant="bodyStrong">{t('Exchange table')}</AppText>
           <AppText variant="caption" color="textSecondary">{t('Swap roles and languages with a partner')}</AppText>
         </PressableCard>
-        <PressableCard style={styles.tile} onPress={() => router.push({ pathname: '/explore', params })}>
+        {showPartners && <PressableCard style={styles.tile} onPress={() => router.push({ pathname: '/community', params: { ...params, section: 'partners' } })}>
           <AppText variant="bodyStrong">{t('Find Partner')}</AppText>
           <AppText variant="caption" color="textSecondary">{t('Find a reciprocal language match')}</AppText>
-        </PressableCard>
+        </PressableCard>}
         <PressableCard style={styles.tile} onPress={() => router.push({ pathname: '/meetups', params })}>
           <AppText variant="bodyStrong">{t('Live rooms')}</AppText>
           <AppText variant="caption" color="textSecondary">{t('Talk in a small group')}</AppText>

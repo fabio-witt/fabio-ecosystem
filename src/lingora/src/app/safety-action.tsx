@@ -44,7 +44,7 @@ export default function SafetyActionScreen() {
             <AppText>{block
               ? t("User blocked. You can manage blocked users under Settings.")
               : t("Report received. Lingora will review it. Your report is private.")}</AppText>
-            <Button title={t("Done")} onPress={() => block ? router.dismissTo('/explore') : router.back()} />
+            <Button title={t("Done")} onPress={() => block ? router.dismissTo({ pathname: '/community', params: { section: 'partners' } }) : router.back()} />
           </>
         ) : (
           <>

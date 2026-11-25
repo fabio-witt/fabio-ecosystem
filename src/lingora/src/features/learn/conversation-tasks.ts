@@ -1,3 +1,5 @@
+import { readPartnerTopicTask } from '@/features/partners/partner-topics';
+import { t } from '@/lib/i18n';
 import { exchangeInvitation, exchangeTask } from '@/features/chats/exchange-table';
 import { adventureTasks } from './zurich-adventure';
 import { swissMissions } from './swiss-missions';
@@ -36,6 +38,15 @@ const workshops: Record<string, ConversationTask> = {
 
 export function conversationTask(id: string | undefined): ConversationTask | undefined {
   if (!id) return;
+  if (id === 'partner-intro') return {
+    goal: t('Find a first topic together'),
+    starter: t('Hi! Would you like to try a short language exchange? What would you like to practise first?'),
+  };
+  const topic = readPartnerTopicTask(id);
+  if (topic) return {
+    goal: t('Find a first topic together'),
+    starter: t('Hi! I saw that you like talking about {topic}. Want to use that as our first topic for a language exchange?', { topic: t(topic) }),
+  };
   const exchange = exchangeTask(id);
   if (exchange) return {
     goal: exchange.goal,

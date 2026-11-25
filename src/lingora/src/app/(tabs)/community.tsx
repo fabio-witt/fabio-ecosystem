@@ -1,6 +1,7 @@
+import { PartnerBrowser } from '@/features/partners/partner-browser';
 import { SocialShortcuts } from '@/features/learn/social-shortcuts';
 import { useTabReselect } from '@/hooks/use-tab-reselect';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -15,6 +16,7 @@ import { PostCard } from '@/components/post-card';
 import {
   AppText,
   Avatar,
+  Button,
   EmptyState,
   ErrorState,
   LoadingState,
@@ -52,14 +54,7 @@ function CommunityScreenContent() {
 
   const header = (
     <View>
-      <View style={styles.titleBlock}>
-        <AppText variant="display">{t("Community")}</AppText>
-        <AppText variant="caption" color="textSecondary">
-          {t("Questions and posts from other learners.")}
-        </AppText>
-      </View>
-
-      <View style={styles.social}><SocialShortcuts /></View>
+      <View style={styles.social}><SocialShortcuts showPartners={false} /></View>
 
       <PressableCard
         style={styles.composeTrigger}
@@ -188,10 +183,10 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
   flex: {
     flex: 1,
   },
-  titleBlock: {
-    gap: spacing.xs,
-    marginBottom: spacing.xl,
-  },
+  switcher: { paddingHorizontal: screenPadding, paddingTop: spacing.sm, paddingBottom: spacing.sm, gap: spacing.sm },
+  hidden: { display: 'none' },
+  switchRow: { flexDirection: 'row', gap: spacing.sm },
+  guestShortcuts: { paddingHorizontal: screenPadding, paddingVertical: spacing.sm },
   composeTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -233,7 +228,50 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
 });
 
 export default function CommunityScreen() {
+  const { styles } = useThemedStyles(createStyles);
+  const { section } = useLocalSearchParams<{ section?: string }>();
+  const partners = section === 'partners';
+  const [keepPosts, setKeepPosts] = useState(false);
+  const [keepPartners, setKeepPartners] = useState(false);
+
+  function switchTo(next: 'posts' | 'partners') {
+    if (partners) setKeepPartners(true);
+    else setKeepPosts(true);
+    router.setParams({ section: next });
+  }
   const guest = useIsGuest();
-  if (guest) return <GuestGate title={t('Join the community with a free account')} message={t('Ask questions, share progress and help other learners.')} />;
-  return <CommunityScreenContent />;
+  return (
+    <Screen>
+      <View style={styles.switcher}>
+        <AppText variant="heading" accessibilityRole="header">{t('Community')}</AppText>
+        <View style={styles.switchRow} accessibilityRole="tablist">
+          <Button title={t('Posts')} accessibilityRole="tab" accessibilityState={{ selected: !partners }}
+            style={styles.flex} variant={partners ? 'secondary' : 'primary'}
+            onPress={() => switchTo('posts')} />
+          <Button title={t('Language partners')} accessibilityRole="tab" accessibilityState={{ selected: partners }}
+            style={styles.flex} variant={partners ? 'primary' : 'secondary'}
+            onPress={() => switchTo('partners')} />
+        </View>
+      </View>
+      {guest ? (
+        <>
+          {!partners && <View style={styles.guestShortcuts}><SocialShortcuts showPartners={false} /></View>}
+          {partners
+            ? <GuestGate title={t('Find partners with a free account')} message={t('Meet people who speak the language you learn and want to learn yours.')} />
+            : <GuestGate title={t('Join the community with a free account')} message={t('Ask questions, share progress and help other learners.')} />}
+        </>
+      ) : <>
+        {(partners || keepPartners) && (
+          <View style={partners ? styles.flex : styles.hidden} importantForAccessibility={partners ? 'auto' : 'no-hide-descendants'}>
+            <PartnerBrowser />
+          </View>
+        )}
+        {(!partners || keepPosts) && (
+          <View style={!partners ? styles.flex : styles.hidden} importantForAccessibility={!partners ? 'auto' : 'no-hide-descendants'}>
+            <CommunityScreenContent />
+          </View>
+        )}
+      </>}
+    </Screen>
+  );
 }

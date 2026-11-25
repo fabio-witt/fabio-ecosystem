@@ -60,7 +60,7 @@ export default function SwissMissionsScreen() {
  <AppText>{mission.roleplay}</AppText><Button title={t('Find a practice partner')} onPress={() => {
   const task = `swiss-${mission.id}`;
   if (user && !user.is_anonymous) {
-    router.push({ pathname: '/explore', params: { task } });
+    router.push({ pathname: '/community', params: { section: 'partners', task } });
   } else {
     rememberExchange(task);
     router.push(user ? '/create-account' : '/login');

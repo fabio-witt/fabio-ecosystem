@@ -1,4 +1,3 @@
-import { SocialShortcuts } from '@/features/learn/social-shortcuts';
 import { Flag } from '@/components/flag';
 import { HintStat } from '@/components/hint';
 import { MedvedSays } from '@/components/medved';
@@ -164,19 +163,6 @@ export default function HomeScreen() {
           </Pressable>
         </View>
 
-        <Card style={styles.card}>
-          <AppText variant="heading">{t('A day in Zurich')}</AppText>
-          <AppText color="textSecondary">{t('Play a branching adventure')}</AppText>
-          <Button title={t('Start the Zurich adventure')} onPress={() => router.push('/zurich-adventure')} />
-        </Card>
-        <Card style={styles.card}>
-          <AppText variant="heading">{t('Daily circuit')}</AppText>
-          <AppText color="textSecondary">{t('Earn medals with a new vocabulary round')}</AppText>
-          <Button title={t('Start practice')} variant="secondary"
-            onPress={() => router.push({ pathname: '/daily-circuit', params: next ? { course: next.course.id } : {} })} />
-        </Card>
-        <SocialShortcuts course={next?.course.id} />
-
         {(!reviewNext && daily.items.length > 0) || due > 0 ? (
         <Card style={styles.card}>
           {!reviewNext && daily.items.length > 0 ? (
@@ -255,7 +241,6 @@ export default function HomeScreen() {
             ))}
           </View>
         )}
-        <Button title={t("Find a partner")} variant="secondary" onPress={() => router.push('/explore')} />
       </ScrollView>
     </Screen>
   );

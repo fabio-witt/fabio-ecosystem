@@ -95,7 +95,7 @@ export default function ZurichAdventure() {
   }
 
   function invite(task: string) {
-    if (user && !user.is_anonymous) router.push({ pathname: '/explore', params: { task } });
+    if (user && !user.is_anonymous) router.push({ pathname: '/community', params: { section: 'partners', task } });
     else {
       rememberExchange(task);
       router.push(user ? '/create-account' : '/login');

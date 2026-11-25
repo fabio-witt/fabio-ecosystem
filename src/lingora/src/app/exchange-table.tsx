@@ -51,7 +51,7 @@ export default function ExchangeTable() {
     if (partner) {
       conversation.mutate(partner, { onSuccess: id => router.push({ pathname: '/chat/[id]', params: { id, task } }) });
     } else {
-      router.push({ pathname: '/explore', params: { task, ...(language ? { course: language } : {}) } });
+      router.push({ pathname: '/community', params: { section: 'partners', task, ...(language ? { course: language } : {}) } });
     }
   }
 

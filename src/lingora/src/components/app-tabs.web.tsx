@@ -15,7 +15,6 @@ import { t } from '@/lib/i18n';
 const TABS = [
   { name: 'index', href: '/', label: 'Home', icon: '🏠' },
   { name: 'learn', href: '/learn', label: 'Learn', icon: '📚' },
-  { name: 'explore', href: '/explore', label: 'Find Partner', icon: '🤝' },
   { name: 'chats', href: '/chats', label: 'Chats', icon: '💬' },
   { name: 'community', href: '/community', label: 'Community', icon: '👥' },
   { name: 'profile', href: '/profile', label: 'Profile', icon: '👤' },
@@ -32,7 +31,7 @@ export default function AppTabs() {
         <View style={{ ...styles.tabBar, paddingHorizontal: Math.max(8, (width - 720) / 2) }}>
           {TABS.map((tab) => (
             <TabTrigger key={tab.name} name={tab.name} href={tab.href} asChild>
-              <TabButton compact={compact} tab={tab.name} icon={tab.icon}>{tab.name === 'community' && width < 390 ? t("Feed") : t(tab.label)}</TabButton>
+              <TabButton compact={compact} tab={tab.name} icon={tab.icon}>{t(tab.label)}</TabButton>
             </TabTrigger>
           ))}
         </View>

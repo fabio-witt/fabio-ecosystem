@@ -21,6 +21,10 @@ export type Partner = {
   review_average: number | null;
   review_total: number;
   active_recently: boolean;
+  interests?: string[] | null;
+  conversation_topics?: string | null;
+  practice_preference?: string | null;
+  availability?: string | null;
 };
 
 export type PartnerFilters = { languageId: number | null; country: string | null; query: string; level?: string; practice?: string; availability?: string };
@@ -50,7 +54,14 @@ export function usePartnerSearch(filters: PartnerFilters) {
           })
         : await supabase.rpc('find_partners', args);
       if (error) throw error;
-      return (data ?? []) as unknown as Partner[];
+      const rows = (data ?? []) as unknown as Partner[];
+      if (!rows.length) return rows;
+      const details = await supabase.from('profiles')
+        .select('id, interests, conversation_topics, practice_preference, availability')
+        .in('id', rows.map(row => row.id));
+      if (details.error) return rows;
+      const byId = new Map(details.data.map(profile => [profile.id, profile]));
+      return rows.map(row => ({ ...row, ...byId.get(row.id) }));
     },
     getNextPageParam: (lastPage, pages) =>
       lastPage.length === PAGE_SIZE ? pages.length * PAGE_SIZE : undefined,
