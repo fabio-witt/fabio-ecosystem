@@ -8,7 +8,6 @@
   </defs>
   <rect width="64" height="64" rx="18" fill="url(#gb-bg)"/>
   <g transform="translate(-8 2) scale(0.667)">
-    <path d="M34 44 C29 66 31 80 40 87 C44 79 46 72 46 66 L74 66 C74 72 76 79 80 87 C89 80 91 66 86 44 Z" fill="#6B4226"/>
     <rect x="53" y="64" width="14" height="18" rx="5" fill="#DDAE90"/>
     <ellipse cx="60" cy="98" rx="30" ry="20" fill="#F4F1EA"/>
     <g clip-path="url(#gb-shirt)" fill="#1B3A5C"><rect x="28" y="84" width="64" height="4"/><rect x="28" y="92" width="64" height="4"/><rect x="28" y="100" width="64" height="4"/></g>
@@ -17,9 +16,8 @@
     <ellipse cx="85" cy="50" rx="4.5" ry="6.5" fill="#DDAE90"/>
     <circle cx="34" cy="59" r="2.8" stroke="#E0A800" stroke-width="1.8" fill="none"/>
     <ellipse cx="60" cy="48" rx="25" ry="27" fill="#F3D2B8"/>
-    <path d="M35 46 C33 22 49 15 60 15 C71 15 87 22 85 46 C80 34 71 31 60 31 C49 31 40 34 35 46 Z" fill="#6B4226"/>
-    <path d="M36 52 C36 75 48 81 60 81 C72 81 84 75 84 52 C80 63 72 67 60 67 C48 67 40 63 36 52 Z" fill="#6B4226"/>
-    <path d="M47 63 C51 58.5 57 59 60 61.5 C63 59 69 58.5 73 63 C69 65 64 64.6 60 63 C56 64.6 51 65 47 63 Z" fill="#4A2C18"/>
+    <path d="M35 45 C33 24 47 17 60 17 C73 17 87 24 85 45 C82 37 77 33 70 32 C63 31 57 31 50 32 C43 33 38 37 35 45 Z" fill="#6B4226"/>
+    <path d="M35.5 44 L39 44 L38.5 55 L36 53 Z M84.5 44 L81 44 L81.5 55 L84 53 Z" fill="#6B4226"/>
     <path d="M53 67 Q60 72.5 67 67" stroke="#7A2E2E" stroke-width="2.4" stroke-linecap="round" fill="none"/>
     <path d="M60 49 C58 55 56.5 57.5 59.5 58.5 C61.5 59 63 58 62.5 56.5" stroke="#DDAE90" stroke-width="1.8" stroke-linecap="round" fill="none"/>
     <ellipse cx="50" cy="47" rx="5.2" ry="4.4" fill="#fff"/>
