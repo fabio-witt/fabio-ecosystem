@@ -27,13 +27,15 @@
   margin: 0;
   overflow: hidden;
   isolation: isolate;
-  border-radius: 24px;
-  background: #133149;
-  box-shadow: 0 12px 34px rgb(11 34 56 / 20%);
+  border-radius: 26px;
+  background: #fff;
+  border: 6px solid #fff;
+  box-shadow: 0 18px 40px rgb(11 34 56 / 16%);
 }
 
 .fw-portrait img {
   display: block;
+  border-radius: 20px;
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 5;
@@ -46,7 +48,8 @@
   inset: auto 0 0;
   display: grid;
   padding: 48px 20px 18px;
-  background: linear-gradient(transparent, rgb(8 23 35 / 92%));
+  border-radius: 0 0 20px 20px;
+  background: linear-gradient(transparent, rgb(8 23 35 / 85%));
   color: #fff;
   font-size: 14px;
   line-height: 1.4;

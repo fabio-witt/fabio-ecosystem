@@ -13,8 +13,8 @@
 .fw50-top,.fw50-dd__link{display:inline-flex;align-items:center;gap:5px;height:40px;padding:0 11px;border-radius:10px;border:0;background:transparent;color:var(--nav-text)!important;text-decoration:none!important;font:inherit;font-size:14px;font-weight:750;white-space:nowrap;cursor:pointer;transition:background .15s}
 .fw50-top:hover,.fw50-dd:hover>.fw50-dd__link,.fw50-dd.is-open>.fw50-dd__link{background:var(--nav-hover)}
 .fw50-dd{display:flex;align-items:center}
-.fw50-dd__link{padding-right:4px!important}
-.fw50-dd__toggle{display:inline-grid;place-items:center;width:22px;height:40px;margin-left:-4px;padding:0;border:0;background:transparent;color:var(--nav-text);cursor:pointer;border-radius:8px}
+.fw50-dd__link{padding-right:6px!important}
+.fw50-dd__toggle{display:inline-grid;place-items:center;width:22px;height:40px;margin-left:2px;padding:0;border:0;background:transparent;color:var(--nav-text);cursor:pointer;border-radius:8px}
 .fw50-dd__toggle:hover{background:var(--nav-hover)}
 .fw50-top[aria-current="page"],.fw50-dd.is-current>button{color:var(--nav-navy)!important;background:var(--nav-hover)}
 .fw50-dd--lingora>button{color:#0F5C8A!important}
