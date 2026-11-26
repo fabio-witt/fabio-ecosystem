@@ -40,7 +40,7 @@ main p a:not([class]),main li a:not([class]){text-underline-offset:3px}
 .page-final-cta{background:var(--fw-deep)!important}
 .page-final-cta a{background:var(--fw-accent)!important;color:#fff!important}
 /* SPRACHWERK: warm hero instead of the shared mountain scene */
-html[data-brand="sprachschule"] .hero{background:radial-gradient(900px 420px at 85% 0%,rgba(63,167,214,.28),transparent 60%),radial-gradient(700px 380px at 0% 100%,rgba(224,168,0,.12),transparent 60%),linear-gradient(160deg,#0b2238 0%,#0f3a5c 60%,#14486e 100%)!important}
+html[data-brand="sprachschule"] .hero{background:#fbfaf7!important;color:#14212e!important}
 html[data-brand="sprachschule"] .hero::before,html[data-brand="sprachschule"] .hero::after{display:none!important}
 html[data-brand="sprachschule"] .hero h1 span,html[data-brand="sprachschule"] .hero .accent{color:#f3b38f!important}
 /* DACHWERK compact home: competence cards use the full width once the side panel is gone */
@@ -56,3 +56,11 @@ html:not([data-brand="lingora"]):not([data-brand="grammarfirst"]) h1{line-height
 .sticky-cta,.floating-cta-v16,.sw56-mobile-cta{display:none!important}
 /* Fewer decorative effects */
 .kicker:before,.kicker:after,.eyebrow:before{display:none!important}
+
+/* v72: Sprachkurse hero in the calm off-white of "Weitere Services" */
+html[data-brand="sprachschule"] .hero h1,html[data-brand="sprachschule"] .hero p,html[data-brand="sprachschule"] .hero li,html[data-brand="sprachschule"] .hero .lead{color:#14212e!important;text-shadow:none!important}
+html[data-brand="sprachschule"] .hero p{color:#4a5260!important}
+html[data-brand="sprachschule"] .hero h1 span,html[data-brand="sprachschule"] .hero .accent{color:#0f5c8a!important}
+html[data-brand="sprachschule"] .hero .hero-proof span{background:#fff!important;border:1px solid #e4dfd5!important;color:#14212e!important;text-shadow:none!important}
+html[data-brand="sprachschule"] .hero .btn-secondary{background:#fff!important;color:#14212e!important;border-color:#cfd6df!important}
+html[data-brand="sprachschule"] .hero .hero-badge,html[data-brand="sprachschule"] .hero .eyebrow,html[data-brand="sprachschule"] .hero .kicker-pill{background:#fff!important;color:#14212e!important;border-color:#e4dfd5!important}
